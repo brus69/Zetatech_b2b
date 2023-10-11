@@ -1,0 +1,27 @@
+html {
+  max-width: 100vw;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#__next {
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ol,
+li {
+  list-style-type: none;
+}
