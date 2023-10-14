@@ -1,12 +1,10 @@
-import { register } from "@/features/register/model";
 import { Button, Card, Input, PasswordInput } from "@mantine/core";
 import { IconAt } from "@tabler/icons-react";
 import { useUnit } from "effector-react/effector-react.mjs";
 import React, { useState } from "react";
+import { register } from "@/features/register/model";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   const { onRegister } = useUnit({
     onRegister: register,
   });
