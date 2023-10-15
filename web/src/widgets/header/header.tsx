@@ -26,16 +26,7 @@ export const Header = () => {
           ))}
         </ul>
 
-        <Button
-          className="mr-4"
-          radius={"xs"}
-          variant="filled"
-          component={Link}
-          href="/register"
-        >
-          Регистрация
-        </Button>
-        <Button radius={"xs"} variant="filled" component={Link} href="/login">
+        <Button variant="filled" component={Link} href="/login">
           Войти в лк
         </Button>
       </div>

@@ -22,11 +22,10 @@ export const Promo = () => {
       <div className="flex w-full max-w-lg m-auto">
         <Input
           className="grow"
-          radius={"xs"}
           placeholder="URL - адрес или ключевое слово"
           leftSection={<IconSearch size={16} />}
         />
-        <Button radius={"xs"}>Искать в каталоге</Button>
+        <Button>Искать в каталоге</Button>
       </div>
     </section>
   );
