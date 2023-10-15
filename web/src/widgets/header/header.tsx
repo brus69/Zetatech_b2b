@@ -2,25 +2,23 @@ import React from "react";
 import { Button } from "@mantine/core";
 import Link from "next/link";
 
-type Props = {};
-
 const ITEMS = [
   { url: "/", name: "О нас" },
+  { url: "/", name: "Тарифы" },
   { url: "/", name: "Отзывы" },
+  { url: "/", name: "Вопросы и ответы" },
   { url: "/", name: "Блог" },
-  { url: "/", name: "Контакты" },
-  { url: "/", name: "Реквизиты" },
-  { url: "/", name: "Вопросы" },
-  { url: "/", name: "Закон и парсинг" },
-  { url: "/", name: "Оферта" },
-  { url: "/", name: "Глосарий" },
 ];
 
-export const Header = (props: Props) => {
+export const Header = () => {
   return (
-    <header className="py-2 text-white bg-black">
+    <header className="py-2">
       <div className="container flex items-center">
-        <ul className="flex gap-4 mr-auto">
+        <Link href="/">
+          <img className="h-12" src="/logo.svg" alt="Логотип" />
+        </Link>
+
+        <ul className="flex gap-4 m-auto">
           {ITEMS.map(({ url, name }) => (
             <li key={name}>
               <Link href={url}>{name}</Link>
@@ -28,17 +26,8 @@ export const Header = (props: Props) => {
           ))}
         </ul>
 
-        <Button
-          className="mr-4"
-          radius={"xs"}
-          variant="default"
-          component={Link}
-          href="/register"
-        >
-          Регистрация
-        </Button>
-        <Button radius={"xs"} variant="default" component={Link} href="/login">
-          Вход
+        <Button variant="filled" component={Link} href="/login">
+          Войти в лк
         </Button>
       </div>
     </header>
