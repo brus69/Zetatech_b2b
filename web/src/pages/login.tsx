@@ -7,6 +7,7 @@ const Page = () => {
   const { onRegister } = useUnit({
     onRegister: register,
   });
+
   const [value, setValue] = useState("Clear me");
 
   return (
@@ -20,22 +21,18 @@ const Page = () => {
       className="w-full gap-4"
       component={"form"}
     >
-      <h2 className="my-2 text-center">Регистрация</h2>
+      <h2 className="my-2 text-center">Вход</h2>
+
       <Input placeholder="Ваша почта" />
+
       <PasswordInput
         type="password"
         placeholder="Пароль"
         value={value}
         onChange={(event) => setValue(event.currentTarget.value)}
       />
-      <PasswordInput
-        type="password"
-        placeholder="Повторите пароль"
-        value={value}
-        onChange={(event) => setValue(event.currentTarget.value)}
-      />
 
-      <Button onClick={() => onRegister()}>Зарегистрироваться</Button>
+      <Button onClick={() => onRegister()}>Войти</Button>
     </Card>
   );
 };
