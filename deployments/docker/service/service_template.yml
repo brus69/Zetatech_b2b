@@ -7,7 +7,7 @@ services:
     networks:
       - zetatech
     volumes:
-      - "../../../backend/zetatech_backend/:/usr/service:rw"
+      - "../../../backend/zetatech_backend/:/usr/zetatech_backend:rw"
       - "dev_static_files:/usr/service/staticfiles"
     environment:
       - DEBUG=${DEBUG}
