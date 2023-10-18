@@ -1,5 +1,5 @@
-import { Header, Footer } from "@/widgets";
 import React from "react";
+import { Header, Footer } from "@/widgets";
 
 type Props = {
   children: React.ReactNode;

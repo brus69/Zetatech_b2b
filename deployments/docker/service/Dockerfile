@@ -1,0 +1,24 @@
+FROM python:3.11.4-slim
+
+ENV HOME_DIR=/usr/zetatech_backend
+ENV LOCAL_DIR=backend/zetatech_backend
+
+WORKDIR $HOME_DIR
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update && \
+    pip install --upgrade pip && \
+    apt install -y netcat-openbsd
+
+
+COPY $LOCAL_DIR/requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY $LOCAL_DIR .
+
+RUN  chmod +x ./entrypoint.sh
+
+ENTRYPOINT [ "./entrypoint.sh" ]

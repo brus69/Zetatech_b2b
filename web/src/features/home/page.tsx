@@ -1,3 +1,4 @@
+import { FAQ } from "./ui/faq";
 import { Promo } from "./ui/promo";
 import { Preview } from './ui/preview';
 import { Prices } from './ui/prices';
@@ -16,6 +17,7 @@ const HomePage = () => {
       <Questions/>
       <Blog/>
       <Newsletter/>
+      <FAQ />
     </>
   );
 };
