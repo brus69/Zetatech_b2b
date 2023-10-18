@@ -5,6 +5,8 @@ from django.db import transaction
 
 from apps.faq.factory import FAQFactory
 from apps.faq.models import FAQ
+from apps.team.models import Team
+from apps.team.factory import TeamFactory
 
 
 class Command(BaseCommand):
@@ -22,6 +24,14 @@ class Command(BaseCommand):
             faq = FAQFactory()
             faq.save()
 
+
+        team: Team = TeamFactory()
+        team.image = team.image.field.attr_class(
+            team,
+            team.image.field,
+            f"team.png",
+        )
+        team.save()
     
         self.stdout.write("Creating new data... - success")
 
