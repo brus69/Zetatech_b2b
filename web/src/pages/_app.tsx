@@ -8,7 +8,7 @@ import { AppLayout, CoreLayout } from "@/layouts";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <EffectorNext>
+    <EffectorNext values={pageProps.values}>
       <CoreLayout>
         <Head>
           <title>ZETATECH - Парсинг сайтов</title>

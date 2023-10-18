@@ -1,5 +1,5 @@
 import { Button, Card, Input, PasswordInput } from "@mantine/core";
-import { useUnit } from "effector-react/effector-react.mjs";
+import { useUnit } from "effector-react";
 import React, { useState } from "react";
 import { register } from "@/features/register/model";
 
@@ -13,9 +13,6 @@ const Page = () => {
   return (
     <Card
       m={"auto"}
-      shadow="sm"
-      padding="lg"
-      radius="md"
       withBorder
       maw={360}
       className="w-full gap-4"
