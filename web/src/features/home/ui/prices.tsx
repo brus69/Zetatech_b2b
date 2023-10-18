@@ -1,6 +1,6 @@
 import React from "react";
 import { IconCircleCheckFilled } from '@tabler/icons-react';
-import { Button } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 
 const rates = [
     {
@@ -43,8 +43,8 @@ export const Prices = () => {
 
   return (
     <section className="w-full pt-[80px] pb-[102px] bg-gray-300">
-        <div className="flex flex-col w-full container p-0">
-          <h3 className="text-[58px] m-0 p-0 ">Тарифы</h3>
+        <div className="flex flex-col w-full container p-0 max-w-[1180px]">
+          <Title order={2} classNames={{ root: 'm-0 p-0' }}>Тарифы</Title>
           <ul className="flex flex-col lg:flex-row p-0 m-auto mt-[77px] gap-[50px]">
             {rates.map(({ name, price, points, buttonColor }) => 
                 <li key={name} className="flex flex-col w-[280px] items-center pt-[40px] bg-white min-h-[512px] gap-[20px]">

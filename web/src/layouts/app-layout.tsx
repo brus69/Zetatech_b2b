@@ -1,4 +1,4 @@
-import { Header } from "@/widgets";
+import { Header, Footer } from "@/widgets";
 import React from "react";
 
 type Props = {
@@ -10,6 +10,7 @@ export const AppLayout = ({ children }: Props) => {
     <>
       <Header />
       <main className="flex flex-col grow">{children}</main>
+      <Footer />
     </>
   );
 };
