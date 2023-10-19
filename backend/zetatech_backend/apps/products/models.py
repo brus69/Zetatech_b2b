@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from shared.models import TimeStampedModel 
+
 User = get_user_model()
 
 
@@ -28,7 +30,7 @@ class Category (models.Model):
         verbose_name_plural = 'Категории'
 
 
-class Product (models.Model):
+class Product (TimeStampedModel):
     title = models.CharField('Заголовок веб-страницы', max_length=100)
     description = models.CharField('Описание', max_length=200)
     h1 = models.CharField('Заголовок на странице', max_length=100)
@@ -36,7 +38,7 @@ class Product (models.Model):
         'Изображение', null=True, blank=True, upload_to="products/images/"
         )
     slug = models.SlugField('URL')
-    datafield = models.FieldFile('БД Парсинга', upload_to="products/uploads/")
+    datafield = models.FileField('БД Парсинга', upload_to="products/uploads/")
     price = models.PositiveSmallIntegerField('Цена')
     downloaded =  models.PositiveSmallIntegerField('Кол-во загрузок')
     annotation = models.TextField('Краткое описание')
