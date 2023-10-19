@@ -38,7 +38,7 @@ class Product (TimeStampedModel):
         'Изображение', null=True, blank=True, upload_to="products/images/"
         )
     slug = models.SlugField('URL')
-    datafield = models.FieldFile('БД Парсинга', upload_to="products/uploads/")
+    datafield = models.FileField('БД Парсинга', upload_to="products/uploads/")
     price = models.PositiveSmallIntegerField('Цена')
     downloaded =  models.PositiveSmallIntegerField('Кол-во загрузок')
     annotation = models.TextField('Краткое описание')
