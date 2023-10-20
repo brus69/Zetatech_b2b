@@ -2,11 +2,11 @@ from datetime import datetime
 
 from django.contrib import admin
 
-from .models import Blog, TagBlog
+from .models import Post, TagPost
 
 
-@admin.register(Blog)
-class BlogAdmin(admin.ModelAdmin):
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'author',
@@ -32,7 +32,7 @@ class BlogAdmin(admin.ModelAdmin):
             form.save()
 
 
-@admin.register(TagBlog)
+@admin.register(TagPost)
 class TagAdmin(admin.ModelAdmin):
     list_display = (
         'id',
