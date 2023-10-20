@@ -7,6 +7,11 @@ from apps.faq.factory import FAQFactory
 from apps.faq.models import FAQ
 from apps.team.models import Team
 from apps.team.factory import TeamFactory
+from apps.products.factory import (UserFactory, 
+                                   CategoryFactory, 
+                                   MarkFactory, 
+                                   ProductFactory,
+                                   )
 
 
 class Command(BaseCommand):
