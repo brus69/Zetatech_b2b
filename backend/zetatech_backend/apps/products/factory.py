@@ -2,7 +2,7 @@ import factory
 from factory.django import DjangoModelFactory
 from django.contrib.auth import get_user_model
 
-User = get_user_model
+User = get_user_model()
 
 from apps.products.models import (Product, 
                                   Category, 
@@ -10,28 +10,31 @@ from apps.products.models import (Product,
                                   )
 
 class UserFactory(DjangoModelFactory):
+    username = factory.Faker('user_name')
+    email = factory.Faker('email')
+
     class Meta:
         model = User
 
 class MarkFactory(DjangoModelFactory):
-    name = factory.Faker('word', nb_words=30, variable_nb_words=True)
-    slug = factory.Faker('slug')
+    name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
     
     class Meta:
         model = Mark
 
 class CategoryFactory(DjangoModelFactory):
-    name = factory.Faker('word', nb_words=30, variable_nb_words=True)
-    slug = factory.Faker('slug')
+    name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
 
     class Meta:
         model = Category
 
 class ProductFactory(DjangoModelFactory):
-    title = factory.Faker('sentence', nb_words=4)
-    description = factory.Faker('sentence', nb_words=10)
-    h1 = factory.Faker('sentence', nb_words=3)
-    slug = factory.Faker('slug')
+    title = factory.Faker('sentence', nb_words=2, variable_nb_words=True)
+    description = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    h1 = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
     price = factory.Faker('random_int', min=10, max=1000)
     downloaded = factory.Faker('random_int', min=0, max=1000)
     annotation = factory.Faker('text', max_nb_chars=200)
