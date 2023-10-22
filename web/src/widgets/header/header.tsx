@@ -12,21 +12,30 @@ const ITEMS = [
 
 export const Header = () => {
   return (
-    <header className="py-2">
+    <header className="py-2 shadow-lg">
       <div className="container flex items-center">
         <Link href="/">
           <img className="h-12" src="/logo.svg" alt="Логотип" />
         </Link>
 
-        <ul className="flex gap-4 m-auto">
+        <ul className="flex gap-4 ml-auto mr-8">
           {ITEMS.map(({ url, name }) => (
-            <li key={name}>
+            <li key={name} className="hover:underline">
               <Link href={url}>{name}</Link>
             </li>
           ))}
         </ul>
 
-        <Button variant="filled" component={Link} href="/login">
+        <ul className="mr-auto font-bold">
+          <li>
+            <a href="mailto:info@zetatech.ru">info@zetatech.ru</a>
+          </li>
+          <li>
+            <a href="tel:8 800 500 50 80">8 800 500 50 80</a>
+          </li>
+        </ul>
+
+        <Button variant="outline" component={Link} href="/login">
           Войти в лк
         </Button>
       </div>

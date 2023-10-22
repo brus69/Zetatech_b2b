@@ -1,32 +1,19 @@
-import { Button, Input, Title } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Button, Title } from "@mantine/core";
 import React from "react";
 
 export const Promo = () => {
   return (
-    <section className="container">
-      <div className="flex items-center gap-32 mt-16 mb-32">
-        <div className="flex flex-col min-w-[410px] mr-auto">
-          <Title size={70} order={1}>
-            Парсинг сайтов
-          </Title>
+    <section className="container flex flex-col mt-16 mb-32">
+      <Title className="mb-10 max-w-[1100px]" size={80} order={1}>
+        Парсинг сайтов, магазинов и маркетплейсов{" "}
+      </Title>
 
-          <p>Поможем решить ваши задачи быстрее и эффективнее</p>
-        </div>
-        <img height={340} src="https://lipsum.app/540x340/" alt="Promo" />
-      </div>
-
-      <p className="mb-4 text-center">
-        Каталог сайтов и мониторинг цен конкурентов
+      <p className="mb-12 max-w-[840px]">
+        Предоставим структурированные данные для вашего сайта или базу клиентов
+        чтобы вы решали свои задачи быстрее и эффективнее
       </p>
-      <div className="flex w-full max-w-lg m-auto">
-        <Input
-          className="grow"
-          placeholder="URL - адрес или ключевое слово"
-          leftSection={<IconSearch size={16} />}
-        />
-        <Button>Искать в каталоге</Button>
-      </div>
+
+      <Button className="self-start">Заполнить бриф</Button>
     </section>
   );
 };

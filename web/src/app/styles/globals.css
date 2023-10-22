@@ -1,6 +1,8 @@
-@import './override.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;500&family=Onest:wght@400;500;700&family=Spectral:wght@500&display=swap');
 
 @import '@mantine/core/styles.css';
+
+@import './override.css';
 
 @tailwind components;
 @tailwind utilities;
