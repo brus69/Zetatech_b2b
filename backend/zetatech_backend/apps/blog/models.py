@@ -91,6 +91,7 @@ class Post(models.Model):
         default_related_name = 'posts'
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
+        ordering = ('-id',)
 
     def get_absolute_url(self):
         return reverse('blog_detail', kwargs={'slug': self.slug})
