@@ -1,10 +1,10 @@
 from datetime import datetime
 
+import import_export as ie
 from django.contrib import admin
+from import_export import fields, resources, widgets
 
 from .models import Post, TagPost
-from import_export import resources, widgets, fields
-import import_export as ie
 
 
 class PostExportResource(resources.ModelResource):
@@ -17,7 +17,7 @@ class PostExportResource(resources.ModelResource):
 
     class Meta:
         model = Post
-        exclude =('image',)
+        exclude = ('image',)
         export_order = (
             'id',
             'title',
@@ -44,6 +44,7 @@ class PostImportResource(resources.ModelResource):
     )
 
     def before_import_row(self, row, **kwargs):
+        """Создание тегов перед началом импорта."""
         tags = [
             item for line in row["tags"].splitlines()
             for item in line.split('|')
@@ -68,6 +69,7 @@ class PostImportResource(resources.ModelResource):
 
 
 class PostAdmin(ie.admin.ImportExportModelAdmin):
+    """Админ-модель для блога с возможностью импорта/экспорта."""
     list_display = (
         'id',
         'author',
@@ -99,6 +101,7 @@ class PostAdmin(ie.admin.ImportExportModelAdmin):
 
 @admin.register(TagPost)
 class TagAdmin(admin.ModelAdmin):
+    """Админ-модель тегов."""
     list_display = (
         'id',
         'name',
