@@ -58,7 +58,7 @@ class Post(models.Model):
         editable=False
     )
     image = models.ImageField(
-        upload_to='apps/blog/media',
+        upload_to='media/',
         verbose_name='Изображение',
         blank=True
     )

@@ -11,6 +11,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     pagination_class = BlogAPIPagination
     permission_classes = [AllowAny]
+    lookup_field = 'slug'
 
     @decorators.action(methods=('get',), detail=False)
     def tags(self, request):
