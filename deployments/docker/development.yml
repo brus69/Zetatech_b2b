@@ -1,0 +1,45 @@
+version: '3.9'
+
+name: zetatech
+
+services:
+  zetatech_db:
+    image: postgres:15.4-alpine
+    container_name: zetatech_db
+    restart: always
+    networks:
+      - zetatech
+    volumes:
+      - "../../backend/postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql"
+      - "zetatech_dev_postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_PORT}
+
+  zetatech_api:
+    container_name: zetatech_api
+    extends:
+      file: service/service_template.yml
+      service: base
+    volumes:
+      - "../../zetatech/zetatech_backend/:/usr/service:rw"
+      - "zetatech_dev_static_files:/usr/service/staticfiles"
+    depends_on:
+      - zetatech_db
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    ports:
+      - "${PORT}:8000"
+    environment:
+      - SERVICE_NAME=zetatech_api
+
+
+volumes:
+  zetatech_dev_postgres_data:
+  zetatech_dev_static_files:
+
+networks:
+  zetatech:
+    name: zetatech

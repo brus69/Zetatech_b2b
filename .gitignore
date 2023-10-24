@@ -161,6 +161,5 @@ cython_debug/
 
 /.vscode
 
-migrations/
-media/
-backend_static/
+
+dev.env

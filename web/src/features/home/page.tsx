@@ -1,3 +1,4 @@
+import { FAQ } from "./ui/faq";
 import { Promo } from "./ui/promo";
 
 const HomePage = () => {
@@ -5,6 +6,7 @@ const HomePage = () => {
     <>
       <Promo />
 
+      <FAQ />
       {/* rest sections here */}
     </>
   );
