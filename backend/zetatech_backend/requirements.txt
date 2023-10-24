@@ -13,3 +13,4 @@ sqlparse==0.4.4
 pytils==0.4.1
 drf-extra-fields==3.7.0
 django-import-export==3.3.1
+django-filter==23.3

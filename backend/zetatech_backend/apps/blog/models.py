@@ -2,11 +2,12 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
+from shared.models import TimeStampedModel
+
 from .utils import unique_slugify
 
 
 class TagPost(models.Model):
-    """Модель тегов. Состоит из полей: имя и слаг."""
     name = models.CharField(
         max_length=50,
         unique=True,
@@ -35,8 +36,7 @@ class TagPost(models.Model):
         return self.name
 
 
-class Post(models.Model):
-    """Модель публикации блога."""
+class Post(TimeStampedModel):
     title = models.CharField(
         max_length=60,
         verbose_name='SEO заголовок'
@@ -48,10 +48,6 @@ class Post(models.Model):
     description = models.CharField(
         max_length=400,
         verbose_name='SEO описание публикации'
-    )
-    created = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Создан'
     )
     author = models.ForeignKey(
         get_user_model(),
@@ -92,7 +88,7 @@ class Post(models.Model):
         default_related_name = 'posts'
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
-        ordering = ('-id',)
+        ordering = ('-created_at',)
 
     def get_absolute_url(self):
         return reverse('blog-detail', kwargs={'slug': self.slug})

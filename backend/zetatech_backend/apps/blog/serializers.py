@@ -5,7 +5,6 @@ from .models import Post, TagPost
 
 
 class TagPostSerializer(serializers.ModelSerializer):
-    """Сериалайзер тегов публикаций."""
     class Meta:
         model = TagPost
         fields = (
@@ -16,7 +15,6 @@ class TagPostSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    """Сериалайзер для чтения публикаций."""
     tags = TagPostSerializer(many=True, read_only=True)
     image = Base64ImageField(use_url=True)
 

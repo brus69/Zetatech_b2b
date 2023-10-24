@@ -69,7 +69,6 @@ class PostImportResource(resources.ModelResource):
 
 
 class PostAdmin(ie.admin.ImportExportModelAdmin):
-    """Админ-модель для блога с возможностью импорта/экспорта."""
     list_display = (
         'id',
         'author',
@@ -101,7 +100,6 @@ class PostAdmin(ie.admin.ImportExportModelAdmin):
 
 @admin.register(TagPost)
 class TagAdmin(admin.ModelAdmin):
-    """Админ-модель тегов."""
     list_display = (
         'id',
         'name',

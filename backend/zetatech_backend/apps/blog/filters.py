@@ -5,7 +5,7 @@ from .models import Post
 
 
 class PostFilter(FilterSet):
-    """Фильтр постов по пол и теги."""
+    """Фильтр по слагу тега."""
     tags = AllValuesMultipleFilter(
         field_name='tags__slug',
     )

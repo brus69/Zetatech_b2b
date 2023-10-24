@@ -2,10 +2,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import decorators, viewsets
 from rest_framework.permissions import AllowAny
 
-from .filters import PostFilter
-from .models import Post, TagPost
-from .pagination import BlogAPIPagination
-from .serializers import PostSerializer, TagPostSerializer
+from apps.blog.filters import PostFilter
+from apps.blog.models import Post, TagPost
+from apps.blog.pagination import BlogAPIPagination
+from apps.blog.serializers import PostSerializer, TagPostSerializer
 
 
 class PostViewSet(viewsets.ReadOnlyModelViewSet):
