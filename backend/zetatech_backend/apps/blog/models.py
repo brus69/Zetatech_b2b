@@ -41,7 +41,7 @@ class Post(models.Model):
         verbose_name='SEO заголовок'
     )
     h1 = models.CharField(
-        max_length=150,
+        max_length=100,
         verbose_name='Заголовок'
     )
     description = models.CharField(
@@ -94,7 +94,7 @@ class Post(models.Model):
         ordering = ('-id',)
 
     def get_absolute_url(self):
-        return reverse('blog_detail', kwargs={'slug': self.slug})
+        return reverse('blog-detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

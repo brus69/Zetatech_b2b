@@ -163,3 +163,4 @@ cython_debug/
 
 migrations/
 media/
+backend_static/
