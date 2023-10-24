@@ -8,7 +8,6 @@ from .models import Post, TagPost
 
 
 class PostExportResource(resources.ModelResource):
-    """Ресурс экспорта в файл каталога постов."""
     tags = fields.Field(
         column_name='tags',
         attribute='tags',
@@ -29,14 +28,16 @@ class PostExportResource(resources.ModelResource):
             'author',
             'published',
             'pub_date',
-            'created'
+            'created_at'
         )
 
 
 class PostImportResource(resources.ModelResource):
-    """Ресурс импорта каталога постов из файла в БД.
+    """
+    Ресурс импорта каталога постов из файла в БД.
     Несколько тегов можно импортировать с помощью сепаратора |.
-    Также можно использовать новые теги, они автоматически создаются в базе."""
+    Также можно использовать новые теги, они автоматически создаются в базе.
+    """
     tags = fields.Field(
         column_name='tags',
         attribute='tags',
