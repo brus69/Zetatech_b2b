@@ -37,6 +37,7 @@ export const theme = createTheme({
   headings: {
     fontFamily: "Spectral, serif",
     sizes: {
+      h1: { fontSize: "80px", fontWeight: "500" },
       h2: { fontSize: "58px", fontWeight: "500" },
     },
   },

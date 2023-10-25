@@ -3,7 +3,6 @@ import { GetStaticProps } from "next";
 import { Promo } from "./ui/promo";
 import { Preview } from "./ui/preview";
 import { Prices } from "./ui/prices";
-import { Form } from "./ui/form";
 import { Questions } from "./ui/questions";
 import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
@@ -24,15 +23,16 @@ export const getStaticPropsHomePage: GetStaticProps = async () => {
 
 const HomePage = () => {
   return (
-    <>
+    <div className="flex flex-col gap-36">
       <Promo />
       <Preview />
-      <Prices />
-      <Form />
-      <Questions />
-      <Blog />
+      {/* <Team /> */}
       <Newsletter />
-    </>
+      <Prices />
+      <Questions />
+      {/* <Comments /> */}
+      <Blog />
+    </div>
   );
 };
 

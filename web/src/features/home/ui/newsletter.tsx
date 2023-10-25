@@ -2,29 +2,48 @@ import React from "react";
 import { Title, Input, Button } from "@mantine/core";
 
 export const Newsletter = () => {
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    console.log('сабмит формы');
-    evt.preventDefault();
-  }
+  const handleSubmit = (event) => {
+    console.log("сабмит формы");
+    event.preventDefault();
+  };
 
   return (
-    <section className="w-full -mt-[2px] pb-[170px] bg-gray-300">
-        <div className="flex flex-col p-0 container max-w-[1180px]">
-          <Title order={2} classNames={{ root: 'm-0 p-0' }}>Подпишитесь на нашу рассылку</Title>
-          <p className="text-[28px] mt-[36px] mb-[74px]">Интересные новости и бесплатные загрузки каждую неделю</p>
-          <form className="flex flex-row" onSubmit={handleSubmit}>
-            <Input variant="unstyled" placeholder="Введите ваш email" 
-                classNames={{ input: 'placeholder:text-[#574F6D] text-[15px] border-[#574F6D] max-w-[256px] p-[20px] h-[58px]' }}
-            />
-            <Button
-                type="submit"
-                classNames={{ 
-                    root: "bg-[#140B27] w-[233px] p-[20px] box-border h-[58px] disabled:bg-transparent ",
-                    inner: 'text-[15px] font-[400] text-white'
-                }}
-            >Подписаться на рассылку</Button>
-          </form>
+    <section className="w-full flex flex-col justify-center items-center bg-[#EBECFE] py-28">
+      <div className="flex flex-col lg:flex-row">
+        <div className="px-3">
+          <Title order={2} classNames={{ root: "md:text-6xl text-3xl m-0 p-0" }}>
+            Давайте созвонимся!
+          </Title>
+          <p className=" mt-7 mb-0">
+            Оставьте свой номер — мы позвоним и ответим на все ваши вопросы
+          </p>
         </div>
+        <img src="/assets/newsletter/plane.png" alt="Plane icon" className="md:m-0 mx-3"/>
+      </div>
+      <div className=" mt-12 lg:mt-7 flex flex-col lg:flex-row gap-5">
+        <Input
+          placeholder="Ваше имя"
+          classNames={{
+            input: "placeholder:text-[#9B9BAB] text-sm shadow-md w-72 h-12",
+          }}
+        />
+        <Input
+          placeholder="Номер телефона"
+          classNames={{
+            input: "placeholder:text-[#9B9BAB] text-sm shadow-md w-72 h-12",
+          }}
+        />
+        <Button
+          type="submit"
+          classNames={{
+            root: "bg-[#00676C] py-3 px-6 box-border disabled:bg-transparent h-12",
+            inner: "font-normal text-m text-white",
+          }}
+          onClick={handleSubmit}
+        >
+          Отправить
+        </Button>
+      </div>
     </section>
   );
 };
