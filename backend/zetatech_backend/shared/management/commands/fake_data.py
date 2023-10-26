@@ -13,6 +13,8 @@ from apps.products.factory import (
                                    MarkFactory, 
                                    ProductFactory,
                                    )
+from apps.blog.models import TagPost, Post
+from apps.blog.factory import TagPostFactory, PostFactory
 
 
 class Command(BaseCommand):
@@ -25,11 +27,9 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating new data...")
 
-
         for _ in range(10):
             faq = FAQFactory()
             faq.save()
-
 
         team: Team = TeamFactory()
         team.image = team.image.field.attr_class(
@@ -41,14 +41,21 @@ class Command(BaseCommand):
 
         category = CategoryFactory()
         category.save()
-        
+
         mark = MarkFactory()
         mark.save()
 
         for _ in range(15):
             product = ProductFactory()
             product.save()
-    
+
+        tagpost = TagPostFactory()
+        tagpost.save()
+
+        for _ in range(10):
+            post = PostFactory()
+            post.save()
+
         self.stdout.write("Creating new data... - success")
 
     def clear_old_data(self):
@@ -58,6 +65,8 @@ class Command(BaseCommand):
         Category.objects.all().delete()
         Mark.objects.all().delete()
         Product.objects.all().delete()
+        TagPost.objects.all().delete()
+        Post.objects.all().delete()
         for user in User.objects.all():
             if user.username != 'admin':
                 user.delete()
