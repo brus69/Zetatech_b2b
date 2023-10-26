@@ -8,8 +8,6 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for User."""
-
     class Meta:
         model = User
         fields = (
@@ -23,14 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileEditSerializer(UserSerializer):
-    """Serializer for Profile."""
-
     role = serializers.CharField(read_only=True)
 
 
 class UsersCreateSerializer(UserCreateSerializer):
-    """Serializer for creating a user."""
-
     class Meta:
         model = User
         fields = (
@@ -42,9 +36,18 @@ class UsersCreateSerializer(UserCreateSerializer):
             "password",
         )
         extra_kwargs = {
-            "first_name": {"required": True, "allow_blank": False},
-            "last_name": {"required": True, "allow_blank": False},
-            "email": {"required": True, "allow_blank": False},
+            "first_name": {
+                "required": True,
+                "allow_blank": False,
+            },
+            "last_name": {
+                "required": True,
+                "allow_blank": False,
+            },
+            "email": {
+                "required": True,
+                "allow_blank": False,
+            },
         }
 
     def validate_username(self, value):
@@ -57,8 +60,6 @@ class UsersCreateSerializer(UserCreateSerializer):
 
 
 class SetPasswordSerializer(serializers.Serializer):
-    """Serializer for changing user password."""
-
     current_password = serializers.CharField()
     new_password = serializers.CharField()
 

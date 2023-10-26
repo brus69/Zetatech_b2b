@@ -1,15 +1,18 @@
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
-from .constants import (ADMIN, AUTHENTICATED_USER, CONTENT_MANAGER, EDITOR,
-                        EMAIL_MAX_LENGTH, GUEST, ROLE_MAX_LENGTH)
+from .constants import (
+    ADMIN,
+    AUTHENTICATED_USER,
+    CONTENT_MANAGER,
+    EDITOR,
+    EMAIL_MAX_LENGTH,
+    GUEST,
+    ROLE_MAX_LENGTH,
+)
 
 
 class User(AbstractUser):
-    """Users authentication system are represented by this model."""
-
     class Role(models.TextChoices):
         GUEST = "guest"
         AUTHENTICATED_USER = "authenticated_user"
@@ -18,10 +21,12 @@ class User(AbstractUser):
         CONTENT_MANAGER = "content_manager"
 
     email = models.EmailField(
-        _("Email address"), max_length=EMAIL_MAX_LENGTH, unique=True
+        "Адрес электронной почты",
+        max_length=EMAIL_MAX_LENGTH,
+        unique=True,
     )
     role = models.CharField(
-        _("Users role"),
+        "Роль пользователя",
         choices=Role.choices,
         max_length=ROLE_MAX_LENGTH,
         default=GUEST,
@@ -29,8 +34,8 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ["id"]
-        verbose_name = _("User")
-        verbose_name_plural = _("Users")
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
     def __str__(self):
         return self.username
