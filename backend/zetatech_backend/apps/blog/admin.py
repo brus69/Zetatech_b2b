@@ -2,9 +2,12 @@ from datetime import datetime
 
 import import_export as ie
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from import_export import fields, resources, widgets
 
 from .models import Post, TagPost
+
+User = get_user_model()
 
 
 class PostExportResource(resources.ModelResource):
@@ -28,7 +31,8 @@ class PostExportResource(resources.ModelResource):
             'author',
             'published',
             'pub_date',
-            'created_at'
+            'created_at',
+            'updated_at'
         )
 
 
@@ -43,6 +47,11 @@ class PostImportResource(resources.ModelResource):
         attribute='tags',
         widget=widgets.ManyToManyWidget(TagPost, field='name', separator='|')
     )
+
+    author = fields.Field(
+        column_name='author',
+        attribute='author',
+        widget=widgets.ForeignKeyWidget(User, field='username'))
 
     def before_import_row(self, row, **kwargs):
         """Создание тегов перед началом импорта."""
@@ -65,7 +74,8 @@ class PostImportResource(resources.ModelResource):
             'h1',
             'description',
             'content',
-            'tags'
+            'tags',
+            'author'
         )
 
 

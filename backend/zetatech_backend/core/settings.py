@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     # packages
     'rest_framework',
     'drf_spectacular',
+    'import_export',
+    'django_filters',
 
     # shared
     "shared",

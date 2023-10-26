@@ -6,6 +6,8 @@ from shared.models import TimeStampedModel
 
 from .utils import unique_slugify
 
+User = get_user_model()
+
 
 class TagPost(models.Model):
     name = models.CharField(
@@ -50,7 +52,7 @@ class Post(TimeStampedModel):
         verbose_name='SEO описание публикации'
     )
     author = models.ForeignKey(
-        get_user_model(),
+        User,
         on_delete=models.PROTECT,
         editable=False
     )
