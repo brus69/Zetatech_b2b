@@ -11,10 +11,10 @@ export const Newsletter = () => {
     <section className="w-full flex flex-col justify-center items-center bg-[#EBECFE] py-28">
       <div className="flex flex-col lg:flex-row">
         <div className="px-3">
-          <Title order={2} classNames={{ root: "md:text-6xl text-3xl m-0 p-0" }}>
+          <Title order={2} classNames={{ root: "md:text-[50px] text-3xl m-0 p-0" }}>
             Давайте созвонимся!
           </Title>
-          <p className=" mt-7 mb-0">
+          <p className="max-w-[510px] mt-7 mb-0">
             Оставьте свой номер — мы позвоним и ответим на все ваши вопросы
           </p>
         </div>

@@ -6,6 +6,7 @@ import { Prices } from "./ui/prices";
 import { Questions } from "./ui/questions";
 import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
+import { Principles } from './ui/principles';
 import { homePageStared } from "./model";
 
 export const getStaticPropsHomePage: GetStaticProps = async () => {
@@ -27,6 +28,7 @@ const HomePage = () => {
       <Promo />
       <Preview />
       {/* <Team /> */}
+      <Principles />
       <Newsletter />
       <Prices />
       <Questions />
