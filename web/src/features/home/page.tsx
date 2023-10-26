@@ -7,6 +7,7 @@ import { Questions } from "./ui/questions";
 import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
 import { Principles } from './ui/principles';
+import { Comments } from './ui/comments';
 import { homePageStared } from "./model";
 
 export const getStaticPropsHomePage: GetStaticProps = async () => {
@@ -32,7 +33,7 @@ const HomePage = () => {
       <Newsletter />
       <Prices />
       <Questions />
-      {/* <Comments /> */}
+      <Comments />
       <Blog />
     </div>
   );
