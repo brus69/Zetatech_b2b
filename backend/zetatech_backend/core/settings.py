@@ -35,7 +35,6 @@ INSTALLED_APPS = [
 
     # internal
     'apps.blog',
-    'apps.core',
     'apps.faq',
     'apps.orders',
     'apps.price',
