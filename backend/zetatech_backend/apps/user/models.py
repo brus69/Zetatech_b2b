@@ -14,7 +14,7 @@ from .constants import (
 
 class User(AbstractUser):
     class Role(models.TextChoices):
-        GUEST = "guest"
+        GUEST = "guest "
         AUTHENTICATED_USER = "authenticated_user"
         ADMIN = "admin"
         EDITOR = "editor"
