@@ -8,6 +8,7 @@ import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
 import { Principles } from './ui/principles';
 import { Comments } from './ui/comments';
+import { Team } from './ui/team';
 import { homePageStared } from "./model";
 
 export const getStaticPropsHomePage: GetStaticProps = async () => {
@@ -28,7 +29,7 @@ const HomePage = () => {
     <div className="flex flex-col gap-36">
       <Promo />
       <Preview />
-      {/* <Team /> */}
+      <Team />
       <Principles />
       <Newsletter />
       <Prices />

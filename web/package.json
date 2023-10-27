@@ -20,6 +20,8 @@
     "@tabler/icons-react": "^2.39.0",
     "effector": "^22.8.7",
     "effector-react": "^22.5.4",
+    "embla-carousel-react": "^8.0.0-rc14",
+    "keen-slider": "^6.8.6",
     "ky": "^1.1.0",
     "next": "13.5.5",
     "next-seo": "^6.1.0",
