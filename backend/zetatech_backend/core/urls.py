@@ -10,13 +10,13 @@ from drf_spectacular.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"),name="swagger-ui"),
-    
+    path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"),
+         name="swagger-ui"),
+
     path("api/", include("apps.faq.api.urls")),
+    path("api/", include("apps.user.api.urls")),
     path("api/", include("apps.team.api.urls")),
-
     path('api/', include('apps.products.api.urls')),
-    path('api/', include('apps.blog.api.urls'))
+    path('api/', include('apps.blog.api.urls')),
 
-    path('api/', include('apps.products.api.urls'))
 ]
