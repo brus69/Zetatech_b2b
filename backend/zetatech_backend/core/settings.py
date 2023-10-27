@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'djoser',
+    'import_export',
+    'django_filters',
 
     # shared
     "shared",
