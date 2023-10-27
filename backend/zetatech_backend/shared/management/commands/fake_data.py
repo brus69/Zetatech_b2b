@@ -13,8 +13,10 @@ from apps.products.factory import (
                                    MarkFactory, 
                                    ProductFactory,
                                    )
+
 from apps.blog.models import TagPost, Post
 from apps.blog.factory import TagPostFactory, PostFactory
+
 
 
 class Command(BaseCommand):
@@ -67,6 +69,7 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         TagPost.objects.all().delete()
         Post.objects.all().delete()
+
         for user in User.objects.all():
             if user.username != 'admin':
                 user.delete()
