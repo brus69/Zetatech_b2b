@@ -33,13 +33,14 @@ class Command(BaseCommand):
             faq = FAQFactory()
             faq.save()
 
-        team: Team = TeamFactory()
-        team.image = team.image.field.attr_class(
-            team,
-            team.image.field,
-            f"team.png",
-        )
-        team.save()
+        for _ in range(6):
+            team: Team = TeamFactory()
+            team.image = team.image.field.attr_class(
+                team,
+                team.image.field,
+                f"team.png",
+            )
+            team.save()
 
         category = CategoryFactory()
         category.save()
