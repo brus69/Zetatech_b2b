@@ -11,4 +11,5 @@ def get_image_path(instance, filename):
 class Team(models.Model):
     name = models.CharField()
     description = models.CharField()
+    position = models.CharField()
     image = models.ImageField("Картинка", upload_to=get_image_path)

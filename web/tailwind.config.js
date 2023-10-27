@@ -9,6 +9,20 @@ module.exports = {
           DEFAULT: "16px",
         },
       },
+      colors: {
+        ruby: "#00676C",
+      },
+      screens: {
+        sm: "640px",
+
+        md: "768px",
+
+        lg: "1024px",
+
+        xl: "1280px",
+
+        "2xl": "1300px",
+      },
     },
   },
   plugins: [],

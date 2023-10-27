@@ -1,82 +1,61 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Title } from "@mantine/core";
 import { useKeenSlider } from "keen-slider/react";
-// import "keen-slider/keen-slider.min.css";
-import "./team.css";
-
-const people = [
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-  {
-    name: "Семен Рыбалкин",
-    about:
-      "Картельные сговоры не допускают ситуации, при которой многие известные личности, инициированные исключительно синтетически обуславливают знакомое течение",
-    position: "Создатель и светлая голова Zetatech",
-    image: "/assets/img.png",
-  },
-];
+import "keen-slider/keen-slider.min.css";
+import { useUnit } from "effector-react";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { $team } from "../model";
+import { cn } from "@/shared/lib";
 
 function Arrow(props: {
-  disabled: boolean;
   left?: boolean;
-  onClick: (e: any) => void;
+  onClick: (event: React.MouseEvent) => void;
 }) {
-  const disabled = props.disabled ? " arrow--disabled" : "";
+  const className =
+    "absolute top-[180px] cursor-pointer bg-ruby border-none text-white center rounded-full w-8 h-8";
+
   return (
     <>
       {props.left ? (
-        <img src="/assets/team/prev.svg" alt="Стрелка назад" onClick={props.onClick} className="absolute top-[50%] left-0 cursor-pointer" />
+        <button
+          aria-label="Стрелка назад"
+          onClick={props.onClick}
+          className={cn(className, "-left-8")}
+        >
+          <IconArrowLeft />
+        </button>
       ) : (
-        <img src="/assets/team/next.svg" alt="Стрелка вперед" onClick={props.onClick} className="absolute top-[50%] right-0 cursor-pointer" />
+        <button
+          aria-label="Стрелка вперед"
+          onClick={props.onClick}
+          className={cn(className, "-right-8")}
+        >
+          <IconArrowRight />
+        </button>
       )}
     </>
   );
 }
 
 export const Team = () => {
-  const [currentSlide, setCurrentSlide] = useState(2);
-  const [loaded, setLoaded] = useState(false);
+  const { team } = useUnit({ team: $team });
+  const [currentSlide, setCurrentSlide] = useState(3);
+  const [, setLoaded] = useState(false);
 
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 3,
+    loop: true,
     slides: {
       origin: "center",
       perView: 5,
-      spacing: 15,
+    },
+    breakpoints: {
+      "(max-width: 800px)": {
+        slides: {
+          origin: "center",
+          perView: 3,
+        },
+      },
     },
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
@@ -86,42 +65,61 @@ export const Team = () => {
     },
   });
 
+  const getScale = useCallback(
+    (index: number) => {
+      if (Math.abs(index - currentSlide) === 0) return "1";
+      if (Math.abs(index - currentSlide) === 1) return "0.8";
+      return "0.6";
+    },
+    [currentSlide]
+  );
+
+  const getWidth = useCallback(
+    (index: number) => {
+      if (Math.abs(index - currentSlide) === 0) return 380;
+      if (Math.abs(index - currentSlide) === 1) return 300;
+      return 250;
+    },
+    [currentSlide]
+  );
+
   return (
-    <section className="flex flex-col justify-center items-center">
+    <section className="flex flex-col items-center justify-center">
       <div className="container">
         <Title order={2} classNames={{ root: "m-0 p-0 text-center mb-20" }}>
           Наша команда
         </Title>
-        <div className="navigation-wrapper relative">
-          <div ref={sliderRef} className="keen-slider">
-            {people.map((el, index) => (
+        <div className="relative max-w-[1200px]">
+          <div ref={sliderRef} className="keen-slider max-sm:!overflow-visible">
+            {team.map((member, index) => (
               <div
                 key={index}
                 style={{
-                  scale: currentSlide !== index && "0.7",
-                  transition: "scale 0.3s",
-                  zIndex: currentSlide === index && "1",
-                  maxWidth: "380px",
+                  zIndex: currentSlide === index ? 1 : "initial",
                 }}
-                className="keen-slider__slide w-[380px]"
+                className="keen-slider__slide min-w-[320px] !overflow-visible flex items-center flex-col"
               >
                 <img
-                  src={el.image}
-                  alt={el.name}
-                  className="rounded-[50%] object-contain w-[380px]"
+                  src={"/assets/img.png"}
+                  alt={member.name}
+                  className="rounded-[50%] aspect-square transition-[scale]"
+                  style={{
+                    scale: getScale(index),
+                    minWidth: getWidth(index),
+                  }}
                 />
                 <div
-                  className="text-center flex flex-col items-center w-[380px]"
+                  className="flex flex-col items-center text-center transition-all"
                   style={{
-                    opacity: currentSlide !== index && "0",
+                    opacity: currentSlide === index ? 1 : 0,
                   }}
                 >
                   <p className="text-[#00676C] text-2xl font-bold m-0 mt-12">
-                    {el.name}
+                    {member.name}
                   </p>
-                  <p className="text-lg my-4">{el.about}</p>
+                  <p className="my-4 text-lg">{member.name}</p>
                   <p className="text-[#9B9BAB] text-base m-0 max-w-[210px]">
-                    {el.position}
+                    {member.description.substring(0, 100)}
                   </p>
                 </div>
               </div>
@@ -129,19 +127,16 @@ export const Team = () => {
           </div>
           <Arrow
             left
-            onClick={(e: any) =>
-              e.stopPropagation() || instanceRef.current?.prev()
-            }
-            disabled={currentSlide === 0}
+            onClick={(event) => {
+              event.stopPropagation();
+              instanceRef.current?.prev();
+            }}
           />
           <Arrow
-            onClick={(e: any) =>
-              e.stopPropagation() || instanceRef.current?.next()
-            }
-            // disabled={
-            //   currentSlide ===
-            //   instanceRef.current.track.details.slides.length - 1
-            // }
+            onClick={(event) => {
+              event.stopPropagation();
+              instanceRef.current?.next();
+            }}
           />
         </div>
       </div>
