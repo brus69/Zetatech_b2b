@@ -11,6 +11,7 @@ module.exports = {
       },
       colors: {
         ruby: "#00676C",
+        grey: "#9B9BAB",
       },
       screens: {
         sm: "640px",

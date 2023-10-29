@@ -3,10 +3,22 @@ import "../app/styles/globals.css";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import { EffectorNext } from "@effector/next";
+import { NextPage } from "next";
+import { ElementType } from "react";
 import { theme } from "../theme";
-import { AppLayout, CoreLayout } from "@/layouts";
+import { Layout, CoreLayout } from "@/layouts";
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  Layout?: ElementType;
+};
+
+export type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const AppLayout = Component.Layout ?? Layout;
+
   return (
     <EffectorNext values={pageProps.values}>
       <CoreLayout>

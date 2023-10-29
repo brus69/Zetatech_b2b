@@ -6,10 +6,11 @@ import { Prices } from "./ui/prices";
 import { Questions } from "./ui/questions";
 import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
-import { Principles } from './ui/principles';
-import { Comments } from './ui/comments';
-import { Team } from './ui/team';
+import { Principles } from "./ui/principles";
+import { Comments } from "./ui/comments";
+import { Team } from "./ui/team";
 import { homePageStared } from "./model";
+import { BriefModal } from "@/widgets/brief-modal";
 
 export const getStaticPropsHomePage: GetStaticProps = async () => {
   const scope = fork();
@@ -26,17 +27,20 @@ export const getStaticPropsHomePage: GetStaticProps = async () => {
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col gap-36">
-      <Promo />
-      <Preview />
-      <Team />
-      <Principles />
-      <Newsletter />
-      <Prices />
-      <Questions />
-      <Comments />
-      <Blog />
-    </div>
+    <>
+      <div className="flex flex-col gap-36">
+        <Promo />
+        <Preview />
+        <Team />
+        <Principles />
+        <Newsletter />
+        <Prices />
+        <Questions />
+        <Comments />
+        <Blog />
+      </div>
+      <BriefModal />
+    </>
   );
 };
 

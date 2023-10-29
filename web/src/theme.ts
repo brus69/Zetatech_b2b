@@ -1,10 +1,40 @@
-import { Button, Input, createTheme } from "@mantine/core";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  FileInput,
+  Input,
+  Select,
+  createTheme,
+  rem,
+  Button,
+} from "@mantine/core";
+
+const defaultInput = {
+  defaultProps: {
+    size: "md",
+  },
+  // @ts-ignore
+  vars: (theme, props: any) => {
+    if (props.size === "md") {
+      return {
+        wrapper: {
+          "--input-height": rem(50),
+        },
+        input: {
+          "--input-padding-right": rem(0),
+          "--input-padding-y": rem(0),
+        },
+      };
+    }
+    return { root: {} };
+  },
+};
 
 export const theme = createTheme({
   defaultRadius: 5,
   activeClassName: "",
   black: "#180D27",
-  spacing: { md: "12px" },
+  spacing: { md: "10" },
+
   colors: {
     ruby: [
       "#00676C",
@@ -43,15 +73,30 @@ export const theme = createTheme({
   },
 
   components: {
+    // @ts-ignore
     Button: Button.extend({
       defaultProps: {
-        size: "lg",
+        size: "md",
+      },
+      classNames: {
+        root: "font-normal",
+      },
+      vars: (theme, props) => {
+        if (props.size === "md") {
+          return {
+            root: {
+              "--button-height": rem(50),
+              "--button-padding-x": rem(26),
+              "--button-fz": rem(16),
+            },
+          };
+        }
+        return { root: {} };
       },
     }),
-    Input: Input.extend({
-      defaultProps: {
-        size: "lg",
-      },
-    }),
+    Input: Input.extend(defaultInput),
+    Select: Select.extend(defaultInput),
+    // @ts-ignore
+    FileInput: FileInput.extend(defaultInput),
   },
 });
