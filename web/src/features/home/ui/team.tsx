@@ -20,7 +20,7 @@ function Arrow(props: {
         <button
           aria-label="Стрелка назад"
           onClick={props.onClick}
-          className={cn(className, "-left-8")}
+          className={cn(className, "-left-2 md:-left-6")}
         >
           <IconArrowLeft />
         </button>
@@ -28,7 +28,7 @@ function Arrow(props: {
         <button
           aria-label="Стрелка вперед"
           onClick={props.onClick}
-          className={cn(className, "-right-8")}
+          className={cn(className, "-right-2 md:-right-6")}
         >
           <IconArrowRight />
         </button>
@@ -50,7 +50,7 @@ export const Team = () => {
       perView: 5,
     },
     breakpoints: {
-      "(max-width: 800px)": {
+      "(max-width: 768px)": {
         slides: {
           origin: "center",
           perView: 3,
@@ -69,6 +69,7 @@ export const Team = () => {
     (index: number) => {
       if (Math.abs(index - currentSlide) === 0) return "1";
       if (Math.abs(index - currentSlide) === 1) return "0.8";
+      if (Math.abs(index - currentSlide) === 3) return "0";
       return "0.6";
     },
     [currentSlide]
@@ -90,7 +91,10 @@ export const Team = () => {
           Наша команда
         </Title>
         <div className="relative max-w-[1200px]">
-          <div ref={sliderRef} className="keen-slider max-sm:!overflow-visible">
+          <div
+            ref={sliderRef}
+            className="keen-slider !overflow-visible !select-auto"
+          >
             {team.map((member, index) => (
               <div
                 key={index}
