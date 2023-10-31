@@ -18,6 +18,9 @@ from apps.products.factory import (
 from apps.blog.models import TagPost, Post
 from apps.blog.factory import TagPostFactory, PostFactory
 
+from apps.price.models import Grid, Price
+from apps.price.factory import GridFactory, PriceFactory
+
 
 
 class Command(BaseCommand):
@@ -70,6 +73,15 @@ class Command(BaseCommand):
                 )
                 post.save()
 
+        for _ in range(7):
+            grid = GridFactory()
+            grid.save()
+
+            price = PriceFactory(
+                grid=[grid]
+            )
+            price.save()
+
         self.stdout.write("Creating new data... - success")
 
     def clear_old_data(self):
@@ -81,6 +93,8 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         TagPost.objects.all().delete()
         Post.objects.all().delete()
+        Grid.objects.all().delete()
+        Price.objects.all().delete()
 
         for user in User.objects.all():
             if user.username != 'admin':
