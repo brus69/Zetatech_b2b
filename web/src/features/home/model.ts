@@ -1,6 +1,6 @@
 import { createEvent, createEffect, createStore, sample } from "effector";
 import { requestFx } from "@/shared/api";
-import { FAQ, Team } from "@/api/codegen";
+import { FAQ, PaginatedPostList, Post, Team } from "@/api/codegen";
 
 export const homePageStared = createEvent();
 
@@ -37,3 +37,21 @@ const fetchPricesFx = createEffect(() => {
 
 sample({ clock: homePageStared, target: fetchPricesFx });
 sample({ clock: fetchPricesFx.doneData, target: $team });
+
+export const $posts = createStore<Post[]>([]);
+
+const fetchPostsFx = createEffect<unknown, PaginatedPostList>(() => {
+  return requestFx({
+    path: "/blog/",
+    params: {
+      limit: 3,
+    },
+  });
+});
+
+sample({ clock: homePageStared, target: fetchPostsFx });
+sample({
+  clock: fetchPostsFx.doneData,
+  fn: (paginated) => paginated.results || [],
+  target: $posts,
+});
