@@ -1,3 +1,4 @@
+from django.test import tag
 import factory
 
 from django.core.management.base import BaseCommand
@@ -42,22 +43,32 @@ class Command(BaseCommand):
             )
             team.save()
 
-        category = CategoryFactory()
-        category.save()
 
-        mark = MarkFactory()
-        mark.save()
 
-        for _ in range(15):
-            product = ProductFactory()
+        for _ in range(5):
+            mark = MarkFactory()
+            mark.save()
+            
+            category = CategoryFactory()
+            
+            category.save()
+
+            product = ProductFactory(
+                mark=[mark],
+                category=[category],
+            )
+            
             product.save()
 
-        tagpost = TagPostFactory()
-        tagpost.save()
+        for _ in range(3):
+            tag_post = TagPostFactory()
+            tag_post.save()
 
-        for _ in range(10):
-            post = PostFactory()
-            post.save()
+            for _ in range(10):
+                post = PostFactory(
+                    tags=[tag_post]
+                )
+                post.save()
 
         self.stdout.write("Creating new data... - success")
 
