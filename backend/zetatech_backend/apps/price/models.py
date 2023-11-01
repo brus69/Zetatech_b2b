@@ -26,7 +26,6 @@ class Price(TimeStampedModel):
     )
     grid = models.ManyToManyField(
         Grid,
-        on_delete=models.SET_NULL,
         verbose_name='Преимущества'
     )
     active = models.BooleanField(
@@ -34,7 +33,7 @@ class Price(TimeStampedModel):
     )
 
     class Meta:
-        ordering = ('price')
+        ordering = ('price',)
         default_related_name = 'prices'
         verbose_name = 'Тариф'
         verbose_name_plural = 'Тарифы'

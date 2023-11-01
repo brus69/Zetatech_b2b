@@ -18,7 +18,7 @@ class PriceFactory(DjangoModelFactory):
     class Meta:
         model = Price
 
-    @factory.price_generation
+    @factory.post_generation
     def grid(self, create, extracted, **kwargs):
         if not create:
             return
