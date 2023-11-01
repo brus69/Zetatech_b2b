@@ -4,7 +4,7 @@ from django.core import exceptions as django_exceptions
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 
-from .models import User
+from .models import Otp, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -89,3 +89,12 @@ class SetPasswordSerializer(serializers.Serializer):
         instance.set_password(validated_data["new_password"])
         instance.save()
         return validated_data
+
+
+class OtpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Otp
+        fields = (
+            "code",
+            "token",
+        )
