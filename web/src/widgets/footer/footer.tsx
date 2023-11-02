@@ -12,7 +12,7 @@ export const Footer = () => {
   const date = new Date();
 
   return (
-    <footer className=" bg-[#140B27] text-white flex justify-center">
+    <footer className=" bg-black text-white flex justify-center">
       <div className="container flex flex-col gap-24">
         <div className="relative box-border p-3 h-36 flex flex-row max-w-[945px] mt-14">
           <img
@@ -26,8 +26,8 @@ export const Footer = () => {
         </div>
         <div className="flex flex-col sm:flex-row justify-between">
           <div className="flex flex-col gap-7 font-medium text-2xl">
-            <p className="m-0 p-0">8 800 500 50 80</p>
-            <p className="m-0 p-0">info@zetatech.ru</p>
+            <Link href="tel:88005005080" target="_blank" className="m-0 p-0">8 800 500 50 80</Link>
+            <Link href="mailto:info@zetatech.ru" target="_blank" className="m-0 p-0">info@zetatech.ru</Link>
             <div className="flex flex-row gap-6">
               <Link href="/">
                 <img
@@ -56,7 +56,7 @@ export const Footer = () => {
                 </li>
               ))}
             </ul>
-            <p className="text-base text-[#9B9BAB] m-0 p-0">
+            <p className="text-base text-gray m-0 p-0">
               {" "}
               &copy; {date.getFullYear()} Company, Inc
             </p>

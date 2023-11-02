@@ -1,6 +1,5 @@
 import React from "react";
-import { Title, Input } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Title } from "@mantine/core";
 
 const points = [
   {
@@ -23,18 +22,12 @@ const points = [
 
 export const Preview = () => {
   return (
-    <section className="container justify-center flex flex-col lg:flex-row gap-10">
+    <section className="container justify-center flex flex-col lg:flex-row">
       <div className="max-w-[620px]">
-        <Title order={2} classNames={{ root: "m-0 p-0 mb-10" }}>
+        <Title order={2} classNames={{ root: "m-0 p-0 text-3xl sm:text-[50px] text-black" }}>
           Парсим сайты любой сложности
         </Title>
-        <Input
-          variant="filled"
-          placeholder="поиск"
-          rightSection={<IconSearch width={"24px"} />}
-          classNames={{ wrapper: "max-w-[510px] rounded-md" }}
-        />
-        <p className=" text-base m-0 p-0 mt-5 max-w-[510px]">
+        <p className="m-0 p-0 mt-7 max-w-[510px] text-dark text-xl">
           Мы собрали наиболее популярные базы компаний. Воспользуйтесь поиском,
           чтобы найти интересующую вас базу
         </p>
@@ -43,7 +36,7 @@ export const Preview = () => {
         {points.map((el) => (
           <li
             key={el.text}
-            className="flex flex-col gap-5 px-3 sm:px-7 py-12 box-border border border-solid border-[#EBECFE] 2xl:w-80 hover:bg-[#EBECFE]"
+            className="flex flex-col gap-5 px-3 sm:px-7 py-12 box-border border border-solid border-light 2xl:w-80 hover:bg-light"
           >
             <img src={el.src} alt="icon" width="64px" />
             <p className="text-base m-0">{el.text}</p>

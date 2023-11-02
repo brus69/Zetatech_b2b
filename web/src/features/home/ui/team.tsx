@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useCallback, useState, useEffect } from "react";
 import { Title } from "@mantine/core";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
@@ -20,7 +21,7 @@ function Arrow(props: {
         <button
           aria-label="Стрелка назад"
           onClick={props.onClick}
-          className={cn(className, "-left-2 md:-left-6")}
+          className={cn(className, "-left-2 md:-left-6 z-30")}
         >
           <IconArrowLeft />
         </button>
@@ -28,7 +29,7 @@ function Arrow(props: {
         <button
           aria-label="Стрелка вперед"
           onClick={props.onClick}
-          className={cn(className, "-right-2 md:-right-6")}
+          className={cn(className, "-right-2 md:-right-6 z-30")}
         >
           <IconArrowRight />
         </button>
@@ -50,10 +51,16 @@ export const Team = () => {
       perView: 5,
     },
     breakpoints: {
-      "(max-width: 768px)": {
+      "(max-width: 938px)": {
         slides: {
           origin: "center",
           perView: 3,
+        },
+      },
+      "(max-width: 600px)": {
+        slides: {
+          origin: "center",
+          perView: 1,
         },
       },
     },
@@ -87,10 +94,10 @@ export const Team = () => {
   return (
     <section className="flex flex-col items-center justify-center">
       <div className="container">
-        <Title order={2} classNames={{ root: "m-0 p-0 text-center mb-20" }}>
+        <Title order={2} classNames={{ root: "m-0 p-0 text-center mb-20 text-3xl sm:text-[50px]" }}>
           Наша команда
         </Title>
-        <div className="relative max-w-[1200px]">
+        <div className="relative max-w-[1200px] m-auto">
           <div
             ref={sliderRef}
             className="keen-slider !overflow-visible !select-auto"
@@ -118,11 +125,11 @@ export const Team = () => {
                     opacity: currentSlide === index ? 1 : 0,
                   }}
                 >
-                  <p className="text-[#00676C] text-2xl font-bold m-0 mt-12">
+                  <p className="text-ruby text-2xl font-bold m-0 mt-12">
                     {member.name}
                   </p>
-                  <p className="my-4 text-lg">{member.name}</p>
-                  <p className="text-[#9B9BAB] text-base m-0 max-w-[210px]">
+                  <p className="my-4 text-lg text-black">{member.name}</p>
+                  <p className="text-gray text-base m-0 max-w-[210px]">
                     {member.description.substring(0, 100)}
                   </p>
                 </div>

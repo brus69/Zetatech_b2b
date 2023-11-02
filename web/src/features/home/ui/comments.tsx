@@ -4,7 +4,7 @@ import "../../../app/styles/slick.css";
 import { Title } from "@mantine/core";
 
 // пробный массив! для вёрстки
-const comms = [
+const comments = [
   {
     grade: 5,
     text: "Благодарим команду  за весьма чуткую и подробную поддержку. Этого очень не хватает в нашем менталитете. Можно сказать европейский уровень обслуживания.Особо удивил момент доработки конкретных файлов по нашему запросу",
@@ -117,22 +117,22 @@ export const Comments = () => {
   };
 
   return (
-    <section className="flex flex-col justify-center bg-[#FAFAFB] pt-20 pb-14">
+    <section className="flex flex-col justify-center bg-silver pt-20 pb-14">
       <div className="container">
-        <Title order={2} classNames={{ root: "m-0 p-0 text-left mb-32" }}>
+        <Title order={2} classNames={{ root: "m-0 p-0 text-left mb-32 text-black text-3xl sm:text-[50px]" }}>
           Отзывы наших клиентов
         </Title>
         <Slider {...settings}>
-          {comms.map((el, index) => (
+          {comments.map((comment, index) => (
             <div key={index} className=" px-5">
               <img
-                src={`/assets/comments/grades-${el.grade}.png`}
+                src={`/assets/comments/grades-${comment.grade}.png`}
                 alt="Grade"
                 className="pb-4"
               />
               <div className="flex flex-col py-5 px-2 gap-5 border-black border-solid border-x-0 border-b-0 border-t">
-                <p className="text-md p-0 m-0">{el.text}</p>
-                <p className="text-md p-0 m-0 text-[#9B9BAB]">{el.author}</p>
+                <p className="text-md p-0 m-0 text-black">{comment.text}</p>
+                <p className="text-md p-0 m-0 text-gray">{comment.author}</p>
               </div>
             </div>
           ))}

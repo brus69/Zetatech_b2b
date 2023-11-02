@@ -16,20 +16,20 @@ export const Questions = () => {
   ));
 
   return (
-    <section className="w-full pt-[105px] pb-[50px] bg-white">
-      <div className="flex flex-col max-w-[250px] sm:max-w-[350px] md:max-w-[988px] p-0 m-auto">
+    <section className="w-full pt-24 pb-12">
+      <div className="flex flex-col  md:max-w-[880px] p-0 m-auto">
         <Title
           order={2}
-          classNames={{ root: "m-0 p-0 text-black text-center" }}
+          classNames={{ root: "m-0 p-0 text-black text-center text-3xl sm:text-[50px]" }}
         >
           Вопросы и ответы
         </Title>
         <Accordion
           classNames={{
-            root: "flex flex-col gap-[10px] p-[30px] pt-[8px] mt-[50px]",
-            item: "flex flex-col gap-[10px] pb-[20px] box-border border-solid border-b-slate-300 border-0 border-b-[1px]",
-            label: "text-lg font-[18px] font-[500] p-0",
-            content: "p-0 pl-[60px] text-[#9B9BAB] text-[14px]",
+            root: "flex flex-col gap-2 p-7 pt-2 mt-10",
+            item: "flex flex-col gap-2 pb-5 box-border border-solid border-b-gray border-0 border-b",
+            label: "text-lg font-medium p-0 pl-8 text-black",
+            content: "p-0 pl-14 text-gray text-sm",
           }}
           chevronPosition="left"
           chevron={<IconPlus />}

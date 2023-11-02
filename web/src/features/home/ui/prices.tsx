@@ -30,8 +30,7 @@ const rates = [
     ],
     textColor: "text-black",
     backgroundColor: "bg-transparent",
-    subcolor: "bg-[#00676C] text-white",
-    buttonColor: "text-[#00676C] bg-transparent border-solid border-[#00676C]",
+    buttonColor: "text-ruby bg-transparent border-solid border-ruby",
   },
   {
     name: "Стандарт",
@@ -60,8 +59,7 @@ const rates = [
     ],
     textColor: "text-black",
     backgroundColor: "bg-transparent",
-    subcolor: "bg-[#00676C] text-white",
-    buttonColor: "text-[#00676C] bg-transparent border-solid border-[#00676C]",
+    buttonColor: "text-ruby bg-transparent border-solid border-ruby",
   },
   {
     name: "Премиум",
@@ -89,9 +87,8 @@ const rates = [
       },
     ],
     textColor: "text-white",
-    backgroundColor: "bg-[#00676C]",
-    subcolor: "bg-[#D9C6F4] text-black",
-    buttonColor: "bg-[#D9C6F4] text-black",
+    backgroundColor: "bg-ruby",
+    buttonColor: "bg-lilac text-black",
   },
 ];
 
@@ -102,7 +99,7 @@ export const Prices = () => {
 
   return (
     <section className="container justify-center items-center flex flex-col">
-      <Title order={2} classNames={{ root: "m-0 p-0" }}>
+      <Title order={2} classNames={{ root: "m-0 p-0 text-3xl sm:text-[50px]" }}>
         Тарифы
       </Title>
       <ul className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-10 p-0 mt-20">
@@ -112,7 +109,6 @@ export const Prices = () => {
             price,
             textColor,
             backgroundColor,
-            subcolor,
             buttonColor,
             points,
           }) => (
@@ -121,12 +117,12 @@ export const Prices = () => {
               key={name}
             >
               <p
-                className={`${subcolor} text-m py-1 px-2 max-w-[169px] rounded-md m-0`}
+                className="bg-lilac text-black text-base text-center py-1 px-2 w-30 sm:w-52 rounded-md m-0"
               >
                 Тариф &quot;{name}&quot;
               </p>
               <div className="flex mt-6 mb-10 sm:mb-24">
-                <p className=" text-2xl sm:text-5xl font-bold m-0 p-0">{price} руб.</p>
+                <p className=" text-2xl sm:text-5xl font-bold m-0 p-0">{price.toLocaleString('ru')} руб.</p>
                 <p className=" text-m font-normal m-0 p-0">/месяц</p>
               </div>
               <div className="flex flex-col gap-5">
