@@ -39,4 +39,4 @@ class PostFactory(DjangoModelFactory):
             return
         if extracted:
             for tags in extracted:
-                self.tagpost.add(tags)
+                self.tags.add(tags)

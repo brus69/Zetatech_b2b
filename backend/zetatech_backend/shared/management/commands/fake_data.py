@@ -1,3 +1,4 @@
+from django.test import tag
 import factory
 
 from django.core.management.base import BaseCommand
@@ -16,6 +17,9 @@ from apps.products.factory import (
 
 from apps.blog.models import TagPost, Post
 from apps.blog.factory import TagPostFactory, PostFactory
+
+from apps.price.models import Grid, Price
+from apps.price.factory import GridFactory, PriceFactory
 
 
 
@@ -42,22 +46,41 @@ class Command(BaseCommand):
             )
             team.save()
 
-        category = CategoryFactory()
-        category.save()
 
-        mark = MarkFactory()
-        mark.save()
 
-        for _ in range(15):
-            product = ProductFactory()
+        for _ in range(5):
+            mark = MarkFactory()
+            mark.save()
+            
+            category = CategoryFactory()
+            
+            category.save()
+
+            product = ProductFactory(
+                mark=[mark],
+                category=[category],
+            )
+            
             product.save()
 
-        tagpost = TagPostFactory()
-        tagpost.save()
+        for _ in range(3):
+            tag_post = TagPostFactory()
+            tag_post.save()
 
-        for _ in range(10):
-            post = PostFactory()
-            post.save()
+            for _ in range(10):
+                post = PostFactory(
+                    tags=[tag_post]
+                )
+                post.save()
+
+        for _ in range(7):
+            grid = GridFactory()
+            grid.save()
+
+            price = PriceFactory(
+                grid=[grid]
+            )
+            price.save()
 
         self.stdout.write("Creating new data... - success")
 
@@ -70,6 +93,8 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         TagPost.objects.all().delete()
         Post.objects.all().delete()
+        Grid.objects.all().delete()
+        Price.objects.all().delete()
 
         for user in User.objects.all():
             if user.username != 'admin':

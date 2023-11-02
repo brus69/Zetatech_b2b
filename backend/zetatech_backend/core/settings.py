@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.products',
     'apps.team',
     'apps.user',
+    'apps.application',
 ]
 
 MIDDLEWARE = [
@@ -181,6 +182,13 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        "rest_framework.throttling.ScopedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "low": "1/min",
+        "high": "60/min",
+    }
 }
 
 SIMPLE_JWT = {

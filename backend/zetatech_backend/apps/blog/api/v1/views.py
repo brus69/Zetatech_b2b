@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import decorators, viewsets
 from rest_framework.permissions import AllowAny
+from drf_spectacular.utils import extend_schema
 
 from apps.blog.filters import PostFilter
 from apps.blog.models import Post, TagPost
@@ -22,6 +23,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = PostFilter
 
+    @extend_schema(responses={"200": PostSerializer})
     @decorators.action(methods=('get',), detail=False)
     def tags(self, request):
         tags = self.paginate_queryset(TagPost.objects.all())
