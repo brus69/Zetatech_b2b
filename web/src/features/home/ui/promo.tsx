@@ -10,7 +10,7 @@ export const Promo = () => {
 
   return (
     <section className="container flex flex-col mt-16 mb-32">
-      <Title className="mb-10 max-w-[1100px] text-black text-4xl sm:text-6xl lg:text-[80px]" order={1}>
+      <Title className="mb-10 max-w-[1090px] text-black text-4xl sm:text-6xl lg:text-[80px]" order={1}>
         Парсинг сайтов, магазинов и маркетплейсов{" "}
       </Title>
 
