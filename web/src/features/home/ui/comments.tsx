@@ -1,7 +1,39 @@
-import React from "react";
-import Slider from "react-slick";
-import "../../../app/styles/slick.css";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import { Title } from "@mantine/core";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import { cn } from "@/shared/lib";
+
+function Arrow(props: {
+  left?: boolean;
+  onClick: (event: React.MouseEvent) => void;
+}) {
+  const className =
+    "absolute top-[-60px] cursor-pointer bg-transparent outline-none border-none text-transparent center rounded-full w-8 h-8";
+
+  return (
+    <>
+      {props.left ? (
+        <button
+          aria-label="Стрелка назад"
+          onClick={props.onClick}
+          className={cn(className, "right-[35px] z-30 bg-center")}
+          style={{ backgroundImage: `url("/assets/comments/arrow-back.svg")` }}
+        >
+        </button>
+      ) : (
+        <button
+          aria-label="Стрелка вперед"
+          onClick={props.onClick}
+          className={cn(className, "right-0 z-30 bg-center")}
+          style={{ backgroundImage: `url("/assets/comments/arrow-next.svg")` }}
+        >
+        </button>
+      )}
+    </>
+  );
+}
 
 // пробный массив! для вёрстки
 const comments = [
@@ -37,92 +69,84 @@ const comments = [
   },
 ];
 
-function SampleNextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        backgroundColor: "transparent",
-        backgroundImage: `url("/assets/comments/arrow-next.svg")`,
-        backgroundSize: "contain",
-        width: "32px",
-        height: "32px",
-        position: "absolute",
-        top: "-60px",
-        cursor: "pointer",
-        right: "0",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-        backgroundColor: "transparent",
-        backgroundImage: `url("/assets/comments/arrow-back.svg")`,
-        backgroundSize: "contain",
-        width: "32px",
-        height: "32px",
-        position: "absolute",
-        top: "-60px",
-        cursor: "pointer",
-        right: "32px",
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
 export const Comments = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    arrows: true,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
+  const [currentSlide, setCurrentSlide] = useState(3);
+  const [, setLoaded] = useState(false);
+
+  const [sliderRef, instanceRef] = useKeenSlider({
+    initial: 1,
+    loop: true,
+    slides: {
+      perView: 4,
+    },
+    breakpoints: {
+      "(max-width: 938px)": {
+        slides: {
+          perView: 3,
         },
       },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          initialSlide: 1,
+      "(max-width: 600px)": {
+        slides: {
+          perView: 2,
         },
       },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
+      "(max-width: 500px)": {
+        slides: {
+          perView: 1,
         },
       },
-    ],
-  };
+    },
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+  });
 
   return (
     <section className="flex flex-col justify-center bg-silver pt-20 pb-14">
       <div className="container">
-        <Title order={2} classNames={{ root: "m-0 p-0 text-left mb-32 text-black text-3xl sm:text-[50px]" }}>
+        <Title
+          order={2}
+          classNames={{
+            root: "m-0 p-0 text-left mb-32 text-black text-3xl sm:text-[50px]",
+          }}
+        >
           Отзывы наших клиентов
         </Title>
-        <Slider {...settings}>
+        <div className="relative">
+          <div ref={sliderRef} className="keen-slider">
+            {comments.map((comment, index) => (
+              <div key={index} className="keen-slider__slide px-5">
+                <img
+                  src={`/assets/comments/grades-${comment.grade}.png`}
+                  alt="Grade"
+                  className="pb-4"
+                />
+                <div className="flex flex-col py-5 px-2 gap-5 border-black border-solid border-x-0 border-b-0 border-t">
+                  <p className="text-md p-0 m-0 text-black">{comment.text}</p>
+                  <p className="text-md p-0 m-0 text-gray">{comment.author}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Arrow
+            left
+            onClick={(event) => {
+              event.stopPropagation();
+              instanceRef.current?.prev();
+            }}
+          />
+          <Arrow
+            onClick={(event) => {
+              event.stopPropagation();
+              instanceRef.current?.next();
+            }}
+          />
+        </div>
+
+        {/* <Slider {...settings}>
           {comments.map((comment, index) => (
             <div key={index} className=" px-5">
               <img
@@ -136,7 +160,7 @@ export const Comments = () => {
               </div>
             </div>
           ))}
-        </Slider>
+        </Slider> */}
       </div>
     </section>
   );
