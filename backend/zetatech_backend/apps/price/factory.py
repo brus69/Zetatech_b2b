@@ -4,8 +4,8 @@ from apps.price.models import Grid, Price
 
 
 class GridFactory(DjangoModelFactory):
-    name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
-    value = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    name = factory.Faker('sentence', nb_words=2, variable_nb_words=True)
+    value = factory.Faker('sentence', nb_words=2, variable_nb_words=True)
 
     class Meta:
         model = Grid

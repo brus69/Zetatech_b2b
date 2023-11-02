@@ -7,7 +7,7 @@ import { Questions } from "./ui/questions";
 import { Blog } from "./ui/blog";
 import { Newsletter } from "./ui/newsletter";
 import { Principles } from "./ui/principles";
-import { Comments } from "./ui/comments";
+import { Reviews } from "./ui/reviews";
 import { Team } from "./ui/team";
 import { homePageStared } from "./model";
 import { BriefModal } from "@/widgets/brief-modal";
@@ -36,7 +36,7 @@ const HomePage = () => {
         <Newsletter />
         <Prices />
         <Questions />
-        <Comments />
+        <Reviews />
         <Blog />
       </div>
       <BriefModal />

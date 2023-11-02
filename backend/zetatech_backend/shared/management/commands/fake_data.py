@@ -1,4 +1,3 @@
-from django.test import tag
 import factory
 
 from django.core.management.base import BaseCommand
@@ -8,12 +7,14 @@ from apps.faq.factory import FAQFactory
 from apps.faq.models import FAQ
 from apps.team.models import Team
 from apps.team.factory import TeamFactory
+from apps.reviews.models import Review
 from apps.products.models import (User, Category, Mark, Product)
 from apps.products.factory import ( 
                                    CategoryFactory, 
                                    MarkFactory, 
                                    ProductFactory,
                                    )
+from apps.reviews.factory import ReviewFactory
 
 from apps.blog.models import TagPost, Post
 from apps.blog.factory import TagPostFactory, PostFactory
@@ -71,16 +72,27 @@ class Command(BaseCommand):
                 post = PostFactory(
                     tags=[tag_post]
                 )
+                post.published = True
                 post.save()
 
-        for _ in range(7):
-            grid = GridFactory()
-            grid.save()
+        for _ in range(3):
+
+            grids = []
+
+            for _ in range(6):
+                grid = GridFactory()
+                grid.save()
+                grids.append(grid)
 
             price = PriceFactory(
-                grid=[grid]
+                grid=grids
             )
+            price.active = True
             price.save()
+
+        for _ in range(10):
+            review = ReviewFactory()
+            review.save()
 
         self.stdout.write("Creating new data... - success")
 
@@ -95,8 +107,10 @@ class Command(BaseCommand):
         Post.objects.all().delete()
         Grid.objects.all().delete()
         Price.objects.all().delete()
+        Review.objects.all().delete()
 
         for user in User.objects.all():
             if user.username != 'admin':
                 user.delete()
+
         self.stdout.write("Deleting old data... - success")

@@ -72,6 +72,19 @@ export interface FAQ {
   question: string;
 }
 
+export interface Grid {
+  /**
+   * Название преимущества
+   * @maxLength 100
+   */
+  name: string;
+  /**
+   * Значение
+   * @maxLength 100
+   */
+  value: string;
+}
+
 export interface Mark {
   id: number;
   /**
@@ -82,6 +95,13 @@ export interface Mark {
   slug: string;
   /** Название метки */
   name: string;
+}
+
+export interface Otp {
+  /** @maxLength 6 */
+  code: string;
+  /** @maxLength 40 */
+  token: string;
 }
 
 export interface PaginatedPostList {
@@ -162,6 +182,21 @@ export interface Post {
   pub_date: string | null;
 }
 
+export interface Price {
+  /**
+   * Название тарифа
+   * @maxLength 100
+   */
+  name: string;
+  /**
+   * Цена
+   * @min 0
+   * @max 32767
+   */
+  price: number;
+  grid: Grid[];
+}
+
 export interface Product {
   id: number;
   /**
@@ -213,6 +248,19 @@ export interface Product {
   content: string;
   mark: number[];
   category: number[];
+}
+
+export interface Review {
+  id: number;
+  /**
+   * @min 1
+   * @max 5
+   */
+  rating: number;
+  /** @maxLength 1024 */
+  text: string;
+  /** @maxLength 256 */
+  author: string;
 }
 
 export interface SendEmailReset {
