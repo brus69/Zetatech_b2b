@@ -1,6 +1,5 @@
-import { $router } from "@/api/app";
-import { requestFx } from "@/shared/api";
 import { attach, createEffect, createEvent, sample } from "effector";
+import { $router } from "@/api/app";
 
 export const register = createEvent();
 
@@ -18,7 +17,8 @@ sample({
   clock: registerFx.doneData,
   target: attach({
     source: $router,
-    effect(router) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    effect(router: any) {
       router?.push("/");
     },
   }),

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { routerChanged } from "@/api/app";
 import { useRouter } from "next/router";
 import { useUnit } from "effector-react";
+import { routerChanged } from "@/api/app";
 
 type Props = {
   children: React.ReactNode;

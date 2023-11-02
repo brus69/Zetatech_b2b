@@ -2,9 +2,9 @@ const path = require("path");
 const { generateApi } = require("swagger-typescript-api");
 
 generateApi({
-  name: "generated.ts",
-  output: path.resolve(process.cwd(), "./src/shared/api"),
-  url: "http://localhost:8000/content/schema/",
+  name: "codegen.ts",
+  output: path.resolve(process.cwd(), "./src/api/"),
+  url: "http://localhost:8088/schema/",
   generateResponses: true,
   enumNamesAsValues: true,
   moduleNameFirstTag: true,

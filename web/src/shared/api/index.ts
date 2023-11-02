@@ -30,9 +30,9 @@ export const requestFx = createEffect<Request, any>(async (request) => {
     );
 
     if (response.status === 204) return true;
-    
+
     const json = await response.json();
-    
+
     if (!response.ok) return Promise.reject(json);
 
     return json;
@@ -51,12 +51,5 @@ export const uploadImageFx = (body: FormData) => {
     path: "/images/",
     body: body,
     rawData: true,
-  });
-};
-
-export const fiasRequestFx = (request: Request) => {
-  return requestFx({
-    url: "http://localhost:7000/fias/api/v1",
-    ...request,
   });
 };
