@@ -2,5 +2,5 @@
     "text": [
         "The DeepL API is a language translation API that allows other computer programs to send texts and documents to DeepL's servers and receive high-quality translations. This opens a whole universe of opportunities for developers: any translation product you can imagine can now be built on top of DeepL's best-in-class translation technology."
     ],
-    "target_lang": "RU"
+    "target_lang": "FR"
 }
