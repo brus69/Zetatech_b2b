@@ -1,4 +1,5 @@
 import factory
+import random
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -47,19 +48,28 @@ class Command(BaseCommand):
             )
             team.save()
 
+        categories = []
+
+        for _ in range(15):
+            parent_category = CategoryFactory()
+            parent_category.save()
+            categories.append(parent_category)
 
 
-        for _ in range(5):
+            for _ in range(random.randint(2,8)):
+                category = CategoryFactory()
+                category.parent_category = parent_category
+                category.save()
+                categories.append(category)
+
+
+        for _ in range(25):
             mark = MarkFactory()
             mark.save()
-            
-            category = CategoryFactory()
-            
-            category.save()
 
             product = ProductFactory(
                 mark=[mark],
-                category=[category],
+                category=[ random.choice(categories)],
             )
             
             product.save()
