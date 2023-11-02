@@ -55,3 +55,11 @@ class User(AbstractUser):
     @property
     def is_content_manager(self):
         return self.role == CONTENT_MANAGER
+
+
+class Otp(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField("token", max_length=40, db_index=True, unique=True)
+    code = models.CharField(max_length=6, null=False, blank=False)
+    expired_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
