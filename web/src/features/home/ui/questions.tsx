@@ -9,7 +9,7 @@ export const Questions = () => {
   const { faqs } = useUnit({ faqs: $faqs });
 
   const items = faqs.map((faq) => (
-    <Accordion.Item key={faq.question} id={faq.id} value={faq.question}>
+    <Accordion.Item key={faq.question} value={faq.question}>
       <Accordion.Control>{faq.question}</Accordion.Control>
       <Accordion.Panel>{faq.answer}</Accordion.Panel>
     </Accordion.Item>
@@ -20,7 +20,9 @@ export const Questions = () => {
       <div className="flex flex-col  md:max-w-[880px] p-0 m-auto">
         <Title
           order={2}
-          classNames={{ root: "m-0 p-0 text-black text-center text-3xl sm:text-[50px]" }}
+          classNames={{
+            root: "m-0 p-0 text-black text-center text-3xl sm:text-[50px]",
+          }}
         >
           Вопросы и ответы
         </Title>
