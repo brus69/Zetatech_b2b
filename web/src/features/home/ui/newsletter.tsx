@@ -2,13 +2,13 @@ import React from "react";
 import { Title, Input, Button } from "@mantine/core";
 
 export const Newsletter = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.MouseEvent) => {
     console.log("сабмит формы");
     event.preventDefault();
   };
 
   return (
-    <section className="w-full flex flex-col justify-center items-center bg-light py-28">
+    <section className="flex flex-col items-center justify-center w-full bg-light py-28">
       <div className="container max-w-[810px] px-3">
         <div className="flex flex-col lg:flex-row">
           <div className="">
@@ -27,10 +27,10 @@ export const Newsletter = () => {
           <img
             src="/assets/newsletter/plane.png"
             alt="Plane icon"
-            className="md:m-0 mx-3"
+            className="mx-3 md:m-0"
           />
         </div>
-        <div className=" mt-12 lg:mt-7 flex flex-col lg:flex-row gap-5">
+        <div className="flex flex-col gap-5 mt-12  lg:mt-7 lg:flex-row">
           <Input
             placeholder="Ваше имя"
             classNames={{
@@ -54,7 +54,7 @@ export const Newsletter = () => {
             Отправить
           </Button>
         </div>
-        <p className="text-gray text-left self-start m-0 mt-5">
+        <p className="self-start m-0 mt-5 text-left text-gray">
           Нажимая на кнопку, я соглашаюсь на Обработку персональных данных
         </p>
       </div>

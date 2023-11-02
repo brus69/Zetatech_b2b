@@ -94,6 +94,7 @@ export const theme = createTheme({
         return { root: {} };
       },
     }),
+    // @ts-ignore
     Input: Input.extend(defaultInput),
     Select: Select.extend(defaultInput),
     // @ts-ignore

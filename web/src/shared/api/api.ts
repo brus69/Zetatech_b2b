@@ -1,6 +1,5 @@
 import ky from "ky";
 import { API_CONFIG } from "../config";
-import { TokenRefresh } from "./generated";
 import {
   getAccessToken,
   getRefreshToken,
@@ -8,6 +7,7 @@ import {
   removeTokens,
   saveAccessToken,
 } from "./tokens";
+import { TokenRefresh } from "@/api/codegen";
 
 export const api = ky.create({
   retry: {
