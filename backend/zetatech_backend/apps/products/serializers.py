@@ -43,6 +43,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'subcategories': data['subcategories'],
         }
         return context
+
     
 class CategoryIdSerializer(serializers.ModelSerializer):
     class Meta:
