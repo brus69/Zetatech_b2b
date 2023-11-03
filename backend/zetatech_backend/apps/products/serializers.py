@@ -42,7 +42,8 @@ class CategorySerializer(serializers.ModelSerializer):
             'slug': data['slug'],
             'subcategories': data['subcategories'],
         }
-        return {'categories': context}
+        return context
+
     
 class CategoryIdSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,18 +1,18 @@
-import React from "react";
-import { Button, Input, Menu, rem } from "@mantine/core";
+import React, { useState } from "react";
+import { Button, Input, Menu } from "@mantine/core";
 import Link from "next/link";
 import {
   IconBaselineDensityMedium,
+  IconChevronRight,
   IconHeart,
-  IconMessageCircle,
-  IconPhoto,
+  IconPointFilled,
   IconSearch,
-  IconSettings,
   IconShoppingCart,
   IconUserCircle,
   IconX,
 } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
+import { useUnit } from "effector-react";
+import { $categories } from "@/api/categories";
 
 const ITEMS = [
   { url: "/", name: "О нас" },
@@ -23,7 +23,15 @@ const ITEMS = [
 ];
 
 export const Header = () => {
-  const [opened, { toggle }] = useDisclosure();
+  const [open, setOpen] = useState(false);
+
+  const { categories } = useUnit({
+    categories: $categories,
+  });
+
+  const [slug, setSlug] = useState<string | null>(null);
+
+  const parentCategory = categories.find((category) => category.slug === slug);
 
   return (
     <header>
@@ -52,58 +60,48 @@ export const Header = () => {
 
       <div className="container flex">
         <Menu
-          classNames={{
-            dropdown: "max-w-[400px] w-full",
-          }}
           offset={0}
           shadow="md"
-          width={"100%"}
           position="bottom-start"
+          onClose={() => setOpen(false)}
         >
           <Menu.Target>
             <Button
-              className="rounded-none max-w-[400px] w-full px-4"
+              className="rounded-none min-w-[400px] max-w-[400px] px-4"
               color="black"
               classNames={{
                 label: "flex items-center gap-2",
               }}
-              onClick={toggle}
+              onClick={() => setOpen((p) => !p)}
             >
-              {opened ? <IconX /> : <IconBaselineDensityMedium />}
+              {open ? <IconX /> : <IconBaselineDensityMedium />}
               Каталог
             </Button>
           </Menu.Target>
-          <Menu.Dropdown className="rounded-none">
-            <Menu.Item
-              leftSection={
-                <IconSettings style={{ width: rem(14), height: rem(14) }} />
-              }
-            >
-              Settings
-            </Menu.Item>
-            <Menu.Item
-              leftSection={
-                <IconMessageCircle
-                  style={{ width: rem(14), height: rem(14) }}
-                />
-              }
-            >
-              Messages
-            </Menu.Item>
-            <Menu.Item
-              leftSection={
-                <IconPhoto style={{ width: rem(14), height: rem(14) }} />
-              }
-            >
-              Gallery
-            </Menu.Item>
-            <Menu.Item
-              leftSection={
-                <IconSearch style={{ width: rem(14), height: rem(14) }} />
-              }
-            >
-              Search
-            </Menu.Item>
+          <Menu.Dropdown className="p-0 rounded-none shadow-md">
+            <div className="flex">
+              <div className="flex flex-col min-w-[400px] max-w-[400px]">
+                {categories.map((category) => (
+                  <Menu.Item
+                    key={category.slug}
+                    leftSection={<IconPointFilled className="w-3" />}
+                    rightSection={<IconChevronRight />}
+                    onMouseOver={() => setSlug(category.slug)}
+                  >
+                    {category.name}
+                  </Menu.Item>
+                ))}
+
+                <Menu.Item className="mt-8">Все категории</Menu.Item>
+              </div>
+
+              <div className="flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0">
+                {parentCategory &&
+                  parentCategory.subcategories.map((category) => (
+                    <Menu.Item key={category.slug}>{category.name}</Menu.Item>
+                  ))}
+              </div>
+            </div>
           </Menu.Dropdown>
         </Menu>
 
