@@ -87,18 +87,28 @@ export const Header = () => {
                     leftSection={<IconPointFilled className="w-3" />}
                     rightSection={<IconChevronRight />}
                     onMouseOver={() => setSlug(category.slug)}
+                    component={Link}
+                    href={`/catalog/${category.slug}`}
                   >
                     {category.name}
                   </Menu.Item>
                 ))}
 
-                <Menu.Item className="mt-8">Все категории</Menu.Item>
+                <Menu.Item className="mt-8" component={Link} href="/catalog">
+                  Все категории
+                </Menu.Item>
               </div>
 
               <div className="flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0">
                 {parentCategory &&
                   parentCategory.subcategories.map((category) => (
-                    <Menu.Item key={category.slug}>{category.name}</Menu.Item>
+                    <Menu.Item
+                      key={category.slug}
+                      component={Link}
+                      href={`/catalog/${category.slug}`}
+                    >
+                      {category.name}
+                    </Menu.Item>
                   ))}
               </div>
             </div>

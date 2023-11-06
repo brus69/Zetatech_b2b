@@ -1,7 +1,7 @@
-import React from "react";
+import {
+  BlogPostsPage,
+  getServerSidePropsBlogPosts,
+} from "@/features/blog/page";
 
-const Page = () => {
-  return <div>Page</div>;
-};
-
-export default Page;
+export const getServerSideProps = getServerSidePropsBlogPosts;
+export default BlogPostsPage;
