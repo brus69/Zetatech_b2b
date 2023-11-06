@@ -55,7 +55,18 @@ export interface ApplicationRequest {
 }
 
 export interface Category {
-  id: number;
+  /**
+   * URL
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  /** Название категории */
+  name: string;
+  subcategories: string;
+}
+
+export interface CategoryId {
   /**
    * URL
    * @maxLength 50
