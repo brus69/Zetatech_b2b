@@ -3,7 +3,7 @@ import { useUnit } from "effector-react";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { $blogPosts, $blogTags, pageStarted } from "./model";
-import { BlogCard } from "@/shared/components/blog-card";
+import { BlogCard } from "@/widgets/blog-card";
 
 export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
   query,
