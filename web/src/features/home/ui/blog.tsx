@@ -3,7 +3,7 @@ import { Button, Title } from "@mantine/core";
 import Link from "next/link";
 import { useUnit } from "effector-react";
 import { $posts } from "../model";
-import { BlogCard } from "@/shared/components/blog-card";
+import { BlogCard } from "@/widgets/blog-card";
 
 export const Blog = () => {
   const { posts } = useUnit({ posts: $posts });
