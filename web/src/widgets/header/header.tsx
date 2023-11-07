@@ -124,6 +124,9 @@ export const Header = () => {
           rightSection={<IconSearch />}
         />
         <Button
+          component={Link}
+          // TODO or go to lk/favorites
+          href="/login"
           className="rounded-none border-x-0"
           color="black"
           variant="outline"
@@ -131,13 +134,22 @@ export const Header = () => {
           <IconHeart />
         </Button>
         <Button
+          component={Link}
+          // TODO or go to lk
+          href="/login"
           className="border-r-0 rounded-none"
           color="black"
           variant="outline"
         >
           <IconUserCircle />
         </Button>
-        <Button className="rounded-none" color="black" variant="outline">
+        <Button
+          component={Link}
+          href="/cart"
+          className="rounded-none"
+          color="black"
+          variant="outline"
+        >
           <IconShoppingCart />
         </Button>
       </div>

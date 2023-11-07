@@ -2,17 +2,25 @@ import { createEffect, createEvent, createStore, sample } from "effector";
 import { PaginatedPostList, Post, TagPost } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
 
-export const pageStarted = createEvent();
+type PageStared = {
+  category?: string | string[];
+  mark?: string | string[];
+};
+
+export const pageStarted = createEvent<PageStared>();
 
 export const $blogPosts = createStore<Post[]>([]);
 
-export const fetchBlogPosts = createEvent();
+export const fetchBlogPosts = createEvent<PageStared>();
 
-export const fetchBlogPostsFx = createEffect<unknown, PaginatedPostList>(() => {
-  return requestFx({
-    path: "/blog/",
-  });
-});
+export const fetchBlogPostsFx = createEffect<PageStared, PaginatedPostList>(
+  (params) => {
+    return requestFx({
+      path: "/blog/",
+      params,
+    });
+  }
+);
 
 sample({
   clock: pageStarted,

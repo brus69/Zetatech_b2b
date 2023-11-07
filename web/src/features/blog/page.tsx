@@ -1,13 +1,24 @@
 import { fork, allSettled, serialize } from "effector";
 import { useUnit } from "effector-react";
 import Link from "next/link";
+import { GetServerSideProps } from "next";
 import { $blogPosts, $blogTags, pageStarted } from "./model";
 import { BlogCard } from "@/shared/components/blog-card";
 
-export const getServerSidePropsBlogPosts = async () => {
+export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
+  query,
+}) => {
   const scope = fork();
 
-  await allSettled(pageStarted, { scope });
+  const { category, mark } = query;
+
+  await allSettled(pageStarted, {
+    scope,
+    params: {
+      category,
+      mark,
+    },
+  });
 
   return {
     props: {

@@ -9,7 +9,7 @@ import {
   Team,
 } from "@/api/codegen";
 
-import { fetchCategoriesFx } from "@/api/categories";
+import { fetchCategories } from "@/api/categories";
 
 export const homePageStared = createEvent();
 
@@ -69,6 +69,6 @@ sample({
     fetchPricesFx,
     fetchPostsFx,
     fetchReviewsFx,
-    fetchCategoriesFx,
+    fetchCategories,
   ],
 });
