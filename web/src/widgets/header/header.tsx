@@ -19,7 +19,7 @@ const ITEMS = [
   { url: "/", name: "Тарифы" },
   { url: "/", name: "Отзывы" },
   { url: "/", name: "Вопросы и ответы" },
-  { url: "/", name: "Блог" },
+  { url: "/blog", name: "Блог" },
 ];
 
 export const Header = () => {
@@ -121,7 +121,7 @@ export const Header = () => {
             input: "rounded-none border-black",
           }}
           placeholder="Поиск"
-          rightSection={<IconSearch />}
+          rightSection={<IconSearch className="!text-black" />}
         />
         <Button
           component={Link}

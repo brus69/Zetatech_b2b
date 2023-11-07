@@ -2,6 +2,7 @@ import { fork, allSettled, serialize } from "effector";
 import { useUnit } from "effector-react";
 import { GetServerSideProps } from "next";
 import { $post, pageStarted } from "./model";
+import { Newsletter } from "@/widgets/newsletter";
 
 export const getServerSidePropsPost: GetServerSideProps = async ({ query }) => {
   const scope = fork();
@@ -33,7 +34,7 @@ export const PostPage = () => {
 
         <p>{post.description}</p>
 
-        <pre>{JSON.stringify(post, null, 4)}</pre>
+        <Newsletter />
       </div>
     </>
   );

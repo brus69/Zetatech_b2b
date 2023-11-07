@@ -1,16 +1,41 @@
-import React from "react";
-import { Title, Input, Button } from "@mantine/core";
+import React, { useState } from "react";
+import { Title, Input, Button, InputWrapper, Alert } from "@mantine/core";
+import { useForm } from "react-hook-form";
+import { ShortApplication } from "@/api/codegen";
+import { requestFx } from "@/shared/api";
+import { PhoneInput } from "@/shared/ui/phone-input";
 
 export const Newsletter = () => {
-  const handleSubmit = (event: React.MouseEvent) => {
-    console.log("сабмит формы");
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<ShortApplication>({
+    values: {
+      phone: "",
+      name: "",
+    },
+  });
+
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const onSubmit = (data: ShortApplication) => {
+    requestFx({
+      path: "/short_applications",
+      method: "post",
+      body: data,
+    })
+      .then(() => setIsSubmit(true))
+      .catch((error) => {
+        setError("name", { message: error?.detail || "" });
+      });
   };
 
   return (
     <section className="flex flex-col items-center justify-center w-full bg-light py-28">
-      <div className="container max-w-[810px] px-3">
-        <div className="flex flex-col lg:flex-row">
+      <div className="container max-w-[810px]">
+        <div className="flex flex-col md:flex-row">
           <div className="">
             <Title
               order={2}
@@ -27,37 +52,63 @@ export const Newsletter = () => {
           <img
             src="/assets/newsletter/plane.png"
             alt="Plane icon"
-            className="mx-3 md:m-0"
+            className="mx-3 md:m-0 max-w-[300px]"
           />
         </div>
-        <div className="flex flex-col gap-5 mt-12  lg:mt-7 lg:flex-row">
-          <Input
-            placeholder="Ваше имя"
-            classNames={{
-              input: "placeholder:text-gray text-sm shadow-md w-72 h-12",
-            }}
-          />
-          <Input
-            placeholder="Номер телефона"
-            classNames={{
-              input: "placeholder:text-gray text-sm shadow-md w-72 h-12",
-            }}
-          />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-5 mt-12 md:mt-7 md:flex-row"
+        >
+          <InputWrapper error={errors.name?.message}>
+            <Input
+              {...register("name", {
+                required: {
+                  value: true,
+                  message: "Данное поле обязательно",
+                },
+              })}
+              placeholder="Ваше имя"
+              error={errors.name?.message}
+              classNames={{
+                input: "placeholder:text-gray text-sm shadow-md md:w-72 h-12",
+              }}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.phone?.message}>
+            <PhoneInput
+              {...register("phone", {
+                required: {
+                  value: true,
+                  message: "Данное поле обязательно",
+                },
+              })}
+              placeholder="Номер телефона"
+              classNames={{
+                input: "placeholder:text-gray text-sm shadow-md md:w-72 h-12",
+              }}
+              error={errors.phone?.message}
+            />
+          </InputWrapper>
+
           <Button
             type="submit"
             classNames={{
               root: "bg-ruby py-3 px-6 box-border disabled:bg-transparent h-12",
               inner: "font-normal text-m text-white",
             }}
-            onClick={handleSubmit}
           >
             Отправить
           </Button>
-        </div>
+        </form>
         <p className="self-start m-0 mt-5 text-left text-gray">
           Нажимая на кнопку, я соглашаюсь на Обработку персональных данных
         </p>
       </div>
+      {isSubmit && (
+        <Alert className="mt-4 w-fit" p={16}>
+          Ваша обращение успешно отправлено. Мы скоро с вами свяжемся.
+        </Alert>
+      )}
     </section>
   );
 };

@@ -108,6 +108,23 @@ export interface Mark {
   name: string;
 }
 
+export interface Newsletter {
+  /**
+   * @format email
+   * @maxLength 254
+   */
+  email: string;
+}
+
+export interface NewsletterRequest {
+  /**
+   * @format email
+   * @minLength 1
+   * @maxLength 254
+   */
+  email: string;
+}
+
 export interface Otp {
   /** @maxLength 6 */
   code: string;
@@ -321,6 +338,22 @@ export interface SetUsernameRequest {
    * @pattern ^[\w.@+-]+$
    */
   new_username: string;
+}
+
+export interface ShortApplication {
+  name: string;
+  /** @maxLength 26 */
+  phone: string;
+}
+
+export interface ShortApplicationRequest {
+  /** @minLength 1 */
+  name: string;
+  /**
+   * @minLength 1
+   * @maxLength 26
+   */
+  phone: string;
 }
 
 export interface TagPost {
