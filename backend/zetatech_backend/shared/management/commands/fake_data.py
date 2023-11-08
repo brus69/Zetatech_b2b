@@ -21,6 +21,9 @@ from apps.blog.factory import TagPostFactory, PostFactory
 from apps.price.models import Grid, Price
 from apps.price.factory import GridFactory, PriceFactory
 
+from apps.favourites.models import Favorite
+from apps.favourites.factory import FavoriteFactory
+
 
 
 class Command(BaseCommand):
@@ -53,15 +56,16 @@ class Command(BaseCommand):
             mark.save()
             
             category = CategoryFactory()
-            
             category.save()
 
             product = ProductFactory(
                 mark=[mark],
                 category=[category],
             )
-            
             product.save()
+
+            favorite = FavoriteFactory()
+            favorite.save()
 
         for _ in range(3):
             tag_post = TagPostFactory()
@@ -80,7 +84,7 @@ class Command(BaseCommand):
             price = PriceFactory(
                 grid=[grid]
             )
-            price.save()
+            price.save()            
 
         self.stdout.write("Creating new data... - success")
 
@@ -95,6 +99,7 @@ class Command(BaseCommand):
         Post.objects.all().delete()
         Grid.objects.all().delete()
         Price.objects.all().delete()
+        Favorite.objects.all().delete()
 
         for user in User.objects.all():
             if user.username != 'admin':
