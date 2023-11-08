@@ -3,6 +3,7 @@ import { Button, Input, Menu } from "@mantine/core";
 import Link from "next/link";
 import {
   IconBaselineDensityMedium,
+  IconChevronLeft,
   IconChevronRight,
   IconHeart,
   IconPointFilled,
@@ -13,6 +14,7 @@ import {
 } from "@tabler/icons-react";
 import { useUnit } from "effector-react";
 import { $categories } from "@/api/categories";
+import { cn } from "@/shared/lib";
 
 const ITEMS = [
   { url: "/", name: "О нас" },
@@ -58,16 +60,17 @@ export const Header = () => {
         </ul>
       </div>
 
-      <div className="container flex">
+      <div className="container flex flex-col md:flex-row">
         <Menu
           offset={0}
           shadow="md"
           position="bottom-start"
           onClose={() => setOpen(false)}
+          keepMounted
         >
           <Menu.Target>
             <Button
-              className="rounded-none min-w-[400px] max-w-[400px] px-4"
+              className="rounded-none  lg:min-w-[400px] md:max-w-[400px] px-4"
               color="black"
               classNames={{
                 label: "flex items-center gap-2",
@@ -80,7 +83,12 @@ export const Header = () => {
           </Menu.Target>
           <Menu.Dropdown className="p-0 rounded-none shadow-md">
             <div className="flex">
-              <div className="flex flex-col min-w-[400px] max-w-[400px]">
+              <div
+                className={cn(
+                  "flex flex-col min-w-[400px] max-w-[400px]",
+                  parentCategory && "max-md:hidden"
+                )}
+              >
                 {categories.map((category) => (
                   <Menu.Item
                     key={category.slug}
@@ -99,7 +107,12 @@ export const Header = () => {
                 </Menu.Item>
               </div>
 
-              <div className="flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0">
+              <div
+                className={cn(
+                  "md:flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0 bg-silver",
+                  !parentCategory && "hidden"
+                )}
+              >
                 {parentCategory &&
                   parentCategory.subcategories.map((category) => (
                     <Menu.Item
@@ -115,43 +128,45 @@ export const Header = () => {
           </Menu.Dropdown>
         </Menu>
 
-        <Input
-          className="grow"
-          classNames={{
-            input: "rounded-none border-black",
-          }}
-          placeholder="Поиск"
-          rightSection={<IconSearch className="!text-black" />}
-        />
-        <Button
-          component={Link}
-          // TODO or go to lk/favorites
-          href="/login"
-          className="rounded-none border-x-0"
-          color="black"
-          variant="outline"
-        >
-          <IconHeart />
-        </Button>
-        <Button
-          component={Link}
-          // TODO or go to lk
-          href="/login"
-          className="border-r-0 rounded-none"
-          color="black"
-          variant="outline"
-        >
-          <IconUserCircle />
-        </Button>
-        <Button
-          component={Link}
-          href="/cart"
-          className="rounded-none"
-          color="black"
-          variant="outline"
-        >
-          <IconShoppingCart />
-        </Button>
+        <div className="flex grow">
+          <Input
+            className="grow"
+            classNames={{
+              input: "rounded-none border-black",
+            }}
+            placeholder="Поиск"
+            rightSection={<IconSearch className="!text-black" />}
+          />
+          <Button
+            component={Link}
+            // TODO or go to lk/favorites
+            href="/login"
+            className="rounded-none border-x-0"
+            color="black"
+            variant="outline"
+          >
+            <IconHeart />
+          </Button>
+          <Button
+            component={Link}
+            // TODO or go to lk
+            href="/login"
+            className="border-r-0 rounded-none"
+            color="black"
+            variant="outline"
+          >
+            <IconUserCircle />
+          </Button>
+          <Button
+            component={Link}
+            href="/cart"
+            className="rounded-none"
+            color="black"
+            variant="outline"
+          >
+            <IconShoppingCart />
+          </Button>
+        </div>
       </div>
     </header>
   );

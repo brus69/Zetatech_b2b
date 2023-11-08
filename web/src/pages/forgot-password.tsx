@@ -1,59 +1,64 @@
-import { Button, Card, Input } from "@mantine/core";
+import { Button, Card } from "@mantine/core";
 import { useUnit } from "effector-react";
 import React from "react";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { AuthLayout } from "@/layouts/auth-layuout";
-import { $isSent, isSentChanged } from "@/features/forgot-password/model";
+import { $step, stepChanged } from "@/features/forgot-password/model";
+import { PinForm } from "@/features/forgot-password/ui/pin-form";
+import { EmailForm } from "@/features/forgot-password/ui/email-form";
+import { PasswordForm } from "@/features/forgot-password/ui/password-form";
 
 const Page = () => {
-  const { isSent, onIsSentChanged } = useUnit({
-    isSent: $isSent,
-    onIsSentChanged: isSentChanged,
+  const { step, onStepChanged } = useUnit({
+    step: $step,
+    onStepChanged: stepChanged,
   });
 
-  return (
-    <Card m={"auto"} maw={440} className="w-full gap-5" component={"form"}>
-      <Link
-        className="flex items-center gap-1 mb-5 underline text-grey"
-        href="/"
-      >
-        <IconArrowLeft />
-        Назад
-      </Link>
-      {isSent ? (
-        <>
-          <h2>Восстановление пароля</h2>
-          <p className="text-sm">
-            Введите код, который мы выслали на вашу эл. почту
-          </p>
+  const handleBack = (event: React.MouseEvent) => {
+    if (step !== "email") {
+      event.preventDefault();
+      onStepChanged("email");
+    }
+  };
 
-          <div className="flex items-center gap-2 text-sm text-grey">
-            <span>Не получили код?</span>
-            <span role="button" className="underline hover:cursor-pointer">
-              Повторить отправку
-            </span>
-          </div>
+  return (
+    <Card m={"auto"} maw={440} className="w-full gap-5">
+      {step === "success" ? (
+        <>
+          <h1 className="m-0 text-3xl font-medium text-center">
+            Восстановление пароля
+          </h1>
+          <Button className="pointer-events-none">
+            Пароль успешно изменен
+          </Button>
+          <Button
+            component={Link}
+            href="/login"
+            variant="outline"
+            color="black"
+            className="mb-6"
+          >
+            На страницу входа
+          </Button>
         </>
       ) : (
         <>
-          <h2>Забыли пароль?</h2>
-
-          <p className="text-sm text-grey">
-            Укажите адрес эл. почты, который вы указали при регистрации и мы
-            пришлем код для восстановления пароля
-          </p>
-
-          <Input placeholder="Эл. почта" />
-
-          <Button
-            className="self-start mb-5"
-            onClick={() => onIsSentChanged(true)}
+          <Link
+            className="flex items-center gap-1 mb-5 hover:underline text-grey"
+            href="/"
+            onClick={handleBack}
           >
-            Выслать код
-          </Button>
+            <IconArrowLeft />
+            Назад
+          </Link>
+
+          {step === "email" && <EmailForm />}
+          {step === "pin" && <PinForm />}
+          {step === "password" && <PasswordForm />}
         </>
       )}
+
       <div className="flex justify-center gap-4 text-grey">
         <Link href="/">Обратная связь</Link>
         <Link href="/">Соглашение</Link>
