@@ -3,7 +3,6 @@ import { Button, Input, Menu } from "@mantine/core";
 import Link from "next/link";
 import {
   IconBaselineDensityMedium,
-  IconChevronLeft,
   IconChevronRight,
   IconHeart,
   IconPointFilled,
