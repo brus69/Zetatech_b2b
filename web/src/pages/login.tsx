@@ -1,49 +1,81 @@
-import { Button, Card, Input, PasswordInput, Tabs } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Input,
+  InputWrapper,
+  PasswordInput,
+} from "@mantine/core";
 import { useUnit } from "effector-react";
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { register } from "@/features/register/model";
+import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/layouts/auth-layuout";
+import { login } from "@/features/login/model";
+import { TokenObtainPairRequest } from "@/api/codegen";
+import { AuthTabs } from "@/widgets/auth-tabs";
 
 const Page = () => {
-  const router = useRouter();
-  const { onRegister } = useUnit({
-    onRegister: register,
+  const { onLogin } = useUnit({
+    onLogin: login,
   });
 
-  const [value, setValue] = useState("Clear me");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TokenObtainPairRequest>({
+    values: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: TokenObtainPairRequest) => {
+    onLogin(data);
+  };
 
   return (
-    <Card m={"auto"} maw={360} className="w-full gap-5" component={"form"}>
+    <Card m={"auto"} maw={360} className="w-full gap-5">
       <Link
-        className="flex items-center gap-1 mb-5 underline text-grey"
+        className="flex items-center gap-1 mb-5 hover:underline text-grey"
         href="/"
       >
         <IconArrowLeft />
         Назад
       </Link>
-      <Tabs value={"login"} onChange={(value) => router.push(`/${value}`)}>
-        <Tabs.List grow>
-          <Tabs.Tab className="text-xl" value="login">
-            Вход
-          </Tabs.Tab>
-          <Tabs.Tab className="text-xl" value="register">
-            Регистрация
-          </Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-      <Input placeholder="Эл. почта" />
 
-      <PasswordInput
-        type="password"
-        placeholder="Пароль"
-        value={value}
-        onChange={(event) => setValue(event.currentTarget.value)}
-      />
+      <AuthTabs />
 
-      <Button onClick={() => onRegister()}>Войти</Button>
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+        <InputWrapper error={errors.username?.message}>
+          <Input
+            error={errors.username?.message}
+            {...register("username", {
+              required: {
+                value: true,
+                message: "Данное поле обязательно",
+              },
+            })}
+            type="email"
+            placeholder="Эл. почта"
+          />
+        </InputWrapper>
+
+        <PasswordInput
+          {...register("password", {
+            required: {
+              value: true,
+              message: "Данное поле обязательно",
+            },
+          })}
+          error={errors.password?.message}
+          type="password"
+          placeholder="Пароль"
+        />
+
+        <Button type="submit">Войти</Button>
+      </form>
 
       <Link className="text-center underline text-grey" href="/forgot-password">
         Забыли пароль?
