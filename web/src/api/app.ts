@@ -1,7 +1,6 @@
-import { attach, createEvent, createStore, sample } from "effector";
+import { createEvent, createStore, sample } from "effector";
 import { createGate } from "effector-react";
 import { NextRouter } from "next/router";
-import { debug } from "patronum";
 
 export const appStaredGate = createGate();
 

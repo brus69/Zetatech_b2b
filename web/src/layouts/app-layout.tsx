@@ -1,15 +1,17 @@
 import React from "react";
-import { Header } from "@/widgets";
+import { Header, Footer } from "@/widgets";
+import { cn } from "@/shared/lib";
 
 type Props = {
   children: React.ReactNode;
-};
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 
-export const AppLayout = ({ children }: Props) => {
+export const Layout = (props: Props) => {
   return (
     <>
       <Header />
-      <main className="flex flex-col grow">{children}</main>
+      <main {...props} className={cn("flex flex-col grow", props.className)} />
+      <Footer />
     </>
   );
 };

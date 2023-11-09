@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.favourites',
     'apps.application',
+    'apps.reviews',
+    'apps.newsletters',
 ]
 
 MIDDLEWARE = [
@@ -192,7 +194,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-
     'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }

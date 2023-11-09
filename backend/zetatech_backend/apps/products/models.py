@@ -21,6 +21,7 @@ class Mark(models.Model):
 class Category(models.Model):
     name = models.CharField('Название категории')
     slug = models.SlugField('URL')
+    parent_category = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
