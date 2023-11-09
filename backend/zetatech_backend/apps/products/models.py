@@ -6,7 +6,7 @@ from shared.models import TimeStampedModel
 User = get_user_model()
 
 
-class Mark (models.Model):
+class Mark(models.Model):
     name = models.CharField('Название метки')
     slug = models.SlugField('URL')
 
@@ -18,7 +18,7 @@ class Mark (models.Model):
         verbose_name_plural = 'Метки'
 
 
-class Category (models.Model):
+class Category(models.Model):
     name = models.CharField('Название категории')
     slug = models.SlugField('URL')
     parent_category = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
@@ -31,7 +31,7 @@ class Category (models.Model):
         verbose_name_plural = 'Категории'
 
 
-class Product (TimeStampedModel):
+class Product(TimeStampedModel):
     title = models.CharField('Заголовок веб-страницы', max_length=100)
     description = models.CharField('Описание', max_length=200)
     h1 = models.CharField('Заголовок на странице', max_length=100)

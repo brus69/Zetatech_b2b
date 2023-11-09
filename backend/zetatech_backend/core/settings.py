@@ -10,7 +10,6 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", '127.0.0.1').split()
 
-
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", '').split()
 
 DOMAIN = os.environ.get("DOMAIN")
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'apps.products',
     'apps.team',
     'apps.user',
+    'apps.favourites',
     'apps.application',
     'apps.reviews',
     'apps.newsletters',

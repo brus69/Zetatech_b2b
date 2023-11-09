@@ -23,6 +23,9 @@ from apps.blog.factory import TagPostFactory, PostFactory
 from apps.price.models import Grid, Price
 from apps.price.factory import GridFactory, PriceFactory
 
+from apps.favourites.models import Favorite
+from apps.favourites.factory import FavoriteFactory
+
 
 
 class Command(BaseCommand):
@@ -66,13 +69,18 @@ class Command(BaseCommand):
         for _ in range(25):
             mark = MarkFactory()
             mark.save()
+            
+            category = CategoryFactory()
+            category.save()
 
             product = ProductFactory(
                 mark=[mark],
                 category=[ random.choice(categories)],
             )
-            
             product.save()
+
+            favorite = FavoriteFactory()
+            favorite.save()
 
         for _ in range(3):
             tag_post = TagPostFactory()
@@ -97,6 +105,7 @@ class Command(BaseCommand):
             price = PriceFactory(
                 grid=grids
             )
+
             price.active = True
             price.save()
 
@@ -117,6 +126,7 @@ class Command(BaseCommand):
         Post.objects.all().delete()
         Grid.objects.all().delete()
         Price.objects.all().delete()
+        Favorite.objects.all().delete()
         Review.objects.all().delete()
 
         for user in User.objects.all():

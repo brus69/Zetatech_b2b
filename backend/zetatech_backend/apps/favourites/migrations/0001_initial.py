@@ -6,13 +6,16 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    initial = True
+
     dependencies = [
-        ("user", "0001_initial"),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Otp",
+            name="Favorite",
             fields=[
                 (
                     "id",
@@ -24,14 +27,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "token",
-                    models.CharField(
-                        db_index=True, max_length=40, unique=True, verbose_name="token"
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="products.product",
                     ),
                 ),
-                ("code", models.CharField(max_length=6)),
-                ("expired_at", models.DateTimeField()),
-                ("created_at", models.DateTimeField(auto_now_add=True)),
                 (
                     "user",
                     models.ForeignKey(
@@ -40,5 +41,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
+            options={
+                "verbose_name": "Избронное",
+                "verbose_name_plural": "Избранное",
+            },
         ),
     ]
