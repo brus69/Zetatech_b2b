@@ -13,3 +13,7 @@
     @apply flex items-center justify-center;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}

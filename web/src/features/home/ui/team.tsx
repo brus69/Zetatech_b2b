@@ -94,7 +94,13 @@ export const Team = () => {
   return (
     <section className="flex flex-col items-center justify-center">
       <div className="container">
-        <Title order={2} classNames={{ root: "m-0 p-0 text-center mb-20 text-3xl sm:text-[50px]" }}>
+        <Title
+          id="team"
+          order={2}
+          classNames={{
+            root: "m-0 p-0 text-center mb-20 text-3xl sm:text-[50px]",
+          }}
+        >
           Наша команда
         </Title>
         <div className="relative max-w-[1200px] m-auto">
@@ -125,7 +131,7 @@ export const Team = () => {
                     opacity: currentSlide === index ? 1 : 0,
                   }}
                 >
-                  <p className="text-ruby text-2xl font-bold m-0 mt-12">
+                  <p className="m-0 mt-12 text-2xl font-bold text-ruby">
                     {member.name}
                   </p>
                   <p className="my-4 text-lg text-black">{member.name}</p>

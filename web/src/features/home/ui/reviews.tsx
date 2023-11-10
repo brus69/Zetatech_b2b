@@ -69,6 +69,7 @@ export const Reviews = () => {
     <section className="flex flex-col justify-center pt-20 bg-silver pb-14">
       <div className="container">
         <Title
+          id="reviews"
           order={2}
           classNames={{
             root: "m-0 p-0 text-left mb-32 text-black text-3xl sm:text-[50px]",

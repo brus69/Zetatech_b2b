@@ -3,7 +3,7 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
-
+from django.db.models import Exists, OuterRef
 from apps.products.serializers import (ProductSerializer,
                                        CategorySerializer,
                                        CategoryIdSerializer,
@@ -14,6 +14,7 @@ from apps.products.models import (Product,
                                   Category, 
                                   Mark,
                                   )
+from apps.favourites.models import Favorite
 
 @extend_schema(responses={"200": ProductSerializer})
 class ProductViewSet(
@@ -21,7 +22,15 @@ class ProductViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = Product.objects.all()
+    
+    def get_queryset(self):
+        queryset = Product.objects.annotate(
+            is_favorite=Exists(Favorite.objects.filter(
+                product_id=OuterRef('id'),
+                user_id=self.request.user.pk,
+            ))).all()
+        return queryset
+  
     serializer_class = ProductSerializer
 
 class CategoryViewSet(viewsets.ViewSet):
