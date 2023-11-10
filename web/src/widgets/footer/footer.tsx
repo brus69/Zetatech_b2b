@@ -12,7 +12,7 @@ export const Footer = () => {
   const date = new Date();
 
   return (
-    <footer className=" bg-black text-white flex justify-center">
+    <footer className="flex justify-center text-white bg-black ">
       <div className="container flex flex-col gap-24">
         <div className="relative box-border p-3 h-36 flex flex-row max-w-[945px] mt-14">
           <img
@@ -24,10 +24,18 @@ export const Footer = () => {
             МЫ ВСЕГДА НА СВЯЗИ
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row justify-between">
-          <div className="flex flex-col gap-7 font-medium text-2xl">
-            <Link href="tel:88005005080" target="_blank" className="m-0 p-0">8 800 500 50 80</Link>
-            <Link href="mailto:info@zetatech.ru" target="_blank" className="m-0 p-0">info@zetatech.ru</Link>
+        <div className="flex flex-col justify-between sm:flex-row">
+          <div className="flex flex-col text-2xl font-medium gap-7">
+            <Link href="tel:88005005080" target="_blank" className="p-0 m-0">
+              8 800 500 50 80
+            </Link>
+            <Link
+              href="mailto:info@zetatech.ru"
+              target="_blank"
+              className="p-0 m-0"
+            >
+              info@zetatech.ru
+            </Link>
             <div className="flex flex-row gap-6">
               <Link href="/">
                 <img
@@ -45,8 +53,12 @@ export const Footer = () => {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col gap-7 mb-8 mt-8 sm:mt-0">
-            <img src="assets/footer/logo_light.svg" alt="Логотип" className="w-[178px] object-contain" />
+          <div className="flex flex-col mt-8 mb-8 gap-7 sm:mt-0">
+            <img
+              src="/logo.svg"
+              alt="Логотип"
+              className="w-[178px] object-contain text-white"
+            />
             <ul className="flex flex-col gap-1 p-0 m-0">
               {items.map(({ url, name }) => (
                 <li key={name}>
@@ -56,7 +68,7 @@ export const Footer = () => {
                 </li>
               ))}
             </ul>
-            <p className="text-base text-gray m-0 p-0">
+            <p className="p-0 m-0 text-base text-gray">
               {" "}
               &copy; {date.getFullYear()} Company, Inc
             </p>

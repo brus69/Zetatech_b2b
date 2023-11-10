@@ -17,9 +17,9 @@ import { cn } from "@/shared/lib";
 
 const ITEMS = [
   { url: "/", name: "О нас" },
-  { url: "/", name: "Тарифы" },
-  { url: "/", name: "Отзывы" },
-  { url: "/", name: "Вопросы и ответы" },
+  { url: "/#pricing", name: "Тарифы" },
+  { url: "/#reviews", name: "Отзывы" },
+  { url: "/#faq", name: "Вопросы и ответы" },
   { url: "/blog", name: "Блог" },
 ];
 

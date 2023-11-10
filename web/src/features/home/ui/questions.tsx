@@ -19,6 +19,7 @@ export const Questions = () => {
     <section className="w-full pt-24 pb-12">
       <div className="flex flex-col  md:max-w-[880px] p-0 m-auto">
         <Title
+          id="faq"
           order={2}
           classNames={{
             root: "m-0 p-0 text-black text-center text-3xl sm:text-[50px]",

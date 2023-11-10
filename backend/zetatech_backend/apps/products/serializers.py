@@ -7,6 +7,8 @@ from apps.products.models import (Product,
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    is_favorite = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = Product
         fields = ('id',
@@ -21,7 +23,8 @@ class ProductSerializer(serializers.ModelSerializer):
                   'annotation',
                   'content',
                   'mark',
-                  'category'
+                  'category',
+                  'is_favorite'
                   )
 
 

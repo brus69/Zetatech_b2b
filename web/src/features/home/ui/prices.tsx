@@ -31,7 +31,11 @@ export const Prices = () => {
 
   return (
     <section className="container flex flex-col items-center justify-center">
-      <Title order={2} classNames={{ root: "m-0 p-0 text-3xl sm:text-[50px]" }}>
+      <Title
+        id="pricing"
+        order={2}
+        classNames={{ root: "m-0 p-0 text-3xl sm:text-[50px]" }}
+      >
         Тарифы
       </Title>
       <ul className="grid grid-cols-1 gap-10 p-0 mt-20 lg:grid-cols-2 2xl:grid-cols-3">
