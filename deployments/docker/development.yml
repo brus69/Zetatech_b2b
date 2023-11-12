@@ -35,6 +35,14 @@ services:
     environment:
       - SERVICE_NAME=zetatech_api
 
+  zetatech_redis:
+    image: redis:latest
+    container_name: zetatech_redis
+    networks:
+      - zetatech
+    restart: always
+    expose:
+      - 6379
 
 volumes:
   zetatech_dev_postgres_data:

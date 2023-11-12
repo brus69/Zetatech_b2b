@@ -28,7 +28,7 @@ class PostExportResource(resources.ModelResource):
             'slug',
             'content',
             'tags',
-            'author',
+            'user',
             'published',
             'pub_date',
             'created_at',
@@ -48,9 +48,9 @@ class PostImportResource(resources.ModelResource):
         widget=widgets.ManyToManyWidget(TagPost, field='name', separator='|')
     )
 
-    author = fields.Field(
-        column_name='author',
-        attribute='author',
+    user = fields.Field(
+        column_name='user',
+        attribute='user',
         widget=widgets.ForeignKeyWidget(User, field='username'))
 
     def before_import_row(self, row, **kwargs):
@@ -75,26 +75,26 @@ class PostImportResource(resources.ModelResource):
             'description',
             'content',
             'tags',
-            'author'
+            'user'
         )
 
 
 class PostAdmin(ie.admin.ImportExportModelAdmin):
     list_display = (
         'id',
-        'author',
+        'user',
         'published',
         'pub_date',
         'short_title'
     )
 
     list_editable = ('published',)
-    list_filter = ('author', 'tags')
-    search_fields = ('title', 'author', 'tags')
+    list_filter = ('user', 'tags')
+    search_fields = ('title', 'user', 'tags')
     resource_classes = (PostImportResource,)
 
     def save_model(self, request, obj, form, change):
-        obj.author = request.user
+        obj.user = request.user
         obj.save()
         form.save_m2m()
 

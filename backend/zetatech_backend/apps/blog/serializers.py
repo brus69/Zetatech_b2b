@@ -28,8 +28,8 @@ class PostSerializer(serializers.ModelSerializer):
             'h1',
             'content',
             'image',
-            'author',
+            'user',
             'slug',
             'pub_date'
         )
-        read_only_fields = ('author', 'pub_date')
+        read_only_fields = ('user', 'pub_date')

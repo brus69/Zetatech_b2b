@@ -13,6 +13,8 @@ from .constants import (
 
 
 class User(AbstractUser):
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     class Role(models.TextChoices):
         GUEST = "guest "
         AUTHENTICATED_USER = "authenticated_user"

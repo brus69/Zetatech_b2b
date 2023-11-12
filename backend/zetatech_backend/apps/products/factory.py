@@ -1,20 +1,13 @@
 import factory
 from factory.django import DjangoModelFactory
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
 
+from apps.user.factory import UserFactory
 from apps.products.models import (Product, 
                                   Category, 
                                   Mark,
                                   )
 
-class UserFactory(DjangoModelFactory):
-    username = factory.Faker('user_name')
-    email = factory.Faker('email')
-
-    class Meta:
-        model = User
 
 class MarkFactory(DjangoModelFactory):
     name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
