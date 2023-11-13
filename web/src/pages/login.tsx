@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   Input,
@@ -11,13 +12,15 @@ import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/layouts/auth-layuout";
-import { login } from "@/features/login/model";
+import { $error, login, loginFx } from "@/features/login/model";
 import { TokenObtainPairRequest } from "@/api/codegen";
 import { AuthTabs } from "@/widgets/auth-tabs";
 
 const Page = () => {
-  const { onLogin } = useUnit({
+  const { error, loading, onLogin } = useUnit({
+    error: $error,
     onLogin: login,
+    loading: loginFx.pending,
   });
 
   const {
@@ -26,7 +29,7 @@ const Page = () => {
     formState: { errors },
   } = useForm<TokenObtainPairRequest>({
     values: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -48,10 +51,10 @@ const Page = () => {
       <AuthTabs />
 
       <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-        <InputWrapper error={errors.username?.message}>
+        <InputWrapper error={errors.email?.message}>
           <Input
-            error={errors.username?.message}
-            {...register("username", {
+            error={errors.email?.message}
+            {...register("email", {
               required: {
                 value: true,
                 message: "Данное поле обязательно",
@@ -74,7 +77,10 @@ const Page = () => {
           placeholder="Пароль"
         />
 
-        <Button type="submit">Войти</Button>
+        {error && <Alert className="px-2 py-1">{error}</Alert>}
+        <Button loading={loading} type="submit">
+          Войти
+        </Button>
       </form>
 
       <Link className="text-center underline text-grey" href="/forgot-password">

@@ -1,19 +1,19 @@
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
 
 import factory
-from apps.user.model import User
 
+User = get_user_model()
 
 class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: "username%s" % n)
     first_name = factory.Sequence(lambda n: "First Name %s" % n)
     last_name = factory.Sequence(lambda n: "Last Name %s" % n)
-    email = factory.Sequence(lambda n: "email%s@example.com" % n)
     role = factory.Sequence(lambda n: "editor %s" % n)
-    is_staff = False
-    is_active = False
+    is_staff = True
+    is_active = True
     is_superuser = False
-    password = "123"
+    password = "password"
 
     @classmethod
     def _prepare(cls, create, **kwargs):

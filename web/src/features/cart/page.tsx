@@ -1,5 +1,5 @@
 import { Button, Checkbox, Input, Radio, Title } from "@mantine/core";
-import { useUnit } from "effector-react";
+import { useGate, useUnit } from "effector-react";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import {
   $cart,
   $payment,
   $total,
+  cartPageCate,
   clearCart,
   paymentChanged,
   removeFromCart,
@@ -15,6 +16,8 @@ import { $user } from "@/api/user";
 import { cn } from "@/shared/lib";
 
 export const CartPage = () => {
+  useGate(cartPageCate);
+
   const {
     cart,
     total,
@@ -63,7 +66,7 @@ export const CartPage = () => {
     <div className="container mb-16">
       <Title className="mt-16 mb-8 text-5xl">Корзина</Title>
 
-      {cart.products.length === 0 && (
+      {cart.length === 0 && (
         <p>
           Ваша корзина пуста, перейдите в{" "}
           <Link className="underline" href="/catalog">
@@ -76,7 +79,7 @@ export const CartPage = () => {
         onSubmit={handleSubmit(onSubmit)}
         className={cn(
           "flex flex-col gap-8 lg:gap-16 md:flex-row",
-          cart.products.length === 0 && "hidden"
+          cart.length === 0 && "hidden"
         )}
       >
         <div className="flex flex-col grow">
@@ -91,7 +94,7 @@ export const CartPage = () => {
           </Button>
 
           <ul className="p-0 m-0 divide-y divide-gray divide-solid">
-            {cart.products.map((product) => (
+            {cart.map((product) => (
               <li
                 key={product.id}
                 className="flex items-center gap-2 my-2 border-x-0"
@@ -104,7 +107,7 @@ export const CartPage = () => {
                 >
                   <IconX />
                 </Button>
-                <p className="mr-auto">{product.name}</p>
+                <p className="mr-auto">{product.title}</p>
                 <span className="text-lg font-medium">
                   {product.price} руб.
                 </span>

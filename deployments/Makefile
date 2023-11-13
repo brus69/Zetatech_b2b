@@ -19,7 +19,6 @@ stop:
 
 clean:
 	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) down || true
-	docker system prune --force
 	docker volume rm zetatech_zetatech_dev_postgres_data || true
 	docker volume rm zetatech_zetatech_dev_static_files || true
 

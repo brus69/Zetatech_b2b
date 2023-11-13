@@ -54,6 +54,12 @@ export interface ApplicationRequest {
   attachment?: File | null;
 }
 
+export interface Cart {
+  product_id: number;
+  user_id: number;
+  product: Product;
+}
+
 export interface Category {
   /**
    * URL
@@ -77,10 +83,23 @@ export interface CategoryId {
   name: string;
 }
 
+export interface CreateCart {
+  product_id: number;
+}
+
 export interface FAQ {
   id: number;
   answer: string;
   question: string;
+}
+
+export interface Favorite {
+  user_id: number;
+  product: Product;
+}
+
+export interface FavoriteRequest {
+  product: ProductRequest;
 }
 
 export interface Grid {
@@ -132,6 +151,22 @@ export interface Otp {
   token: string;
 }
 
+export interface PaginatedFavoriteList {
+  /** @example 123 */
+  count?: number;
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=4"
+   */
+  next?: string | null;
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=2"
+   */
+  previous?: string | null;
+  results?: Favorite[];
+}
+
 export interface PaginatedPostList {
   /** @example 123 */
   count?: number;
@@ -161,16 +196,6 @@ export interface PasswordResetConfirmRequest {
   token: string;
   /** @minLength 1 */
   new_password: string;
-}
-
-export interface PatchedUserRequest {
-  /**
-   * Адрес электронной почты
-   * @format email
-   * @minLength 1
-   * @maxLength 254
-   */
-  email?: string;
 }
 
 export interface Post {
@@ -233,49 +258,50 @@ export interface Product {
    */
   title: string;
   /**
-   * Описание
-   * @maxLength 200
-   */
-  description: string;
-  /**
-   * Заголовок на странице
-   * @maxLength 100
-   */
-  h1: string;
-  /**
-   * Изображение
-   * @format uri
-   */
-  img_product?: string | null;
-  /**
    * URL
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug: string;
   /**
-   * БД Парсинга
-   * @format uri
+   * Цена
+   * @min 0
+   * @max 32767
    */
-  datafield: string;
+  price: number;
+}
+
+export interface ProductRequest {
+  /**
+   * Заголовок веб-страницы
+   * @minLength 1
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * Заголовок на странице
+   * @minLength 1
+   * @maxLength 100
+   */
+  h1: string;
+  /**
+   * Изображение
+   * @format binary
+   */
+  img_product?: File | null;
+  /**
+   * URL
+   * @minLength 1
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
   /**
    * Цена
    * @min 0
    * @max 32767
    */
   price: number;
-  /**
-   * Кол-во загрузок
-   * @min 0
-   * @max 32767
-   */
-  downloaded: number;
-  /** Краткое описание */
-  annotation: string;
-  /** Подробное описание */
-  content: string;
-  mark: number[];
-  category: number[];
 }
 
 export interface Review {
@@ -319,25 +345,23 @@ export interface SetPasswordRequest {
 export interface SetUsername {
   current_password: string;
   /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
+   * Адрес электронной почты
+   * @format email
+   * @maxLength 254
    */
-  new_username: string;
+  new_email: string;
 }
 
 export interface SetUsernameRequest {
   /** @minLength 1 */
   current_password: string;
   /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
+   * Адрес электронной почты
+   * @format email
    * @minLength 1
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
+   * @maxLength 254
    */
-  new_username: string;
+  new_email: string;
 }
 
 export interface ShortApplication {
@@ -389,7 +413,7 @@ export interface TokenObtainPair {
 
 export interface TokenObtainPairRequest {
   /** @minLength 1 */
-  username: string;
+  email: string;
   /** @minLength 1 */
   password: string;
 }
@@ -409,18 +433,12 @@ export interface TokenVerifyRequest {
 }
 
 export interface User {
+  id: number;
   /**
    * Адрес электронной почты
    * @format email
-   * @maxLength 254
    */
   email: string;
-  id: number;
-  /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   */
-  username: string;
 }
 
 export interface UserCreate {
@@ -430,13 +448,6 @@ export interface UserCreate {
    * @maxLength 254
    */
   email: string;
-  /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
-   */
-  username: string;
   id: number;
 }
 
@@ -448,45 +459,25 @@ export interface UserCreateRequest {
    * @maxLength 254
    */
   email: string;
-  /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   * @minLength 1
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
-   */
-  username: string;
   /** @minLength 1 */
   password: string;
 }
 
-export interface UserRequest {
+export interface UsernameResetConfirm {
+  /**
+   * Адрес электронной почты
+   * @format email
+   * @maxLength 254
+   */
+  new_email: string;
+}
+
+export interface UsernameResetConfirmRequest {
   /**
    * Адрес электронной почты
    * @format email
    * @minLength 1
    * @maxLength 254
    */
-  email: string;
-}
-
-export interface UsernameResetConfirm {
-  /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
-   */
-  new_username: string;
-}
-
-export interface UsernameResetConfirmRequest {
-  /**
-   * Имя пользователя
-   * Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.
-   * @minLength 1
-   * @maxLength 150
-   * @pattern ^[\w.@+-]+$
-   */
-  new_username: string;
+  new_email: string;
 }

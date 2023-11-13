@@ -3,19 +3,21 @@ import random
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.contrib.auth import get_user_model
 
 from apps.faq.factory import FAQFactory
 from apps.faq.models import FAQ
 from apps.team.models import Team
 from apps.team.factory import TeamFactory
 from apps.reviews.models import Review
-from apps.products.models import (User, Category, Mark, Product)
+from apps.products.models import (Category, Mark, Product)
 from apps.products.factory import ( 
                                    CategoryFactory, 
                                    MarkFactory, 
                                    ProductFactory,
                                    )
 from apps.reviews.factory import ReviewFactory
+from apps.user.factory import UserFactory
 
 from apps.blog.models import TagPost, Post
 from apps.blog.factory import TagPostFactory, PostFactory
@@ -27,6 +29,7 @@ from apps.favourites.models import Favorite
 from apps.favourites.factory import FavoriteFactory
 
 
+User = get_user_model()
 
 class Command(BaseCommand):
     help = "Generates test data"
@@ -37,6 +40,17 @@ class Command(BaseCommand):
         self.clear_old_data()
 
         self.stdout.write("Creating new data...")
+
+        users = []
+        categories = []
+
+        for i in range(10):
+            user: User = UserFactory()
+            user.email =  "person{}@example.com".format(i)
+            user.set_password("password")
+            user.save()
+            users.append(user)
+
 
         for _ in range(10):
             faq = FAQFactory()
@@ -50,8 +64,6 @@ class Command(BaseCommand):
                 f"team.png",
             )
             team.save()
-
-        categories = []
 
         for _ in range(15):
             parent_category = CategoryFactory()
@@ -75,12 +87,11 @@ class Command(BaseCommand):
 
             product = ProductFactory(
                 mark=[mark],
-                category=[ random.choice(categories)],
+                category=[random.choice(categories)],
+                user=random.choice(users)
             )
             product.save()
 
-            favorite = FavoriteFactory()
-            favorite.save()
 
         for _ in range(3):
             tag_post = TagPostFactory()
@@ -88,9 +99,10 @@ class Command(BaseCommand):
 
             for _ in range(10):
                 post = PostFactory(
-                    tags=[tag_post]
-                )
+                    tags=[tag_post],
+                    user=random.choice(users))
                 post.published = True
+
                 post.save()
 
         for _ in range(3):

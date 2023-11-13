@@ -1,18 +1,8 @@
 import factory
 from factory.django import DjangoModelFactory
-from django.contrib.auth import get_user_model
 from apps.blog.models import Post, TagPost
+from apps.user.factory import UserFactory
 
-
-User = get_user_model()
-
-
-class UserFactory(DjangoModelFactory):
-    username = factory.Faker('user_name')
-    email = factory.Faker('email')
-
-    class Meta:
-        model = User
 
 
 class TagPostFactory(DjangoModelFactory):
@@ -28,7 +18,7 @@ class PostFactory(DjangoModelFactory):
     description = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
     h1 = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
     content = factory.Faker('text', max_nb_chars=1000)
-    author = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(UserFactory)
 
     class Meta:
         model = Post

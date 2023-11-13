@@ -30,9 +30,8 @@ INSTALLED_APPS = [
     'import_export',
     'django_filters',
 
-    # shared
-    "shared",
-
+    'shared',
+    
     # internal
     'apps.blog',
     'apps.faq',
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'apps.application',
     'apps.reviews',
     'apps.newsletters',
+    'apps.cart',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'shared.middleware.session.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -205,4 +206,11 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
     "COMPONENT_SPLIT_REQUEST": True,
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://zetatech_redis:6379/1",
+    }
 }

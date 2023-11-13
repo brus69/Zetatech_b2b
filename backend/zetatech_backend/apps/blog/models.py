@@ -51,7 +51,7 @@ class Post(TimeStampedModel):
         max_length=400,
         verbose_name='SEO описание публикации'
     )
-    author = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
         editable=False

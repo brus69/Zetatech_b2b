@@ -10,6 +10,7 @@ import {
 import { TokenRefresh } from "@/api/codegen";
 
 export const api = ky.create({
+  credentials: "include",
   retry: {
     limit: 2,
     statusCodes: [401],
