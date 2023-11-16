@@ -11,19 +11,19 @@ export const $categories = createStore<TreeCategory[]>([]);
 export const fetchCategories = createEvent();
 
 export const fetchCategoriesFx = createEffect(() => {
-  return requestFx({ path: "/categories/" });
+  return requestFx({ path: "/categories/", method: "get" });
 });
-
-sample({
-  source: { categories: $categories, loading: fetchCategoriesFx.pending },
-  clock: fetchCategories,
-  filter: ({ categories, loading }) => categories.length === 0 && !loading,
-  target: fetchCategoriesFx,
-});
-
-sample({ clock: fetchCategoriesFx.doneData, target: $categories });
 
 sample({
   clock: appStaredGate.open,
   target: fetchCategories,
 });
+
+sample({
+  clock: fetchCategories,
+  source: { categories: $categories, loading: fetchCategoriesFx.pending },
+  // filter: ({ categories, loading }) => categories.length === 0 && !loading,
+  target: fetchCategoriesFx,
+});
+
+sample({ clock: fetchCategoriesFx.doneData, target: $categories });
