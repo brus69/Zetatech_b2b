@@ -11,14 +11,12 @@ from apps.products.models import (Product,
 
 class MarkFactory(DjangoModelFactory):
     name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
-    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
     
     class Meta:
         model = Mark
 
 class CategoryFactory(DjangoModelFactory):
     name = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
-    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
 
     class Meta:
         model = Category
@@ -27,7 +25,6 @@ class ProductFactory(DjangoModelFactory):
     title = factory.Faker('sentence', nb_words=2, variable_nb_words=True)
     description = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
     h1 = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
-    slug = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
     price = factory.Faker('random_int', min=10, max=1000)
     downloaded = factory.Faker('random_int', min=0, max=1000)
     annotation = factory.Faker('text', max_nb_chars=200)

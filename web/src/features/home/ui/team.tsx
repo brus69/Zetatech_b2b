@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { Title } from "@mantine/core";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";

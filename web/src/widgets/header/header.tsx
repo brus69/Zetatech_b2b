@@ -80,11 +80,11 @@ export const Header = () => {
               Каталог
             </Button>
           </Menu.Target>
-          <Menu.Dropdown className="p-0 rounded-none shadow-md">
+          <Menu.Dropdown className="p-0 rounded-none shadow-md ">
             <div className="flex">
               <div
                 className={cn(
-                  "flex flex-col min-w-[400px] max-w-[400px]",
+                  "flex flex-col min-w-[400px] max-w-[400px] sm:max-h-[500px] overflow-auto",
                   parentCategory && "max-md:hidden"
                 )}
               >
@@ -108,7 +108,7 @@ export const Header = () => {
 
               <div
                 className={cn(
-                  "md:flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0 bg-silver",
+                  "md:flex flex-col min-w-[350px] max-w-[350px] border-l border-solid border-0 bg-silver sm:max-h-[500px] overflow-auto",
                   !parentCategory && "hidden"
                 )}
               >

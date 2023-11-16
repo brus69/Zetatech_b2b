@@ -5,9 +5,36 @@ from apps.products.models import (Product,
                                   Mark,
                                   )
 
+class CategoryInternalSerializer(serializers.ModelSerializer):
+    parent_category = serializers.SerializerMethodField()
 
-class ProductSerializer(serializers.ModelSerializer):
+    def get_parent_category(self, obj):
+        return (
+            CategoryInternalSerializer(obj.parent_category).data if obj.parent_category else None
+        )
+
+    class Meta:
+        model = Category
+        fields = [
+            "name",
+            "slug",
+            "parent_category",
+        ]
+
+class MarkInternalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mark
+        fields = [
+            "name",
+            "slug",
+        ]
+
+
+
+class ProductDetailSerializer(serializers.ModelSerializer):
     is_favorite = serializers.BooleanField(read_only=True)
+    category = CategoryInternalSerializer(many=True)
+    mark = MarkInternalSerializer(many=True)
 
     class Meta:
         model = Product
@@ -24,6 +51,25 @@ class ProductSerializer(serializers.ModelSerializer):
                   'content',
                   'mark',
                   'category',
+                  'is_favorite'
+                  )
+
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    is_favorite = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ('id',
+                  'title',
+                  'h1',
+                  'img_product',
+                  'slug',
+                  'datafield',
+                  'price',
+                  'downloaded',
+                  'annotation',
                   'is_favorite'
                   )
 
@@ -56,4 +102,5 @@ class CategoryIdSerializer(serializers.ModelSerializer):
 class MarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mark
-        fields = ('id', 'slug', 'name')
+        fields = ('slug', 'name')
+
