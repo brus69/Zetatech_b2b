@@ -13,6 +13,7 @@ export const $product = createStore<Product>(null!);
 export const fetchProduct = createEvent<PageStared>();
 
 export const fetchProductFx = createEffect<PageStared, Product>(({ slug }) => {
+
   return requestFx({
     path: `/products/${slug}/`,
   });

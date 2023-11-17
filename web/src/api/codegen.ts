@@ -127,7 +127,6 @@ export interface Grid {
 }
 
 export interface Mark {
-  id: number;
   /**
    * Слаг
    * @maxLength 50
