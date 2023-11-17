@@ -13,35 +13,35 @@ import { homePageStared } from "./model";
 import { BriefModal } from "@/widgets/brief-modal";
 
 export const getStaticPropsHomePage: GetStaticProps = async () => {
-  const scope = fork();
+    const scope = fork();
 
-  await allSettled(homePageStared, { scope });
+    await allSettled(homePageStared, { scope });
 
-  return {
-    props: {
-      values: serialize(scope),
-      revalidate: 60 * 5, // 5 minutes
-    },
-  };
+    return {
+        props: {
+            values: serialize(scope),
+            revalidate: 60 * 5, // 5 minutes
+        },
+    };
 };
 
 const HomePage = () => {
-  return (
-    <>
-      <div className="flex flex-col gap-36">
-        <Promo />
-        <Preview />
-        <Team />
-        <Principles />
-        <Newsletter />
-        <Prices />
-        <Questions />
-        <Reviews />
-        <Blog />
-      </div>
-      <BriefModal />
-    </>
-  );
+    return (
+        <>
+            <div className="flex flex-col gap-36">
+                <Promo />
+                <Preview />
+                <Team />
+                <Principles />
+                <Newsletter />
+                <Prices />
+                <Questions />
+                <Reviews />
+                <Blog />
+            </div>
+            <BriefModal />
+        </>
+    );
 };
 
 export { HomePage };
