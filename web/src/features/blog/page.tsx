@@ -33,11 +33,7 @@ export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
 
 function NextButton() {
   return (
-    <img
-      src="/assets/blogpage/next.svg"
-      alt="Icon"
-      className="w-[68px] object-contain"
-    />
+    <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>
   );
 }
 
