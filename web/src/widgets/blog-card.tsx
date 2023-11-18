@@ -10,7 +10,7 @@ export const BlogCard = ({ post }: Props) => {
   return (
     <li
       key={post.title}
-      className="flex flex-col-2 w-[340px] h-[482px] box-border hover:bg-light"
+      className="flex flex-col-2 w-[340px] box-border hover:bg-light"
     >
       <Link href={`/blog/${post.slug}`} className="px-5 py-2">
         <div className="px-2 mb-7">

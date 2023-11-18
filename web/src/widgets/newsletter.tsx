@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { Newsletter as NewsletterApi } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
 
-export const Newsletter = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Newsletter = ({ details = 'bg-lilac' }) => {
   const {
     register,
     handleSubmit,
@@ -35,7 +36,7 @@ export const Newsletter = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-xs px-4 py-6 text-center bg-lilac"
+      className={`max-w-xs px-4 py-6 text-center ${details}`}
     >
       <h2 className="text-2xl">Получайте новости первыми</h2>
       <p>Будете первыми получать новости о парсинге и наши обновления</p>
