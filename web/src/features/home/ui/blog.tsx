@@ -35,7 +35,7 @@ export const Blog = () => {
       </div>
 
       <ul className="flex flex-col p-0 m-0 xl:gap-5 xl:flex-row grow">
-        {posts.slice(-3).map((post) => (
+        {posts.map((post) => (
           <BlogCard post={post} key={post.title}></BlogCard>
         ))}
       </ul>

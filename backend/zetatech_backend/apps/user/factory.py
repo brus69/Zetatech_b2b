@@ -14,6 +14,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     is_active = True
     is_superuser = False
     password = "password"
+    avatar = factory.django.ImageField(color='blue')
 
     @classmethod
     def _prepare(cls, create, **kwargs):

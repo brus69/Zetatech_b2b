@@ -30,6 +30,7 @@ class ProductFactory(DjangoModelFactory):
     annotation = factory.Faker('text', max_nb_chars=200)
     content = factory.Faker('text', max_nb_chars=1000)
     user = factory.SubFactory(UserFactory)
+    img_product = factory.django.ImageField(color='green')
 
     class Meta:
         model = Product
