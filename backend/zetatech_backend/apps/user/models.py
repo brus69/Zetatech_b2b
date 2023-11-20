@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
+
+
 from .constants import (
     ADMIN,
     AUTHENTICATED_USER,
@@ -11,6 +14,12 @@ from .constants import (
     ROLE_MAX_LENGTH,
 )
 
+
+def get_image_path(instance, filename):
+    directory = "user/avatar/"
+    format_file = "img_.png" 
+    path = directory + format_file
+    return path
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
@@ -33,6 +42,9 @@ class User(AbstractUser):
         max_length=ROLE_MAX_LENGTH,
         default=GUEST,
     )
+
+    avatar = models.ImageField("Картинка", upload_to=get_image_path, null=True, blank=True)
+
 
     class Meta:
         ordering = ["id"]

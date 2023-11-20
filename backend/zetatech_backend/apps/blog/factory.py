@@ -1,8 +1,9 @@
 import factory
+from django.core.files.base import ContentFile
+
 from factory.django import DjangoModelFactory
 from apps.blog.models import Post, TagPost
 from apps.user.factory import UserFactory
-
 
 
 class TagPostFactory(DjangoModelFactory):
@@ -19,6 +20,8 @@ class PostFactory(DjangoModelFactory):
     content = factory.Faker('text', max_nb_chars=1000)
     user = factory.SubFactory(UserFactory)
 
+    image = factory.django.ImageField(color='blue')
+
     class Meta:
         model = Post
 
@@ -29,3 +32,4 @@ class PostFactory(DjangoModelFactory):
         if extracted:
             for tags in extracted:
                 self.tags.add(tags)
+

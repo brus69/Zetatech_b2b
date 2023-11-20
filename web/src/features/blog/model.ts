@@ -1,6 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
-import { PaginatedPostList, Post, TagPost } from "@/api/codegen";
+import { PaginatedPostList, TagPost } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
+import { $$paginated } from "@/shared/fabrics/paginated";
 
 type PageStared = {
   category?: string | string[];
@@ -9,35 +10,14 @@ type PageStared = {
 
 export const pageStarted = createEvent<PageStared>();
 
-export const $blogPosts = createStore<Post[]>([]);
-
-export const fetchBlogPosts = createEvent<PageStared>();
-
-export const fetchBlogPostsFx = createEffect<PageStared, PaginatedPostList>(
-  (params) => {
-    return requestFx({
-      path: "/blog/",
-      params,
-    });
-  }
-);
+export const { $items: $blogPosts, fetchItems } =
+  $$paginated<PaginatedPostList>({
+    path: "/blog/",
+  });
 
 sample({
   clock: pageStarted,
-  target: fetchBlogPosts,
-});
-
-sample({
-  clock: fetchBlogPosts,
-  target: fetchBlogPostsFx,
-});
-
-sample({
-  clock: fetchBlogPostsFx.doneData,
-  fn: (data) => {
-    return data.results || [];
-  },
-  target: $blogPosts,
+  target: fetchItems,
 });
 
 export const $blogTags = createStore<TagPost[]>([]);
@@ -53,11 +33,6 @@ export const fetchBlogTagsFx = createEffect<unknown, TagPost[]>(() => {
 sample({
   clock: pageStarted,
   target: fetchBlogTags,
-});
-
-sample({
-  clock: fetchBlogPosts,
-  target: fetchBlogTagsFx,
 });
 
 sample({
