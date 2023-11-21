@@ -10,3 +10,4 @@ def unique_slugify(instance, name):
         unique_slug = slugify(name) + "-" + get_random_string(length=4)
 
     return unique_slug
+
