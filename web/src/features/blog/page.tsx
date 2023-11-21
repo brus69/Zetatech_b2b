@@ -1,16 +1,16 @@
-import { fork, allSettled, serialize } from "effector";
-import { useUnit } from "effector-react";
-import Link from "next/link";
-import { GetServerSideProps } from "next";
-import { $blogPosts, $blogTags, pageStarted } from "./model";
-import { BlogCard } from "@/widgets/blog-card";
+import { fork, allSettled, serialize } from 'effector'
+import { useUnit } from 'effector-react'
+import Link from 'next/link'
+import { GetServerSideProps } from 'next'
+import { $blogPosts, $blogTags, pageStarted } from './model'
+import { BlogCard } from '@/widgets/blog-card'
 
 export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
   query,
 }) => {
-  const scope = fork();
+  const scope = fork()
 
-  const { category, mark } = query;
+  const { category, mark } = query
 
   await allSettled(pageStarted, {
     scope,
@@ -18,21 +18,21 @@ export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
       category,
       mark,
     },
-  });
+  })
 
   return {
     props: {
       values: serialize(scope),
       revalidate: 60 * 5, // 5 minutes
     },
-  };
-};
+  }
+}
 
 export const BlogPostsPage = () => {
   const { blogPosts, blogTags } = useUnit({
     blogPosts: $blogPosts,
     blogTags: $blogTags,
-  });
+  })
 
   return (
     <>
@@ -58,5 +58,5 @@ export const BlogPostsPage = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}

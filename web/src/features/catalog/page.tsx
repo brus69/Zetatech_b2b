@@ -4,25 +4,33 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { $marks, $products, pageStarted } from './model'
 import { requestFx } from '@/shared/api'
-import { Breadcrumbs, Anchor, NavLink } from '@mantine/core'
-import { IconChevronRight, IconPointFilled } from '@tabler/icons-react'
-import { BlogCard } from '@/widgets/blog-card'
-import { $posts } from '../home/model'
+import { Breadcrumbs, Anchor, Pagination, Text, Select } from '@mantine/core'
+import {
+  IconChevronRight,
+  IconPointFilled,
+  IconChevronDown,
+} from '@tabler/icons-react'
+import { GetServerSideProps } from 'next'
+import { ProductCard } from './card/card'
+import { NewsCard } from './news/news'
 
 const items = [
   { title: 'Главная', href: '/' },
   { title: 'Каталог компаний', href: '/catalog' },
   { title: 'Популярные базы', href: '#' },
 ].map((item, index) => (
-  <Anchor className="text-base" href={item.href} key={index}>
+  <Anchor className="text-gray text-base" href={item.href} key={index}>
     {item.title}
   </Anchor>
 ))
 
-export const getServerSidePropsCatalog = async () => {
+export const getServerSidePropsCatalog: GetServerSideProps = async ({
+  query,
+}) => {
   const scope = fork()
+  const { category, mark } = query
 
-  await allSettled(pageStarted, { scope })
+  await allSettled(pageStarted, { scope, params: { category, mark } })
 
   return {
     props: {
@@ -33,10 +41,9 @@ export const getServerSidePropsCatalog = async () => {
 }
 
 export const CatalogPage = () => {
-  const { products, marks, posts } = useUnit({
+  const { products, marks } = useUnit({
     products: $products,
     marks: $marks,
-    posts: $posts,
   })
 
   useEffect(() => {
@@ -45,37 +52,56 @@ export const CatalogPage = () => {
     })
   }, [])
 
+  const handleChangePage = () => {
+    console.log('переход')
+  }
+
+  function NextButton() {
+    return <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>
+  }
+
+  function PrevButton() {
+    return <div style={{ display: 'none' }}></div>
+  }
+
   return (
     <>
-      {posts.slice(-3).map((post) => (
-        <BlogCard post={post} key={post.title}></BlogCard>
-      ))}
-      {console.log(posts)}
-      <div className="grid grid-cols-10 grid-rows-6 gap-4">
-        <div className="col-span-2 row-span-3 col-start-2 ml-2">
-          <h3 className="font-medium mt-10">Популярные базы</h3>
-          <div>
-            {products.map((product) => (
-              <Link key={product.slug} href={`/product/$product.slug`}>
-                <li className="mb-2 flex items-center text-base">
-                  <IconPointFilled className="w-4" />
-                  &thinsp;
-                  {product.h1}
-                </li>
-              </Link>
-            ))}
-            <h3 className="font-medium mt-10">Все категории</h3>
+      <div className="container flex flex-no-wrap">
+        <div className="flex flex-col mr-14 w-[399px]">
+          <h3 className="font-medium mt-5">Популярные базы</h3>
+          {products.slice(-15).map((product) => (
+            <Link key={product.slug} href={`/product/$product.slug`}>
+              <li className="mb-2 w-[399px] flex text-base hover:bg-light">
+                <IconPointFilled className="w-4" />
+                &thinsp;
+                {product.h1}
+              </li>
+            </Link>
+          ))}
+
+          <Link href="/catalog/">
+            <h3 className="font-medium mt-4">Все категории</h3>
+          </Link>
+
+          <div className="flex flex-col">
+            <h1 className="font-medium">Популярные новости</h1>
+            <NewsCard />
+            <NewsCard />
+            <NewsCard />
+            <NewsCard />
           </div>
+
+          <Link href="/blog">
+            <Text td="underline">Перейти в блог</Text>
+          </Link>
         </div>
-        <div className="col-span-2 row-span-3 col-start-2 row-start-4">
-          <h1 className="font-normal">Популярные новости</h1>
-        </div>
-        <div className="col-span-6 col-start-4 row-start-1 ml-6 relative">
-          <h1 className="text-center font-normal">
+
+        <div className="flex flex-col w-max">
+          <h1 className="text-center font-medium">
             Исследуйте данные по меткам
           </h1>
-          <div className="flex flex-wrap gap-x-7 gap-y-2 mb-8">
-            {marks.map((mark) => (
+          <div className="flex flex-wrap gap-x-7 gap-y-2 mb-28">
+            {marks.slice(-9).map((mark) => (
               <Link
                 className="p-1 px-2 text-black rounded bg-lilac"
                 key={mark.slug}
@@ -85,33 +111,73 @@ export const CatalogPage = () => {
               </Link>
             ))}
           </div>
-          <div className="absolute bottom-0 left-0 text-center">
-            <Breadcrumbs separator=<IconChevronRight />>{items}</Breadcrumbs>
+
+          <Breadcrumbs
+            classNames={{
+              root: 'text-gray',
+              separator: 'text-gray',
+            }}
+            separator={<IconChevronRight />}
+          >
+            {items}
+          </Breadcrumbs>
+
+          <div className="text-justify w-fit font-normal mt-4 relative inline-block">
+            <h1 className="text-center font-medium">Популярные базы</h1>
+            <p className="text-xl w-6/7">
+              Мы собственноручно подготовили базы компаний по различным
+              отраслям: интернет-магазины, строительные компании, поставщики и
+              оптовики и т.д., которые вы можете использовать для своего отдела
+              продаж.
+              <br />
+              Все базы созданы и отобраны на основе анализа общедоступной
+              информации на сайтах компаний (заголовок, описание сайта). Наши
+              подготовленные базы содержат почту, телефоны, ИНН, ОГРН и
+              налоговые данные.
+            </p>
+            <div className="absolute right-0 block z-1">
+              <Select
+                rightSection=<IconChevronDown />
+                color="bg-light"
+                radius="xs"
+                withCheckIcon={false}
+                placeholder="По популярности"
+                data={[
+                  'Цена: по убыванию',
+                  'Цена: по возрастанию',
+                  'По новизне',
+                  'По рейтингу',
+                ]}
+                classNames={{
+                  option: 'hover:bg-light rounded-none',
+                  dropdown: 'p-0 rounded-none -mt-[10px]',
+                  input: 'border-light border-2 placeholder-black',
+                }}
+              />
+            </div>
+            <div className="flex flex-row flex-wrap mt-24">
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+            </div>
+            <Pagination
+              total={75}
+              gap="0"
+              withControls={true}
+              classNames={{
+                root: 'text-gray pl-[24px]',
+                control: 'p-0 text-gray border-0 bg-transparent text-base',
+              }}
+              nextIcon={NextButton}
+              previousIcon={PrevButton}
+              onChange={handleChangePage}
+              className="mt-[7px]"
+            />
           </div>
-        </div>
-        <div className="col-span-6 col-start-4 row-start-2 relative">
-          <h1 className="text-center font-normal">Популярные базы</h1>
-          <div className="ml-6 absolute text-justify text-xl w-fit font-normal">
-            Мы собственноручно подготовили базы компаний по различным отраслям:
-            интернет-магазины, строительные компании, поставщики и оптовики и
-            т.д., которые вы можете использовать для своего отдела продаж.
-            <br /> <p /> Все базы созданы и отобраны на основе анализа
-            общедоступной информации на сайтах компаний (заголовок, описание
-            сайта). Наши подготовленные базы содержат почту, телефоны, ИНН, ОГРН
-            и налоговые данные.
+          <h1 className="text-center font-medium">Больше всего скачивают</h1>
+          <div className="flex flex-row flex-wrap">
+            <ProductCard />
           </div>
-        </div>
-        <div className="col-span-6 row-span-3 col-start-4 row-start-3">
-          <div className="absolute">
-            <NavLink label="First parent link" childrenOffset={0}>
-              <NavLink label="First child link" />
-              <NavLink label="Second child link" />
-            </NavLink>
-          </div>
-          замапанные карточки
-        </div>
-        <div className="col-span-6 col-start-4 row-start-6">
-          Больше всего скачивают
         </div>
       </div>
     </>
