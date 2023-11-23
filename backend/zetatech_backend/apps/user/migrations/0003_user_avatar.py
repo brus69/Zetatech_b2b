@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             field=models.ImageField(
                 blank=True,
                 null=True,
-                upload_to=apps.user.models.get_image_path,
+                upload_to="user/avatar/",
                 verbose_name="Картинка",
             ),
         ),
