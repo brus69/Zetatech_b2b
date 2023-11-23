@@ -1,11 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode } from "react";
 import { fork, allSettled, serialize } from "effector";
 import { useUnit } from "effector-react";
 import { Title, Pagination } from "@mantine/core";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
-import { $blogTags, pageStarted, $items, $page, $totalPages, pageChanged } from "./model";
+import {
+  $blogTags,
+  pageStarted,
+  $items,
+  $page,
+  $totalPages,
+  pageChanged,
+} from "./model";
 import { Newsletter } from "@/widgets/newsletter";
 import { BlogCard } from "@/widgets/blog-card";
 
@@ -33,7 +38,7 @@ export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
 };
 
 function NextButton() {
-  return <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>;
+  return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>;
 }
 
 function PrevButton() {
@@ -51,24 +56,24 @@ export const BlogPostsPage = () => {
 
   return (
     <>
-      <div className="container max-w-6xl mb-24">
+      <div className="container mb-24">
         <Title
           order={2}
           classNames={{
-            root: "mb-4 mt-12 px-8",
+            root: "mb-4 mt-12",
           }}
         >
           Блог
         </Title>
-        <p className="px-8 max-w-2xl m-0 text-xl text-black">
+        <p className="max-w-2xl m-0 text-xl text-black">
           Всё о нашей работе в парсинг-мире: полезные статьи, бизнес-кейсы и
           личные размышления, пишем легко и по делу
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-8 mt-5 px-8">
+        <div className="flex flex-wrap gap-2 mt-5 mb-8">
           {blogTags.map((blogTag) => (
             <Link
-              className="text-gray lowercase text-base"
+              className="text-base lowercase text-gray"
               key={blogTag.slug}
               href={`/blog/category/${blogTag.slug}`}
             >
@@ -77,11 +82,11 @@ export const BlogPostsPage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-x-12 gap-y-10 items-center mb-5">
+        <div className="grid items-center gap-4 mb-5 grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
           {posts.map((post) => (
             <BlogCard key={post.slug} post={post}></BlogCard>
           ))}
-          <div className="pt-3 px-7 box-border bg-light h-96">
+          <div className="box-border h-full bg-light">
             <Newsletter details={`bg-light`} />
           </div>
         </div>

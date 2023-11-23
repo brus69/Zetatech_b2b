@@ -10,10 +10,6 @@ type PageStared = {
 
 export const pageStarted = createEvent<PageStared>();
 
-// новое
-export const pageStared = createEvent();
-
-// новое
 export const {
   $items,
   $totalItems,
@@ -22,12 +18,11 @@ export const {
   $totalPages,
   $page,
 } = $$paginated<PaginatedPostList>({
-  path: "/blogs/",
+  path: "/blog/",
 });
 
-// новое
 sample({
-  clock: [pageStared, pageChanged],
+  clock: [pageStarted, pageChanged],
   fn: () => {
     return {
       page_size: 12,
@@ -35,16 +30,6 @@ sample({
   },
   target: fetchItems,
 });
-
-// export const { $items: $blogPosts, fetchItems } =
-//   $$paginated<PaginatedPostList>({
-//     path: "/blog/",
-//   });
-
-// sample({
-//   clock: pageStarted,
-//   target: fetchItems,
-// });
 
 export const $blogTags = createStore<TagPost[]>([]);
 

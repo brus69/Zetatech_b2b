@@ -5,7 +5,7 @@ import { Newsletter as NewsletterApi } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Newsletter = ({ details = 'bg-lilac' }) => {
+export const Newsletter = ({ details = "bg-lilac" }) => {
   const {
     register,
     handleSubmit,
@@ -36,14 +36,14 @@ export const Newsletter = ({ details = 'bg-lilac' }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`max-w-xs px-4 py-6 text-center ${details}`}
+      className={`flex items-center flex-col justify-center px-8 py-6 text-center ${details}`}
     >
       <h2 className="text-2xl">Получайте новости первыми</h2>
       <p>Будете первыми получать новости о парсинге и наши обновления</p>
 
       {!isSubmit && (
         <>
-          <Input.Wrapper error={errors.email?.message} className="flex-1 mb-4">
+          <Input.Wrapper error={errors.email?.message} className="w-full mb-4">
             <Input
               {...register("email")}
               type="email"
