@@ -47,7 +47,7 @@ export const CartPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: unknown) => {
     console.log(data);
   };
 
