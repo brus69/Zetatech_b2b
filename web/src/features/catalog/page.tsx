@@ -29,6 +29,7 @@ export const CatalogPage = () => {
       path: "/cart/",
     });
   }, []);
+
   return (
     <>
       <div className="container">
