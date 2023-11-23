@@ -10,3 +10,9 @@ class CrawlerItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+class PostItrms(scrapy.Item):
+    title = scrapy.Field()
+    description = scrapy.Field()
+    h1 = scrapy.Field()
+    content = scrapy.Field()
