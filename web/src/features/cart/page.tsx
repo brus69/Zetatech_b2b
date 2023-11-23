@@ -98,7 +98,7 @@ export const CartPage = () => {
               <li key={product.id} className="my-2 border-x-0">
                 <Link
                   className="flex items-center gap-2"
-                  href={`/product/${product.id}`}
+                  href={`/product/${product.slug}`}
                 >
                   <Button
                     onClick={() => onRemoveFromCart(product.id)}
