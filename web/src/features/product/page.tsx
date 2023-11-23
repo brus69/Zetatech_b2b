@@ -3,9 +3,9 @@ import { GetServerSideProps } from "next";
 import { useUnit } from "effector-react";
 import { NextSeo } from "next-seo";
 import { Anchor, Breadcrumbs, Button } from "@mantine/core";
-import { useState } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
+import { $cart } from "../cart/model";
 import { $product, pageStarted } from "./model";
 import Category from "@/pages/catalog/[category]";
 
@@ -31,8 +31,9 @@ export const getServerSidePropsProduct: GetServerSideProps = async ({
 };
 
 export const ProductPage = () => {
-  const { product } = useUnit({ product: $product });
-  const [hidden, setHidden] = useState(false);
+  const { product, cart } = useUnit({ product: $product, cart: $cart });
+
+  const inCart = cart.some((value) => value.id === product.id);
 
   const breadCrumbs = product?.category.map(
     (itemCategory) => itemCategory.name
@@ -130,21 +131,18 @@ export const ProductPage = () => {
               </div>
 
               <Button
-                onClick={() => setHidden(true)}
+                // onClick={() => setHidden(true)}
                 variant="outline"
                 color="rgba(0, 103, 108, 1)"
-                className={hidden ? "hidden" : ""}
+                className={inCart ? "hidden" : ""}
               >
                 Добавить в корзину
               </Button>
 
-              {hidden && (
-                <Link href="/cart">
-                  {" "}
-                  <Button className={!hidden ? "hidden" : ""}>
-                    В корзине. Оплатить
-                  </Button>
-                </Link>
+              {inCart && (
+                <Button component={Link} href="/cart">
+                  В корзине. Оплатить
+                </Button>
               )}
             </div>
           </div>
