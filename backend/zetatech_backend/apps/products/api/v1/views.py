@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from django.db.models import Exists, OuterRef
-from apps.products.serializers import (ProductSerializer,
+from apps.products.serializers import (ProductDetailSerializer, ProductSerializer,
                                        CategorySerializer,
                                        CategoryIdSerializer,
                                        MarkSerializer,
@@ -22,7 +22,20 @@ class ProductViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
+    serializer_class = ProductSerializer
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == 'retrieve':
+            return ProductDetailSerializer
+        return super().get_serializer_class()
     
+    @extend_schema(responses={"200": ProductDetailSerializer}) 
+    def retrieve(self, request, pk=None):
+        queryset = Product.objects.all()
+        product = get_object_or_404(queryset, slug=pk)
+        serializer = ProductDetailSerializer(product)
+        return Response(serializer.data)
+
     def get_queryset(self):
         queryset = Product.objects.annotate(
             is_favorite=Exists(Favorite.objects.filter(
@@ -31,7 +44,6 @@ class ProductViewSet(
             ))).all()
         return queryset
   
-    serializer_class = ProductSerializer
 
 class CategoryViewSet(viewsets.ViewSet):
 

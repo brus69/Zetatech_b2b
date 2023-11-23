@@ -54,15 +54,30 @@ export interface ApplicationRequest {
   attachment?: File | null;
 }
 
-export interface Cart {
-  product_id: number;
-  user_id: number;
-  product: Product;
+export interface CartProducts {
+  id: number;
+  /**
+   * Заголовок веб-страницы
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  /**
+   * Цена
+   * @min 0
+   * @max 32767
+   */
+  price: number;
 }
 
 export interface Category {
   /**
-   * URL
+   * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
@@ -74,7 +89,7 @@ export interface Category {
 
 export interface CategoryId {
   /**
-   * URL
+   * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
@@ -83,8 +98,16 @@ export interface CategoryId {
   name: string;
 }
 
-export interface CreateCart {
-  product_id: number;
+export interface CategoryInternal {
+  /** Название категории */
+  name: string;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  parent_category: string;
 }
 
 export interface FAQ {
@@ -116,15 +139,25 @@ export interface Grid {
 }
 
 export interface Mark {
-  id: number;
   /**
-   * URL
+   * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug: string;
   /** Название метки */
   name: string;
+}
+
+export interface MarkInternal {
+  /** Название метки */
+  name: string;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
 }
 
 export interface Newsletter {
@@ -220,7 +253,7 @@ export interface Post {
   content: string;
   /** @format uri */
   image: string;
-  author: number;
+  user: number;
   /**
    * Слаг статьи
    * Автоматическое поле, можно заполнить вручную.
@@ -251,14 +284,23 @@ export interface Price {
 }
 
 export interface Product {
-  id: number;
   /**
    * Заголовок веб-страницы
    * @maxLength 100
    */
   title: string;
   /**
-   * URL
+   * Заголовок на странице
+   * @maxLength 100
+   */
+  h1: string;
+  /**
+   * Изображение
+   * @format uri
+   */
+  img_product?: string | null;
+  /**
+   * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
@@ -269,6 +311,60 @@ export interface Product {
    * @max 32767
    */
   price: number;
+}
+
+export interface ProductDetail {
+  id: number;
+  /**
+   * Заголовок веб-страницы
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * Описание
+   * @maxLength 200
+   */
+  description: string;
+  /**
+   * Заголовок на странице
+   * @maxLength 100
+   */
+  h1: string;
+  /**
+   * Изображение
+   * @format uri
+   */
+  img_product?: string | null;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  /**
+   * БД Парсинга
+   * @format uri
+   */
+  datafield: string;
+  /**
+   * Цена
+   * @min 0
+   * @max 32767
+   */
+  price: number;
+  /**
+   * Кол-во загрузок
+   * @min 0
+   * @max 32767
+   */
+  downloaded: number;
+  /** Краткое описание */
+  annotation: string;
+  /** Подробное описание */
+  content: string;
+  mark: MarkInternal[];
+  category: CategoryInternal[];
+  is_favorite: boolean;
 }
 
 export interface ProductRequest {
@@ -290,7 +386,7 @@ export interface ProductRequest {
    */
   img_product?: File | null;
   /**
-   * URL
+   * Слаг
    * @minLength 1
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$

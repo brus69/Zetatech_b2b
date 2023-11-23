@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
+from shared.utils import unique_slugify
 from shared.models import TimeStampedModel
 
-from .utils import unique_slugify
 
 User = get_user_model()
 
