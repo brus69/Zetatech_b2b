@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode } from "react";
 import { fork, allSettled, serialize } from "effector";
 import { useUnit } from "effector-react";
 import { Title, Pagination } from "@mantine/core";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
-import { $blogPosts, $blogTags, pageStarted } from "./model";
+import { $blogTags, pageStarted, $items, $page, $totalPages, pageChanged } from "./model";
 import { Newsletter } from "@/widgets/newsletter";
 import { BlogCard } from "@/widgets/blog-card";
-import "../../app/styles/styles.css";
 
 export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
   query,
@@ -32,9 +33,7 @@ export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
 };
 
 function NextButton() {
-  return (
-    <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>
-  );
+  return <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>;
 }
 
 function PrevButton() {
@@ -42,14 +41,13 @@ function PrevButton() {
 }
 
 export const BlogPostsPage = () => {
-  const { blogPosts, blogTags } = useUnit({
-    blogPosts: $blogPosts,
+  const { blogTags, posts, page, totalPages, onPageChanged } = useUnit({
+    posts: $items,
+    page: $page,
+    totalPages: $totalPages,
+    onPageChanged: pageChanged,
     blogTags: $blogTags,
   });
-
-  const handleChangePage = () => {
-    console.log("переход по страницам");
-  };
 
   return (
     <>
@@ -80,8 +78,8 @@ export const BlogPostsPage = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-x-12 gap-y-10 items-center mb-5">
-          {blogPosts.map((blogPost) => (
-            <BlogCard key={blogPost.slug} post={blogPost}></BlogCard>
+          {posts.map((post) => (
+            <BlogCard key={post.slug} post={post}></BlogCard>
           ))}
           <div className="pt-3 px-7 box-border bg-light h-96">
             <Newsletter details={`bg-light`} />
@@ -89,7 +87,6 @@ export const BlogPostsPage = () => {
         </div>
 
         <Pagination
-          total={10}
           gap="0"
           withControls={true}
           classNames={{
@@ -98,7 +95,9 @@ export const BlogPostsPage = () => {
           }}
           nextIcon={NextButton}
           previousIcon={PrevButton}
-          onChange={handleChangePage}
+          value={page}
+          total={totalPages}
+          onChange={onPageChanged}
         />
       </div>
     </>
