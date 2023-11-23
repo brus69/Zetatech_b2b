@@ -95,22 +95,24 @@ export const CartPage = () => {
 
           <ul className="p-0 m-0 divide-y divide-gray divide-solid">
             {cart.map((product) => (
-              <li
-                key={product.id}
-                className="flex items-center gap-2 my-2 border-x-0"
-              >
-                <Button
-                  onClick={() => onRemoveFromCart(product.id)}
-                  className="p-0"
-                  variant="transparent"
-                  color="gray"
+              <li key={product.id} className="my-2 border-x-0">
+                <Link
+                  className="flex items-center gap-2"
+                  href={`/product/${product.id}`}
                 >
-                  <IconX />
-                </Button>
-                <p className="mr-auto">{product.title}</p>
-                <span className="text-lg font-medium">
-                  {product.price} руб.
-                </span>
+                  <Button
+                    onClick={() => onRemoveFromCart(product.id)}
+                    className="p-0"
+                    variant="transparent"
+                    color="gray"
+                  >
+                    <IconX />
+                  </Button>
+                  <p className="mr-auto">{product.title}</p>
+                  <span className="text-lg font-medium">
+                    {product.price} руб.
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
