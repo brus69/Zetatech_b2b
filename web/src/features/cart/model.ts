@@ -3,6 +3,8 @@ import { createGate } from "effector-react";
 import { reset } from "patronum";
 import { ProductDetail } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
+import { appStaredGate } from "@/api/app";
+import { fetchInitialUserFx } from "@/api/user";
 
 export const cartPageCate = createGate();
 
@@ -16,7 +18,10 @@ export const fetchCartFx = createEffect(() => {
   });
 });
 
-sample({ clock: cartPageCate.open, target: fetchCart });
+sample({
+  clock: [appStaredGate.open, fetchInitialUserFx.doneData],
+  target: fetchCart,
+});
 sample({ clock: fetchCart, target: fetchCartFx });
 
 sample({ clock: fetchCartFx.doneData, target: $cart });
