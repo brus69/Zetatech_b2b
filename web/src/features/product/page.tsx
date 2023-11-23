@@ -5,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { Anchor, Breadcrumbs, Button } from "@mantine/core";
 import { useState } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
+import Link from "next/link";
 import { $product, pageStarted } from "./model";
 import Category from "@/pages/catalog/[category]";
 
@@ -31,7 +32,8 @@ export const getServerSidePropsProduct: GetServerSideProps = async ({
 
 export const ProductPage = () => {
   const { product } = useUnit({ product: $product });
-  const [orderButton, setOrderButton] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
   const breadCrumbs = product?.category.map(
     (itemCategory) => itemCategory.name
   );
@@ -65,22 +67,14 @@ export const ProductPage = () => {
           <div className="grid grid-cols-[auto,380px] gap-16 mt-9 relative">
             <div>
               <div className="flex gap-32 ">
-                {/* {product.img_product && (
-              <img
-                src={product.img_product}
-                width={111}
-                height={112}
-                alt={product.title}
-              />
-            )} */}
-                <div className="h-28">
+                {product.img_product && (
                   <img
-                    src="https://polyakovdmitriy.ru/wp-content/uploads/2020/09/Getting-Started-with-NextJS.jpg"
-                    alt={product?.title}
-                    height="100%"
-                    width="100%"
+                    src={product.img_product}
+                    width={111}
+                    height={112}
+                    alt={product.title}
                   />
-                </div>
+                )}
 
                 <div>
                   <h1 className="font-medium">{product?.h1}</h1>
@@ -136,12 +130,22 @@ export const ProductPage = () => {
               </div>
 
               <Button
-                onClick={() => setOrderButton(true)}
-                variant={!orderButton ? "outline" : undefined}
-                color={!orderButton ? "rgba(0, 103, 108, 1)" : undefined}
+                onClick={() => setHidden(true)}
+                variant="outline"
+                color="rgba(0, 103, 108, 1)"
+                className={hidden ? "hidden" : ""}
               >
-                {orderButton ? "В корзине. Оплатить" : "Добавить в корзину"}
+                Добавить в корзину
               </Button>
+
+              {hidden && (
+                <Link href="/cart">
+                  {" "}
+                  <Button className={!hidden ? "hidden" : ""}>
+                    В корзине. Оплатить
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

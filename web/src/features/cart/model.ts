@@ -1,12 +1,12 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
 import { createGate } from "effector-react";
 import { reset } from "patronum";
-import { Product } from "@/api/codegen";
+import { ProductDetail } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
 
 export const cartPageCate = createGate();
 
-export const $cart = createStore<Product[]>([]);
+export const $cart = createStore<ProductDetail[]>([]);
 
 const fetchCart = createEvent();
 
