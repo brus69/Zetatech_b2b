@@ -23,12 +23,18 @@ class ProductViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = ProductSerializer
-    lookup_field = "slug"
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'retrieve':
             return ProductDetailSerializer
         return super().get_serializer_class()
+    
+    @extend_schema(responses={"200": ProductDetailSerializer}) 
+    def retrieve(self, request, pk=None):
+        queryset = Product.objects.all()
+        product = get_object_or_404(queryset, slug=pk)
+        serializer = ProductDetailSerializer(product)
+        return Response(serializer.data)
 
     def get_queryset(self):
         queryset = Product.objects.annotate(

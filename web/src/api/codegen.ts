@@ -98,6 +98,18 @@ export interface CategoryId {
   name: string;
 }
 
+export interface CategoryInternal {
+  /** Название категории */
+  name: string;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  parent_category: string;
+}
+
 export interface FAQ {
   id: number;
   answer: string;
@@ -127,7 +139,6 @@ export interface Grid {
 }
 
 export interface Mark {
-  id: number;
   /**
    * Слаг
    * @maxLength 50
@@ -136,6 +147,17 @@ export interface Mark {
   slug: string;
   /** Название метки */
   name: string;
+}
+
+export interface MarkInternal {
+  /** Название метки */
+  name: string;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
 }
 
 export interface Newsletter {
@@ -289,6 +311,60 @@ export interface Product {
    * @max 32767
    */
   price: number;
+}
+
+export interface ProductDetail {
+  id: number;
+  /**
+   * Заголовок веб-страницы
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * Описание
+   * @maxLength 200
+   */
+  description: string;
+  /**
+   * Заголовок на странице
+   * @maxLength 100
+   */
+  h1: string;
+  /**
+   * Изображение
+   * @format uri
+   */
+  img_product?: string | null;
+  /**
+   * Слаг
+   * @maxLength 50
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug: string;
+  /**
+   * БД Парсинга
+   * @format uri
+   */
+  datafield: string;
+  /**
+   * Цена
+   * @min 0
+   * @max 32767
+   */
+  price: number;
+  /**
+   * Кол-во загрузок
+   * @min 0
+   * @max 32767
+   */
+  downloaded: number;
+  /** Краткое описание */
+  annotation: string;
+  /** Подробное описание */
+  content: string;
+  mark: MarkInternal[];
+  category: CategoryInternal[];
+  is_favorite: boolean;
 }
 
 export interface ProductRequest {
