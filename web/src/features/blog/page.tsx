@@ -95,8 +95,7 @@ export const BlogPostsPage = () => {
           gap="0"
           withControls={true}
           classNames={{
-            root: "text-gray pl-[24px]",
-            control: "p-0 text-gray border-0 bg-transparent text-base",
+            control: "border-none text-base mr-2",
           }}
           nextIcon={NextButton}
           previousIcon={PrevButton}
