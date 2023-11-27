@@ -5,7 +5,7 @@ import { NextSeo } from "next-seo";
 import { Anchor, Breadcrumbs, Button } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
-import { $cart } from "../cart/model";
+import { $cart, addToCart } from "../cart/model";
 import { $product, pageStarted } from "./model";
 import Category from "@/pages/catalog/[category]";
 
@@ -31,7 +31,11 @@ export const getServerSidePropsProduct: GetServerSideProps = async ({
 };
 
 export const ProductPage = () => {
-  const { product, cart } = useUnit({ product: $product, cart: $cart });
+  const { product, cart, onAddToCart } = useUnit({
+    product: $product,
+    cart: $cart,
+    onAddToCart: addToCart,
+  });
 
   const inCart = cart.some((value) => value.id === product.id);
 
@@ -131,7 +135,7 @@ export const ProductPage = () => {
               </div>
 
               <Button
-                // onClick={() => setHidden(true)}
+                onClick={() => onAddToCart(product)}
                 variant="outline"
                 color="rgba(0, 103, 108, 1)"
                 className={inCart ? "hidden" : ""}
@@ -205,7 +209,10 @@ export const ProductPage = () => {
             </div>
 
             <div className="flex justify-end mt-16">
-              <Button>Получить консультацию</Button>
+              <Button component={Link} href="/login">
+                {" "}
+                Получить консультацию
+              </Button>
             </div>
           </div>
         </div>
