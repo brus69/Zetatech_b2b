@@ -38,6 +38,24 @@ export const $total = $cart.map((cart) =>
   cart.reduce((acc, { price }) => acc + price, 0)
 );
 
+export const addToCart = createEvent<ProductDetail>();
+
+$cart.on(addToCart, (cart, product) => {
+  return [...cart, product]
+});
+
+export const addFromToCartFX = createEffect((id: number) => {
+  return requestFx({
+    path: `/cart/${id}/`,
+    method: "POST",
+    body: {
+      product_id: id,
+    },
+  });
+});
+
+sample({ clock: addToCart, target: addFromToCartFX, fn: (product) => product.id });
+
 export const removeFromCart = createEvent<number>();
 
 $cart.on(removeFromCart, (cart, productId) => {
