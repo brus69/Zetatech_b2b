@@ -7,8 +7,10 @@
 import requests
 import sqlite3
 
-key=''
-headers = {"Authorization":f"DeepL-Auth-Key {key}"}
+from constants import DEEPL_TOKEN
+
+
+headers = {"Authorization":f"DeepL-Auth-Key {DEEPL_TOKEN}"}
 
 def base_connect():
     """Показывает кол-во символов для превода, и сам текст для превода"""
@@ -52,7 +54,3 @@ def checklimittranslit(count_symbol, limittranslit):
         return False
     else:
         return True
-
-text = base_connect()
-count_num_text = quantity_text(text)
-print(text)

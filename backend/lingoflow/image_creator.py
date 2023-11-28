@@ -9,9 +9,9 @@ from datetime import datetime
 import json
 import time
 import os
-
 import requests
 
+from constants import FUSIONBRAIN_PUBLIC_TOKEN, FUSIONBRAIN_SECRET_TOKEN
 
 class Text2ImageAPI:
 
@@ -72,7 +72,9 @@ def decode_and_save_image(base64_string, output_folder):
 
 
 if __name__ == '__main__':
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', 'Public_key', 'Secret_key')
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', 
+                        FUSIONBRAIN_PUBLIC_TOKEN, 
+                        FUSIONBRAIN_SECRET_TOKEN)
     model_id = api.get_model()
     uuid = api.generate("Парсинг, базы данных", model_id)
     #Промт будет геренерироваться на основе статьи
