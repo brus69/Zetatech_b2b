@@ -8,6 +8,7 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import { GetServerSideProps } from "next";
+import { $page, $totalPages, pageChanged } from "../blog/model";
 import { $marks, $products, pageStarted } from "./model";
 import { ProductCard } from "./card/card";
 import { NewsCard } from "./news/news";
@@ -39,14 +40,13 @@ export const getServerSidePropsCatalog: GetServerSideProps = async ({
 };
 
 export const CatalogPage = () => {
-  const { products, marks } = useUnit({
+  const { products, marks, page, totalPages, onPageChanged } = useUnit({
     products: $products,
     marks: $marks,
+    page: $page,
+    totalPages: $totalPages,
+    onPageChanged: pageChanged,
   });
-
-  const handleChangePage = () => {
-    console.log("переход");
-  };
 
   function NextButton() {
     return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>;
@@ -153,17 +153,16 @@ export const CatalogPage = () => {
               ))}
             </div>
             <Pagination
-              total={75}
               gap="0"
               withControls={true}
               classNames={{
-                root: "text-gray pl-[24px]",
-                control: "p-0 text-gray border-0 bg-transparent text-base",
+                control: "border-none text-base mr-2",
               }}
               nextIcon={NextButton}
               previousIcon={PrevButton}
-              onChange={handleChangePage}
-              className="mt-[7px]"
+              value={page}
+              total={totalPages}
+              onChange={onPageChanged}
             />
           </div>
           <h1 className="font-medium text-center">Больше всего скачивают</h1>
