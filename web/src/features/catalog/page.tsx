@@ -13,6 +13,7 @@ import {
 import { GetServerSideProps } from 'next'
 import { ProductCard } from './card/card'
 import { NewsCard } from './news/news'
+import { $page, $totalPages, pageChanged } from '../blog/model'
 
 const items = [
   { title: 'Главная', href: '/' },
@@ -41,20 +42,13 @@ export const getServerSidePropsCatalog: GetServerSideProps = async ({
 }
 
 export const CatalogPage = () => {
-  const { products, marks } = useUnit({
+  const { products, marks, page, totalPages, onPageChanged } = useUnit({
     products: $products,
     marks: $marks,
+    page: $page,
+    totalPages: $totalPages,
+    onPageChanged: pageChanged,
   })
-
-  useEffect(() => {
-    requestFx({
-      path: '/cart/',
-    })
-  }, [])
-
-  const handleChangePage = () => {
-    console.log('переход')
-  }
 
   function NextButton() {
     return <p className="text-gray text-xs cursor-pointer pl-5">Следующая</p>
@@ -156,28 +150,23 @@ export const CatalogPage = () => {
               />
             </div>
             <div className="flex flex-row flex-wrap mt-24">
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
+              <ProductCard product={product} />
             </div>
             <Pagination
-              total={75}
               gap="0"
               withControls={true}
               classNames={{
-                root: 'text-gray pl-[24px]',
-                control: 'p-0 text-gray border-0 bg-transparent text-base',
+                control: 'border-none text-base mr-2',
               }}
               nextIcon={NextButton}
               previousIcon={PrevButton}
-              onChange={handleChangePage}
-              className="mt-[7px]"
+              value={page}
+              total={totalPages}
+              onChange={onPageChanged}
             />
           </div>
           <h1 className="text-center font-medium">Больше всего скачивают</h1>
-          <div className="flex flex-row flex-wrap">
-            <ProductCard />
-          </div>
+          <div className="flex flex-row flex-wrap"></div>
         </div>
       </div>
     </>

@@ -1,7 +1,8 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
-import { Mark, Product } from '@/api/codegen'
+import { Mark, PaginatedCatalogList, Product } from '@/api/codegen'
 import { requestFx } from '@/shared/api'
 import { Post, PaginatedPostList } from '@/api/codegen'
+import { $$paginated } from '@/shared/fabrics/paginated'
 
 export const $products = createStore<Product[]>([])
 
@@ -89,4 +90,25 @@ sample({
 sample({
   clock: fetchMarksFx.doneData,
   target: $marks,
+})
+
+export const {
+  $items,
+  $totalItems,
+  fetchItems,
+  pageChanged,
+  $totalPages,
+  $page,
+} = $$paginated<PaginatedPostList>({
+  path: '/blog/',
+})
+
+sample({
+  clock: [pageStarted, pageChanged],
+  fn: () => {
+    return {
+      page_size: 12,
+    }
+  },
+  target: fetchItems,
 })
