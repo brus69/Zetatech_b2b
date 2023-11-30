@@ -4,12 +4,13 @@
 2) отправить запрос
 3) получить ответ
 """
-import json
 import requests
 import sqlite3
 
-key=''
-headers = {"Authorization":f"DeepL-Auth-Key {key}"}
+from constants import DEEPL_TOKEN
+
+
+headers = {"Authorization":f"DeepL-Auth-Key {DEEPL_TOKEN}"}
 
 def base_connect():
     """Показывает кол-во символов для превода, и сам текст для превода"""
@@ -17,16 +18,19 @@ def base_connect():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM lingflow_scrapy")
     data_list = cursor.fetchall()
+    # result_dict = {item[0]: (item[1], item[2], item[3], item[4]) 
+    #                for item in data_list}
+    cursor.close()
+    return data_list
+
+def quantity_text(text):
+    """подсчет кол-ва символов для перевода"""
     count_symbol = 0
-
- #подсчет кол-ва символов для перевода
-    for i in data_list:
-        for n in i:
-            if not isinstance(n, int):
-                count_symbol += len(n)
-
-    result_dict = {item[0]: (item[1], item[2], item[3], item[4]) for item in data_list}
-    return {'count_symbol': count_symbol, 'text_no_translit': result_dict}
+    for i in text:
+            for n in i:
+                if not isinstance(n, int):
+                    count_symbol += len(n)
+    return count_symbol
     
 
 def translittext(text):
@@ -43,17 +47,10 @@ def limittext():
     return r.json()
 
 def checklimittranslit(count_symbol, limittranslit):
+    """Проверка на возможность перевести текст с текущим лимитом"""
     result = limittranslit['character_limit'] - limittranslit['character_count']
     if count_symbol > result:
         print('Привышение лимитов на:', result - count_symbol)
         return False
     else:
         return True
-
-
-bc = base_connect()
-count_symbol = bc['count_symbol']
-limittranslit = limittext()
-checklimittranslit(count_symbol, limittranslit)
-text_no_translit = bc['text_no_translit']
-print(text_no_translit[1])
