@@ -1,9 +1,12 @@
-import React from 'react'
-import Image from 'next/image'
-import salony from '../../../../public/assets/catalog/salony.svg'
-import favorite from '../../../../public/assets/catalog/favorite.svg'
+import React from "react";
+import Image from "next/image";
+import salony from "../../../../public/assets/catalog/salony.svg";
+import favorite from "../../../../public/assets/catalog/favorite.svg";
+import { Product } from "@/api/codegen";
 
-export const ProductCard = () => {
+type Props = { product: Product };
+
+export const ProductCard = ({ product }: Props) => {
   return (
     <div className="flex flex-col w-[178px] box-border border-solid transition-colors duration-300 ease-in-out border rounded border-light hover:border-ruby cursor-pointer relative mr-[42px] mb-[20px]">
       <div className="flex flex-col items-center min-h-[268px]">
@@ -12,8 +15,8 @@ export const ProductCard = () => {
           alt="favorite"
           className="absolute top-0 right-0 mr-[15px] mt-[20px]"
         />
-        <Image
-          src={salony}
+        <img
+          src={product.img_product || ""}
           alt="Card image"
           className="object-cover object-center mt-[33px] mr-[2px]"
         />
@@ -25,5 +28,5 @@ export const ProductCard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
