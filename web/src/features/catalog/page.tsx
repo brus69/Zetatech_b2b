@@ -1,59 +1,71 @@
-import { fork, allSettled, serialize } from "effector";
-import { useUnit } from "effector-react";
-import Link from "next/link";
-import { Breadcrumbs, Anchor, Pagination, Text, Select } from "@mantine/core";
+import { fork, allSettled, serialize } from 'effector'
+import { useUnit } from 'effector-react'
+import Link from 'next/link'
+import { Breadcrumbs, Anchor, Pagination, Text, Select } from '@mantine/core'
 import {
   IconChevronRight,
   IconPointFilled,
   IconChevronDown,
-} from "@tabler/icons-react";
-import { GetServerSideProps } from "next";
-import { $page, $totalPages, pageChanged } from "../blog/model";
-import { $marks, $products, pageStarted } from "./model";
-import { ProductCard } from "./card/card";
-import { NewsCard } from "./news/news";
+} from '@tabler/icons-react'
+import { GetServerSideProps } from 'next'
+import { $page, $totalPages, pageChanged } from '../blog/model'
+import { $blogPosts, $marks, $products, pageStarted } from './model'
+import { ProductCard } from './card/card'
+import { NewsCard } from './news/news'
+import { $categories } from '@/api/categories'
+import { $posts } from '../home/model'
 
 const items = [
-  { title: "Главная", href: "/" },
-  { title: "Каталог компаний", href: "/catalog" },
-  { title: "Популярные базы", href: "#" },
+  { title: 'Главная', href: '/' },
+  { title: 'Каталог компаний', href: '/catalog' },
+  { title: 'Популярные базы', href: '#' },
 ].map((item, index) => (
   <Anchor className="text-base text-gray" href={item.href} key={index}>
     {item.title}
   </Anchor>
-));
+))
 
 export const getServerSidePropsCatalog: GetServerSideProps = async ({
   query,
 }) => {
-  const scope = fork();
-  const { category, mark } = query;
+  const scope = fork()
+  const { category, mark } = query
 
-  await allSettled(pageStarted, { scope, params: { category, mark } });
+  await allSettled(pageStarted, { scope, params: { category, mark } })
 
   return {
     props: {
       values: serialize(scope),
       revalidate: 60 * 5, // 5 minutes
     },
-  };
-};
+  }
+}
 
 export const CatalogPage = () => {
-  const { products, marks, page, totalPages, onPageChanged } = useUnit({
+  const {
+    products,
+    marks,
+    page,
+    totalPages,
+    onPageChanged,
+    categories,
+    posts,
+  } = useUnit({
     products: $products,
     marks: $marks,
     page: $page,
     totalPages: $totalPages,
     onPageChanged: pageChanged,
-  });
+    categories: $categories,
+    posts: $blogPosts,
+  })
 
   function NextButton() {
-    return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>;
+    return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>
   }
 
   function PrevButton() {
-    return <div style={{ display: "none" }}></div>;
+    return <div style={{ display: 'none' }}></div>
   }
 
   return (
@@ -61,12 +73,12 @@ export const CatalogPage = () => {
       <div className="container flex flex-no-wrap">
         <div className="flex flex-col mr-14 w-[399px]">
           <h3 className="mt-5 font-medium">Популярные базы</h3>
-          {products.slice(-15).map((product) => (
-            <Link key={product.slug} href={`/product/$product.slug`}>
+          {categories.slice(-15).map((categorie) => (
+            <Link key={categorie.slug} href={`/product/$product.slug`}>
               <li className="mb-2 w-[399px] flex text-base hover:bg-light">
                 <IconPointFilled className="w-4" />
                 &thinsp;
-                {product.h1}
+                {categorie.name}
               </li>
             </Link>
           ))}
@@ -77,10 +89,13 @@ export const CatalogPage = () => {
 
           <div className="flex flex-col">
             <h1 className="font-medium">Популярные новости</h1>
-            <NewsCard />
-            <NewsCard />
-            <NewsCard />
-            <NewsCard />
+            {posts.slice(-3).map((post) => (
+              <div className="mb-[20px]">
+                <Link href={`/blog/${post.slug}`}>
+                  <NewsCard key={post.title} post={post} />
+                </Link>
+              </div>
+            ))}
           </div>
 
           <Link href="/blog">
@@ -106,8 +121,8 @@ export const CatalogPage = () => {
 
           <Breadcrumbs
             classNames={{
-              root: "text-gray",
-              separator: "text-gray",
+              root: 'text-gray',
+              separator: 'text-gray',
             }}
             separator={<IconChevronRight />}
           >
@@ -135,19 +150,19 @@ export const CatalogPage = () => {
                 withCheckIcon={false}
                 placeholder="По популярности"
                 data={[
-                  "Цена: по убыванию",
-                  "Цена: по возрастанию",
-                  "По новизне",
-                  "По рейтингу",
+                  'Цена: по убыванию',
+                  'Цена: по возрастанию',
+                  'По новизне',
+                  'По рейтингу',
                 ]}
                 classNames={{
-                  option: "hover:bg-light rounded-none",
-                  dropdown: "p-0 rounded-none -mt-[10px]",
-                  input: "border-light border-2 placeholder-black",
+                  option: 'hover:bg-light rounded-none',
+                  dropdown: 'p-0 rounded-none -mt-[10px]',
+                  input: 'border-light border-2 placeholder-black',
                 }}
               />
             </div>
-            <div className="flex flex-row flex-wrap mt-24">
+            <div className="flex flex-row flex-wrap mt-24 grid grid-cols-4 grid-rows-2 gap-4 mb-[30px]">
               {products.map((product) => (
                 <ProductCard key={product.title} product={product} />
               ))}
@@ -156,7 +171,7 @@ export const CatalogPage = () => {
               gap="0"
               withControls={true}
               classNames={{
-                control: "border-none text-base mr-2",
+                control: 'border-none text-base mr-2',
               }}
               nextIcon={NextButton}
               previousIcon={PrevButton}
@@ -166,11 +181,13 @@ export const CatalogPage = () => {
             />
           </div>
           <h1 className="font-medium text-center">Больше всего скачивают</h1>
-          {/* <div className="flex flex-row flex-wrap">
-            <ProductCard />
-          </div> */}
+          <div className="flex flex-row flex-wrap grid grid-cols-4 grid-rows-1 gap-4">
+            {products.slice(-4).map((product) => (
+              <ProductCard key={product.title} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
