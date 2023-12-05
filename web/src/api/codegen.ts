@@ -10,69 +10,69 @@
  */
 
 export interface Activation {
-  uid: string;
-  token: string;
+  uid: string
+  token: string
 }
 
 export interface ActivationRequest {
   /** @minLength 1 */
-  uid: string;
+  uid: string
   /** @minLength 1 */
-  token: string;
+  token: string
 }
 
 export interface Application {
-  name: string;
+  name: string
   /**
    * @format email
    * @maxLength 254
    */
-  email: string;
-  description?: string | null;
+  email: string
+  description?: string | null
   /** @maxLength 56 */
-  format: string;
+  format: string
   /** @format uri */
-  attachment?: string | null;
+  attachment?: string | null
 }
 
 export interface ApplicationRequest {
   /** @minLength 1 */
-  name: string;
+  name: string
   /**
    * @format email
    * @minLength 1
    * @maxLength 254
    */
-  email: string;
-  description?: string | null;
+  email: string
+  description?: string | null
   /**
    * @minLength 1
    * @maxLength 56
    */
-  format: string;
+  format: string
   /** @format binary */
-  attachment?: File | null;
+  attachment?: File | null
 }
 
 export interface CartProducts {
-  id: number;
+  id: number
   /**
    * Заголовок веб-страницы
    * @maxLength 100
    */
-  title: string;
+  title: string
   /**
    * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /**
    * Цена
    * @min 0
    * @max 32767
    */
-  price: number;
+  price: number
 }
 
 export interface Category {
@@ -81,10 +81,10 @@ export interface Category {
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /** Название категории */
-  name: string;
-  subcategories: string;
+  name: string
+  subcategories: string
 }
 
 export interface CategoryId {
@@ -93,36 +93,36 @@ export interface CategoryId {
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /** Название категории */
-  name: string;
+  name: string
 }
 
 export interface CategoryInternal {
   /** Название категории */
-  name: string;
+  name: string
   /**
    * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
-  parent_category: string;
+  slug: string
+  parent_category: string
 }
 
 export interface FAQ {
-  id: number;
-  answer: string;
-  question: string;
+  id: number
+  answer: string
+  question: string
 }
 
 export interface Favorite {
-  user_id: number;
-  product: Product;
+  user_id: number
+  product: Product
 }
 
 export interface FavoriteRequest {
-  product: ProductRequest;
+  product: ProductRequest
 }
 
 export interface Grid {
@@ -130,12 +130,12 @@ export interface Grid {
    * Название преимущества
    * @maxLength 100
    */
-  name: string;
+  name: string
   /**
    * Значение
    * @maxLength 100
    */
-  value: string;
+  value: string
 }
 
 export interface Mark {
@@ -144,20 +144,20 @@ export interface Mark {
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /** Название метки */
-  name: string;
+  name: string
 }
 
 export interface MarkInternal {
   /** Название метки */
-  name: string;
+  name: string
   /**
    * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
 }
 
 export interface Newsletter {
@@ -165,7 +165,7 @@ export interface Newsletter {
    * @format email
    * @maxLength 254
    */
-  email: string;
+  email: string
 }
 
 export interface NewsletterRequest {
@@ -174,33 +174,65 @@ export interface NewsletterRequest {
    * @minLength 1
    * @maxLength 254
    */
-  email: string;
+  email: string
 }
 
 export interface Otp {
   /** @maxLength 6 */
-  code: string;
+  code: string
   /** @maxLength 40 */
-  token: string;
+  token: string
 }
 
 export interface PaginatedFavoriteList {
   /** @example 123 */
-  count?: number;
+  count?: number
   /**
    * @format uri
    * @example "http://api.example.org/accounts/?page=4"
    */
-  next?: string | null;
+  next?: string | null
   /**
    * @format uri
    * @example "http://api.example.org/accounts/?page=2"
    */
-  previous?: string | null;
-  results?: Favorite[];
+  previous?: string | null
+  results?: Favorite[]
 }
 
 export interface PaginatedPostList {
+  /** @example 123 */
+  count?: number
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=4"
+   */
+  next?: string | null
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=2"
+   */
+  previous?: string | null
+  results?: Post[]
+}
+
+export interface PaginatedCatalogList {
+  /** @example 123 */
+  count?: number
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=4"
+   */
+  next?: string | null
+  /**
+   * @format uri
+   * @example "http://api.example.org/accounts/?page=2"
+   */
+  previous?: string | null
+  results?: Product[]
+}
+
+export interface PaginatedProductList {
   /** @example 123 */
   count?: number;
   /**
@@ -213,59 +245,59 @@ export interface PaginatedPostList {
    * @example "http://api.example.org/accounts/?page=2"
    */
   previous?: string | null;
-  results?: Post[];
+  results?: Product[];
 }
 
 export interface PasswordResetConfirm {
-  uid: string;
-  token: string;
-  new_password: string;
+  uid: string
+  token: string
+  new_password: string
 }
 
 export interface PasswordResetConfirmRequest {
   /** @minLength 1 */
-  uid: string;
+  uid: string
   /** @minLength 1 */
-  token: string;
+  token: string
   /** @minLength 1 */
-  new_password: string;
+  new_password: string
 }
 
 export interface Post {
-  id: number;
+  id: number
   /**
    * SEO заголовок
    * @maxLength 60
    */
-  title: string;
+  title: string
   /**
    * SEO описание публикации
    * @maxLength 400
    */
-  description: string;
-  tags: TagPost[];
+  description: string
+  tags: TagPost[]
   /**
    * Заголовок
    * @maxLength 100
    */
-  h1: string;
+  h1: string
   /** Текст публикации */
-  content: string;
+  content: string
   /** @format uri */
-  image: string;
-  user: number;
+  image: string
+  user: number
   /**
    * Слаг статьи
    * Автоматическое поле, можно заполнить вручную.
    * @maxLength 180
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug?: string;
+  slug?: string
   /**
    * Дата публикации
    * @format date-time
    */
-  pub_date: string | null;
+  pub_date: string | null
 }
 
 export interface Price {
@@ -273,14 +305,14 @@ export interface Price {
    * Название тарифа
    * @maxLength 100
    */
-  name: string;
+  name: string
   /**
    * Цена
    * @min 0
    * @max 32767
    */
-  price: number;
-  grid: Grid[];
+  price: number
+  grid: Grid[]
 }
 
 export interface Product {
@@ -288,83 +320,83 @@ export interface Product {
    * Заголовок веб-страницы
    * @maxLength 100
    */
-  title: string;
+  title: string
   /**
    * Заголовок на странице
    * @maxLength 100
    */
-  h1: string;
+  h1: string
   /**
    * Изображение
    * @format uri
    */
-  img_product?: string | null;
+  img_product?: string | null
   /**
    * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /**
    * Цена
    * @min 0
    * @max 32767
    */
-  price: number;
+  price: number
 }
 
 export interface ProductDetail {
-  id: number;
+  id: number
   /**
    * Заголовок веб-страницы
    * @maxLength 100
    */
-  title: string;
+  title: string
   /**
    * Описание
    * @maxLength 200
    */
-  description: string;
+  description: string
   /**
    * Заголовок на странице
    * @maxLength 100
    */
-  h1: string;
+  h1: string
   /**
    * Изображение
    * @format uri
    */
-  img_product?: string | null;
+  img_product?: string | null
   /**
    * Слаг
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /**
    * БД Парсинга
    * @format uri
    */
-  datafield: string;
+  datafield: string
   /**
    * Цена
    * @min 0
    * @max 32767
    */
-  price: number;
+  price: number
   /**
    * Кол-во загрузок
    * @min 0
    * @max 32767
    */
-  downloaded: number;
+  downloaded: number
   /** Краткое описание */
-  annotation: string;
+  annotation: string
   /** Подробное описание */
-  content: string;
-  mark: MarkInternal[];
-  category: CategoryInternal[];
-  is_favorite: boolean;
+  content: string
+  mark: MarkInternal[]
+  category: CategoryInternal[]
+  is_favorite: boolean
 }
 
 export interface ProductRequest {
@@ -373,49 +405,49 @@ export interface ProductRequest {
    * @minLength 1
    * @maxLength 100
    */
-  title: string;
+  title: string
   /**
    * Заголовок на странице
    * @minLength 1
    * @maxLength 100
    */
-  h1: string;
+  h1: string
   /**
    * Изображение
    * @format binary
    */
-  img_product?: File | null;
+  img_product?: File | null
   /**
    * Слаг
    * @minLength 1
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug: string;
+  slug: string
   /**
    * Цена
    * @min 0
    * @max 32767
    */
-  price: number;
+  price: number
 }
 
 export interface Review {
-  id: number;
+  id: number
   /**
    * @min 1
    * @max 5
    */
-  rating: number;
+  rating: number
   /** @maxLength 1024 */
-  text: string;
+  text: string
   /** @maxLength 256 */
-  author: string;
+  author: string
 }
 
 export interface SendEmailReset {
   /** @format email */
-  email: string;
+  email: string
 }
 
 export interface SendEmailResetRequest {
@@ -423,118 +455,118 @@ export interface SendEmailResetRequest {
    * @format email
    * @minLength 1
    */
-  email: string;
+  email: string
 }
 
 export interface SetPassword {
-  new_password: string;
-  current_password: string;
+  new_password: string
+  current_password: string
 }
 
 export interface SetPasswordRequest {
   /** @minLength 1 */
-  new_password: string;
+  new_password: string
   /** @minLength 1 */
-  current_password: string;
+  current_password: string
 }
 
 export interface SetUsername {
-  current_password: string;
+  current_password: string
   /**
    * Адрес электронной почты
    * @format email
    * @maxLength 254
    */
-  new_email: string;
+  new_email: string
 }
 
 export interface SetUsernameRequest {
   /** @minLength 1 */
-  current_password: string;
+  current_password: string
   /**
    * Адрес электронной почты
    * @format email
    * @minLength 1
    * @maxLength 254
    */
-  new_email: string;
+  new_email: string
 }
 
 export interface ShortApplication {
-  name: string;
+  name: string
   /** @maxLength 26 */
-  phone: string;
+  phone: string
 }
 
 export interface ShortApplicationRequest {
   /** @minLength 1 */
-  name: string;
+  name: string
   /**
    * @minLength 1
    * @maxLength 26
    */
-  phone: string;
+  phone: string
 }
 
 export interface TagPost {
-  id: number;
+  id: number
   /**
    * Название тега
    * @maxLength 50
    */
-  name: string;
+  name: string
   /**
    * Слаг тега
    * Автоматическое поле, можно заполнить вручную.
    * @maxLength 80
    * @pattern ^[-a-zA-Z0-9_]+$
    */
-  slug?: string;
+  slug?: string
 }
 
 export interface Team {
-  name: string;
-  description: string;
+  name: string
+  description: string
   /**
    * Картинка
    * @format uri
    */
-  image: string;
+  image: string
 }
 
 export interface TokenObtainPair {
-  access: string;
-  refresh: string;
+  access: string
+  refresh: string
 }
 
 export interface TokenObtainPairRequest {
   /** @minLength 1 */
-  email: string;
+  email: string
   /** @minLength 1 */
-  password: string;
+  password: string
 }
 
 export interface TokenRefresh {
-  access: string;
+  access: string
 }
 
 export interface TokenRefreshRequest {
   /** @minLength 1 */
-  refresh: string;
+  refresh: string
 }
 
 export interface TokenVerifyRequest {
   /** @minLength 1 */
-  token: string;
+  token: string
 }
 
 export interface User {
-  id: number;
+  id: number
   /**
    * Адрес электронной почты
    * @format email
    */
-  email: string;
+  email: string
 }
 
 export interface UserCreate {
@@ -543,8 +575,8 @@ export interface UserCreate {
    * @format email
    * @maxLength 254
    */
-  email: string;
-  id: number;
+  email: string
+  id: number
 }
 
 export interface UserCreateRequest {
@@ -554,9 +586,9 @@ export interface UserCreateRequest {
    * @minLength 1
    * @maxLength 254
    */
-  email: string;
+  email: string
   /** @minLength 1 */
-  password: string;
+  password: string
 }
 
 export interface UsernameResetConfirm {
@@ -565,7 +597,7 @@ export interface UsernameResetConfirm {
    * @format email
    * @maxLength 254
    */
-  new_email: string;
+  new_email: string
 }
 
 export interface UsernameResetConfirmRequest {
@@ -575,5 +607,5 @@ export interface UsernameResetConfirmRequest {
    * @minLength 1
    * @maxLength 254
    */
-  new_email: string;
+  new_email: string
 }
