@@ -9,7 +9,7 @@ import sqlite3
 
 from constants import DEEPL_TOKEN
 
-headers = {"Authorization":f"DeepL-Auth-Key !!!ade09c63-1962-3ebb-020d-ef5adedb2036:fx"}
+headers = {"Authorization":f"DeepL-Auth-Key "}
 
 def base_connect() -> list[tuple]:
     """Показывает текст для превода"""
