@@ -44,7 +44,7 @@ def _quantity_symbol(text: list[tuple]) -> int:
 
 
 def _deepl_limit() -> LimitTranslate:
-    """Запрос лимита на стороне deepl"""
+    """Запрос лимита на стороне Deepl"""
     try:
         r = requests.get(DEEPL_API_URL_LIMIT, headers=headers)
         if r.status_code != 200:
