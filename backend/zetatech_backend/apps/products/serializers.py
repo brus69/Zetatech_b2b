@@ -84,14 +84,6 @@ class CategorySerializer(serializers.ModelSerializer):
         subcategories = Category.objects.filter(parent_category=obj)
         return CategorySerializer(subcategories, many=True).data
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        context = {
-            'name': data['name'],
-            'slug': data['slug'],
-            'subcategories': data['subcategories'],
-        }
-        return context
 
     
 class CategoryIdSerializer(serializers.ModelSerializer):

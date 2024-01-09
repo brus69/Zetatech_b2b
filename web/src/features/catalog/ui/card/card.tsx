@@ -11,7 +11,7 @@ export const ProductCard = ({ product }: Props) => {
   return (
     <Link
       className="flex flex-col box-border border-solid transition-all border rounded border-light hover:border-ruby cursor-pointer relative mb-[30px]"
-      href={`/products/${product.slug}`}
+      href={`/product/${product.slug}`}
     >
       <div className="flex flex-col min-h-[268px] p-4">
         <IconHeart className="absolute top-2 right-2" />
