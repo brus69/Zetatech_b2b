@@ -1,14 +1,13 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
-import { Mark, PaginatedProductList, Product } from "@/api/codegen";
+import { Mark, PaginatedProductList } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
 import { Post, PaginatedPostList } from "@/api/codegen";
 import { $$paginated } from "@/shared/fabrics/paginated";
 
-export const $products = createStore<Product[]>([]);
-
 type PageStarted = {
   category?: string | string[];
   mark?: string | string[];
+  page: number;
 };
 
 export const pageStarted = createEvent<PageStarted>();
@@ -21,7 +20,10 @@ export const fetchBlogPostsFx = createEffect<PageStarted, PaginatedPostList>(
   (params) => {
     return requestFx({
       path: "/blog/",
-      params,
+      params: {
+        ...params,
+        page_size: 3,
+      },
     });
   }
 );
@@ -44,34 +46,14 @@ sample({
   target: $blogPosts,
 });
 
-export const fetchProducts = createEvent();
-
-export const fetchProductsFx = createEffect<unknown, PaginatedProductList>(
-  async () => {
-    const response = await requestFx({
-      path: "/products/",
-    });
-
-    return response;
-  }
-);
-
-sample({
-  clock: pageStarted,
-  target: fetchProducts,
+export const $paginatedProducts = $$paginated<PaginatedProductList>({
+  path: "/products/",
 });
 
 sample({
-  clock: fetchProducts,
-  target: fetchProductsFx,
-});
-
-sample({
-  clock: fetchProductsFx.doneData,
-  fn: (data) => {
-    return data.results || [];
-  },
-  target: $products,
+  fn: () => ({ page_size: 6 }),
+  clock: [pageStarted, $paginatedProducts.pageChanged],
+  target: $paginatedProducts.fetchItems,
 });
 
 export const $marks = createStore<Mark[]>([]);
@@ -97,25 +79,4 @@ sample({
 sample({
   clock: fetchMarksFx.doneData,
   target: $marks,
-});
-
-export const {
-  $items,
-  $totalItems,
-  fetchItems,
-  pageChanged,
-  $totalPages,
-  $page,
-} = $$paginated<PaginatedPostList>({
-  path: "/blog/",
-});
-
-sample({
-  clock: [pageStarted, pageChanged],
-  fn: () => {
-    return {
-      page_size: 12,
-    };
-  },
-  target: fetchItems,
 });
