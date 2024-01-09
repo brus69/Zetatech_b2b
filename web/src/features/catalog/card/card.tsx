@@ -9,7 +9,7 @@ type Props = {
 
 export const ProductCard = ({ product }: Props) => {
   return (
-    <Link href={`/product/${product.slug}`}>
+    <Link href={`/products/${product.slug}`}>
       <div className="flex flex-col w-[178px] h-[268px] box-border border-solid transition-colors duration-300 ease-in-out border rounded border-light hover:border-ruby cursor-pointer relative mb-[30px]">
         <div className="flex flex-col items-center min-h-[268px]">
           <IconHeart className="absolute top-0 right-0 mr-[15px] mt-[20px]" />

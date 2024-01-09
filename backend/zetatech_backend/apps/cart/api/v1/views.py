@@ -6,7 +6,6 @@ from drf_spectacular.utils import extend_schema
 from apps.cart.models import Cart
 from apps.cart.serializers import CreateCartSerializer, CartProductsSerializer
 from apps.products.models import Product
-from django.shortcuts import get_object_or_404
 
 @extend_schema(responses={"200": CartProductsSerializer})
 class CartView(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -43,19 +42,16 @@ class CartView(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericV
     
     @extend_schema(request=CreateCartSerializer)
     def create(self, request, *args, **kwargs):
-        product = get_object_or_404(Product, pk=request.data['product_id'])
-        product_serializer = CartProductsSerializer(product)
-
         if request.user.pk:
             cart = Cart.objects.create(product_id=request.data['product_id'], user_id = request.user.pk)
             cart.save()
-            return Response(product_serializer.data)
+            return Response([cart.id])
         
         ids = cache.get(get_cart_redis_key(request.COOKIES['session_id'])) or []
         ids.append(request.data['product_id'])
         cache.set(get_cart_redis_key(request.COOKIES['session_id']), list(set(ids)))
 
-        return Response(product_serializer.data)
+        return Response(ids)
 
 
     @extend_schema(responses={ "200": CartProductsSerializer(many=True)})

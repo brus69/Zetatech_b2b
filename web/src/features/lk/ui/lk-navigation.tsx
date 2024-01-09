@@ -1,42 +1,42 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { DetailedHTMLProps, HTMLAttributes } from "react";
-import { IconDoorExit } from "@tabler/icons-react";
-import { Button } from "@mantine/core";
-import { cn } from "@/shared/lib";
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { IconDoorExit } from '@tabler/icons-react'
+import { Button } from '@mantine/core'
+import { cn } from '@/shared/lib'
 
 type Props = {} & DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
->;
+>
 
 const ITEMS = [
   {
-    path: "/lk/orders",
-    name: "Мои заказы",
+    path: '/lk/orders',
+    name: 'Мои заказы',
   },
   {
-    path: "/lk/favorites",
-    name: "Избранное",
+    path: '/lk/favorites',
+    name: 'Избранное',
   },
   {
-    path: "/lk/plan",
-    name: "Тарифный план",
+    path: '/lk/plan',
+    name: 'Тарифный план',
   },
   {
-    path: "/lk/account",
-    name: "Личный данные",
+    path: '/lk/account',
+    name: 'Личные данные',
   },
-];
+]
 
 export const LkNavigation = (props: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <div
       {...props}
       className={cn(
-        "md:min-w-[290px] border-r-light border-solid border-0 border-r",
+        'md:min-w-[290px] border-r-light border-solid border-0 border-r',
         props.className
       )}
     >
@@ -46,8 +46,8 @@ export const LkNavigation = (props: Props) => {
             key={path}
             href={path}
             className={cn(
-              "flex items-center gap-2 py-2 px-4 hover:text-orange-700",
-              path === router.pathname && "bg-light"
+              'flex items-center gap-2 py-2 px-4 hover:text-orange-700',
+              path === router.pathname && 'bg-light'
             )}
           >
             {name}
@@ -59,14 +59,14 @@ export const LkNavigation = (props: Props) => {
         variant="transparent"
         color="gray"
         type="button"
-        className={cn("px-4")}
+        className={cn('px-4')}
         onClick={() => {
-          router.push("/").then(() => {});
+          router.push('/').then(() => {})
         }}
       >
         <IconDoorExit className="mr-3" />
         Выйти
       </Button>
     </div>
-  );
-};
+  )
+}
