@@ -50,7 +50,6 @@ class ProductViewSet(
   
 
 class CategoryViewSet(viewsets.ViewSet):
-
     @extend_schema(responses={"200": CategorySerializer})
     def list(self, request):
         queryset = Category.objects.filter(parent_category=None)
