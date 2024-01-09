@@ -13,3 +13,6 @@
 
 ## Запуск фронта (dev режим)
 - cd web && npm i && npm run dev
+
+## Стек Frontend
+React, Ts, Effector, Next, Mantine, Tailwind

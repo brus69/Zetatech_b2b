@@ -1,6 +1,8 @@
 import { fork, allSettled, serialize } from "effector";
 import { useUnit } from "effector-react";
 import { GetServerSideProps } from "next";
+import { NextSeo } from "next-seo";
+import dayjs from "dayjs";
 import { $post, pageStarted } from "./model";
 import { Newsletter } from "@/widgets/newsletter";
 
@@ -29,12 +31,19 @@ export const PostPage = () => {
 
   return (
     <>
-      <div className="container">
-        <h1 className="mb-8">{post.h1}</h1>
+      <NextSeo title={post.title} description={post.description} />
+      <div className="container flex flex-col justify-between gap-16 my-12 sm:flex-row">
+        <div className="flex flex-col">
+          <p className="text-gray">
+            {dayjs(post.pub_date).format("DD MMMM, YYYY")}
+          </p>
+          <h1 className="mt-0 mb-8">{post.h1}</h1>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </div>
 
-        <p>{post.description}</p>
-
-        <Newsletter />
+        <div className="flex flex-col w-full shrink-0 sm:max-w-[326px]">
+          <Newsletter />
+        </div>
       </div>
     </>
   );

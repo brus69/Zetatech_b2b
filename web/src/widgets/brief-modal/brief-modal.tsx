@@ -106,7 +106,7 @@ export const BriefModal = () => {
           )}
 
           <form
-            className="flex flex-col gap-10 max-w-[600px]"
+            className="flex flex-col gap-10 max-w-[680px]"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col gap-10 md:flex-row">
@@ -153,6 +153,7 @@ export const BriefModal = () => {
                 }}
                 render={({ field }) => (
                   <Select
+                    className="flex-1"
                     key={field.value}
                     allowDeselect
                     placeholder="Формат полученных данных"
@@ -171,6 +172,7 @@ export const BriefModal = () => {
                   return (
                     <FileInput
                       {...field}
+                      className="flex-1"
                       onChange={(file) => {
                         onChange(file);
                       }}

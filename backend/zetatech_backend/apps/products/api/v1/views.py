@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from apps.blog.pagination import BlogAPIPagination
 from drf_spectacular.utils import extend_schema
 from django.db.models import Exists, OuterRef
 from apps.products.serializers import (ProductDetailSerializer, ProductSerializer,
@@ -23,6 +24,9 @@ class ProductViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = ProductSerializer
+
+    pagination_class = BlogAPIPagination
+
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'retrieve':
