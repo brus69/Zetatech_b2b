@@ -1,45 +1,47 @@
-import { fork, allSettled, serialize } from 'effector'
-import { useUnit } from 'effector-react'
-import Link from 'next/link'
-import { Breadcrumbs, Anchor, Pagination, Text, Select } from '@mantine/core'
+import { fork, allSettled, serialize } from "effector";
+import { useUnit } from "effector-react";
+import Link from "next/link";
+import { Breadcrumbs, Anchor, Pagination, Text, Select } from "@mantine/core";
 import {
   IconChevronRight,
   IconPointFilled,
   IconChevronDown,
-} from '@tabler/icons-react'
-import { GetServerSideProps } from 'next'
-import { $page, $totalPages, pageChanged } from '../blog/model'
-import { $blogPosts, $marks, $products, pageStarted } from './model'
-import { ProductCard } from './card/card'
-import { NewsCard } from './news/news'
-import { $categories } from '@/api/categories'
-import { $posts } from '../home/model'
+} from "@tabler/icons-react";
+import { GetServerSideProps } from "next";
+import { $blogPosts, $marks, pageStarted, $paginatedProducts } from "./model";
+import { ProductCard } from "./ui/card/card";
+import { NewsCard } from "./ui/news/news";
+import { PopularProducts } from "./ui/popular-products/view";
+import { $categories } from "@/api/categories";
 
 const items = [
-  { title: 'Главная', href: '/' },
-  { title: 'Каталог компаний', href: '/catalog' },
-  { title: 'Популярные базы', href: '#' },
+  { title: "Главная", href: "/" },
+  { title: "Каталог компаний", href: "/catalog" },
+  { title: "Популярные базы", href: "#" },
 ].map((item, index) => (
   <Anchor className="text-base text-gray" href={item.href} key={index}>
     {item.title}
   </Anchor>
-))
+));
 
 export const getServerSidePropsCatalog: GetServerSideProps = async ({
   query,
 }) => {
-  const scope = fork()
-  const { category, mark } = query
+  const scope = fork();
+  const { category, mark, page } = query;
 
-  await allSettled(pageStarted, { scope, params: { category, mark } })
+  await allSettled(pageStarted, {
+    scope,
+    params: { category, mark, page: Number.parseInt(String(page)) || 1 },
+  });
 
   return {
     props: {
       values: serialize(scope),
-      revalidate: 60 * 5, // 5 minutes
+      revalidate: 60,
     },
-  }
-}
+  };
+};
 
 export const CatalogPage = () => {
   const {
@@ -51,21 +53,17 @@ export const CatalogPage = () => {
     categories,
     posts,
   } = useUnit({
-    products: $products,
+    products: $paginatedProducts.$items,
     marks: $marks,
-    page: $page,
-    totalPages: $totalPages,
-    onPageChanged: pageChanged,
+    page: $paginatedProducts.$page,
+    totalPages: $paginatedProducts.$totalPages,
+    onPageChanged: $paginatedProducts.pageChanged,
     categories: $categories,
     posts: $blogPosts,
-  })
+  });
 
   function NextButton() {
-    return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>
-  }
-
-  function PrevButton() {
-    return <div style={{ display: 'none' }}></div>
+    return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>;
   }
 
   return (
@@ -73,12 +71,12 @@ export const CatalogPage = () => {
       <div className="container flex flex-no-wrap">
         <div className="flex flex-col mr-14 w-[399px]">
           <h3 className="mt-5 font-medium">Популярные базы</h3>
-          {categories.slice(-15).map((categorie) => (
-            <Link key={categorie.slug} href={`/product/$product.slug`}>
+          {categories.slice(-15).map((category) => (
+            <Link key={category.slug} href={`/catalog/${category.slug}`}>
               <li className="mb-2 w-[399px] flex text-base hover:bg-light">
                 <IconPointFilled className="w-4" />
                 &thinsp;
-                {categorie.name}
+                {category.name}
               </li>
             </Link>
           ))}
@@ -90,7 +88,7 @@ export const CatalogPage = () => {
           <div className="flex flex-col">
             <h1 className="font-medium">Популярные новости</h1>
             {posts.slice(-3).map((post) => (
-              <div className="mb-[20px]">
+              <div key={post.slug} className="mb-[20px]">
                 <Link href={`/blog/${post.slug}`}>
                   <NewsCard key={post.title} post={post} />
                 </Link>
@@ -121,8 +119,8 @@ export const CatalogPage = () => {
 
           <Breadcrumbs
             classNames={{
-              root: 'text-gray',
-              separator: 'text-gray',
+              root: "text-gray",
+              separator: "text-gray",
             }}
             separator={<IconChevronRight />}
           >
@@ -144,50 +142,42 @@ export const CatalogPage = () => {
             </p>
             <div className="absolute right-0 block z-1">
               <Select
-                rightSection=<IconChevronDown />
+                rightSection={<IconChevronDown />}
                 color="bg-light"
                 radius="xs"
                 withCheckIcon={false}
                 placeholder="По популярности"
                 data={[
-                  'Цена: по убыванию',
-                  'Цена: по возрастанию',
-                  'По новизне',
-                  'По рейтингу',
+                  "Цена: по убыванию",
+                  "Цена: по возрастанию",
+                  "По новизне",
+                  "По рейтингу",
                 ]}
                 classNames={{
-                  option: 'hover:bg-light rounded-none',
-                  dropdown: 'p-0 rounded-none -mt-[10px]',
-                  input: 'border-light border-2 placeholder-black',
+                  option: "hover:bg-light rounded-none",
+                  dropdown: "p-0 rounded-none -mt-[10px]",
+                  input: "border-light border-2 placeholder-black",
                 }}
               />
             </div>
-            <div className="flex flex-row flex-wrap mt-24 grid grid-cols-4 grid-rows-2 gap-4 mb-[30px]">
+            <div className="mt-24 grid grid-cols-4 grid-rows-2 gap-4 mb-[30px]">
               {products.map((product) => (
                 <ProductCard key={product.title} product={product} />
               ))}
             </div>
             <Pagination
-              gap="0"
-              withControls={true}
               classNames={{
-                control: 'border-none text-base mr-2',
+                control: "border-none",
               }}
               nextIcon={NextButton}
-              previousIcon={PrevButton}
               value={page}
               total={totalPages}
               onChange={onPageChanged}
             />
           </div>
-          <h1 className="font-medium text-center">Больше всего скачивают</h1>
-          <div className="flex flex-row flex-wrap grid grid-cols-4 grid-rows-1 gap-4">
-            {products.slice(-4).map((product) => (
-              <ProductCard key={product.title} product={product} />
-            ))}
-          </div>
+          <PopularProducts />
         </div>
       </div>
     </>
-  )
-}
+  );
+};
