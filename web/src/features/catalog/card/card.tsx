@@ -1,11 +1,11 @@
-import React from 'react'
-import { IconHeart } from '@tabler/icons-react'
-import { Product } from '@/api/codegen'
-import Link from 'next/link'
+import React from "react";
+import { IconHeart } from "@tabler/icons-react";
+import Link from "next/link";
+import { Product } from "@/api/codegen";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 export const ProductCard = ({ product }: Props) => {
   return (
@@ -14,7 +14,7 @@ export const ProductCard = ({ product }: Props) => {
         <div className="flex flex-col items-center min-h-[268px]">
           <IconHeart className="absolute top-0 right-0 mr-[15px] mt-[20px]" />
           <img
-            src={product.img_product || ''}
+            src={product.img_product || ""}
             alt="Card image"
             className="object-cover object-center mt-[33px] mr-[2px]"
           />
@@ -27,5 +27,5 @@ export const ProductCard = ({ product }: Props) => {
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
