@@ -1,9 +1,9 @@
-import React from 'react'
-import { Post } from '@/api/codegen'
+import dayjs from "dayjs";
+import { Post } from "@/api/codegen";
 
 type Props = {
-  post: Post
-}
+  post: Post;
+};
 
 export const NewsCard = ({ post }: Props) => {
   return (
@@ -11,8 +11,10 @@ export const NewsCard = ({ post }: Props) => {
       <img src={post.image} alt={post.title} />
       <div className="ml-[14px]">
         <div className="text-lg font-medium leading-5">{post.title}</div>
-        <div className="text-gray mt-[10px]">{post.pub_date}</div>
+        <div className="text-gray mt-[10px]">
+          {dayjs(post.pub_date || new Date()).format("dd MMM yyyy")}
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -6,6 +6,7 @@ import { $$paginated } from "@/shared/fabrics/paginated";
 type PageStared = {
   category?: string | string[];
   mark?: string | string[];
+  page: number;
 };
 
 export const pageStarted = createEvent<PageStared>();
@@ -20,6 +21,8 @@ export const {
 } = $$paginated<PaginatedPostList>({
   path: "/blog/",
 });
+
+$page.on(pageStarted, (_, { page }) => page || 1);
 
 sample({
   clock: [pageStarted, pageChanged],

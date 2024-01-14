@@ -1,8 +1,8 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
 import { Mark, PaginatedProductList } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
-import { Post, PaginatedPostList } from "@/api/codegen";
 import { $$paginated } from "@/shared/fabrics/paginated";
+import { fetchBlogPosts } from "@/widgets/popular-news/model";
 
 type PageStarted = {
   category?: string | string[];
@@ -12,38 +12,9 @@ type PageStarted = {
 
 export const pageStarted = createEvent<PageStarted>();
 
-export const $blogPosts = createStore<Post[]>([]);
-
-export const fetchBlogPosts = createEvent<PageStarted>();
-
-export const fetchBlogPostsFx = createEffect<PageStarted, PaginatedPostList>(
-  (params) => {
-    return requestFx({
-      path: "/blog/",
-      params: {
-        ...params,
-        page_size: 3,
-      },
-    });
-  }
-);
-
 sample({
   clock: pageStarted,
   target: fetchBlogPosts,
-});
-
-sample({
-  clock: fetchBlogPosts,
-  target: fetchBlogPostsFx,
-});
-
-sample({
-  clock: fetchBlogPostsFx.doneData,
-  fn: (data) => {
-    return data.results || [];
-  },
-  target: $blogPosts,
 });
 
 export const $paginatedProducts = $$paginated<PaginatedProductList>({

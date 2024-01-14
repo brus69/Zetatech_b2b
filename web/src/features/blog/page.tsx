@@ -1,8 +1,9 @@
-import { fork, allSettled, serialize } from 'effector'
-import { useUnit } from 'effector-react'
-import { Title, Pagination } from '@mantine/core'
-import Link from 'next/link'
-import { GetServerSideProps } from 'next'
+import { fork, allSettled, serialize } from "effector";
+import { useUnit } from "effector-react";
+import { Title, Pagination } from "@mantine/core";
+import Link from "next/link";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import {
   $blogTags,
   pageStarted,
@@ -10,49 +11,44 @@ import {
   $page,
   $totalPages,
   pageChanged,
-} from './model'
-import { Newsletter } from '@/widgets/newsletter'
-import { BlogCard } from '@/widgets/blog-card'
+} from "./model";
+import { Newsletter } from "@/widgets/newsletter";
+import { BlogCard } from "@/widgets/blog-card";
 
 export const getServerSidePropsBlogPosts: GetServerSideProps = async ({
   query,
 }) => {
-  const scope = fork()
+  const scope = fork();
 
-  const { category, mark } = query
+  const { category, mark, page } = query;
 
   await allSettled(pageStarted, {
     scope,
     params: {
       category,
       mark,
+      page: Number.isNaN(Number(page)) ? 1 : Number(page),
     },
-  })
+  });
 
   return {
     props: {
       values: serialize(scope),
       revalidate: 60 * 5, // 5 minutes
     },
-  }
-}
-
-function NextButton() {
-  return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>
-}
-
-function PrevButton() {
-  return <div className="hidden cursor-none"></div>
-}
+  };
+};
 
 export const BlogPostsPage = () => {
+  const router = useRouter();
+
   const { blogTags, posts, page, totalPages, onPageChanged } = useUnit({
     posts: $items,
     page: $page,
     totalPages: $totalPages,
     onPageChanged: pageChanged,
     blogTags: $blogTags,
-  })
+  });
 
   return (
     <>
@@ -60,7 +56,7 @@ export const BlogPostsPage = () => {
         <Title
           order={2}
           classNames={{
-            root: 'mb-4 mt-12',
+            root: "mb-4 mt-12",
           }}
         >
           Блог
@@ -95,15 +91,18 @@ export const BlogPostsPage = () => {
           gap="0"
           withControls={true}
           classNames={{
-            control: 'border-none text-base mr-2',
+            control: "border-none text-base mr-2",
           }}
-          nextIcon={NextButton}
-          previousIcon={PrevButton}
           value={page}
           total={totalPages}
-          onChange={onPageChanged}
+          onChange={(value) => {
+            router.push(`${router.pathname}?page=${value}`, undefined, {
+              shallow: false,
+            });
+            onPageChanged(value);
+          }}
         />
       </div>
     </>
-  )
-}
+  );
+};
