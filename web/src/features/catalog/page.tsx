@@ -8,11 +8,11 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import { GetServerSideProps } from "next";
-import { $blogPosts, $marks, pageStarted, $paginatedProducts } from "./model";
+import { $marks, pageStarted, $paginatedProducts } from "./model";
 import { ProductCard } from "./ui/card/card";
-import { NewsCard } from "./ui/news/news";
 import { PopularProducts } from "./ui/popular-products/view";
 import { $categories } from "@/api/categories";
+import { PopularNews } from "@/widgets/popular-news/popular-news";
 
 const items = [
   { title: "Главная", href: "/" },
@@ -44,27 +44,15 @@ export const getServerSidePropsCatalog: GetServerSideProps = async ({
 };
 
 export const CatalogPage = () => {
-  const {
-    products,
-    marks,
-    page,
-    totalPages,
-    onPageChanged,
-    categories,
-    posts,
-  } = useUnit({
-    products: $paginatedProducts.$items,
-    marks: $marks,
-    page: $paginatedProducts.$page,
-    totalPages: $paginatedProducts.$totalPages,
-    onPageChanged: $paginatedProducts.pageChanged,
-    categories: $categories,
-    posts: $blogPosts,
-  });
-
-  function NextButton() {
-    return <p className="pl-5 text-xs cursor-pointer text-gray">Следующая</p>;
-  }
+  const { products, marks, page, totalPages, onPageChanged, categories } =
+    useUnit({
+      products: $paginatedProducts.$items,
+      marks: $marks,
+      page: $paginatedProducts.$page,
+      totalPages: $paginatedProducts.$totalPages,
+      onPageChanged: $paginatedProducts.pageChanged,
+      categories: $categories,
+    });
 
   return (
     <>
@@ -85,16 +73,7 @@ export const CatalogPage = () => {
             <h3 className="mt-4 font-medium">Все категории</h3>
           </Link>
 
-          <div className="flex flex-col">
-            <h1 className="font-medium">Популярные новости</h1>
-            {posts.slice(-3).map((post) => (
-              <div key={post.slug} className="mb-[20px]">
-                <Link href={`/blog/${post.slug}`}>
-                  <NewsCard key={post.title} post={post} />
-                </Link>
-              </div>
-            ))}
-          </div>
+          <PopularNews />
 
           <Link href="/blog">
             <Text td="underline">Перейти в блог</Text>
@@ -169,7 +148,6 @@ export const CatalogPage = () => {
               classNames={{
                 control: "border-none",
               }}
-              nextIcon={NextButton}
               value={page}
               total={totalPages}
               onChange={onPageChanged}

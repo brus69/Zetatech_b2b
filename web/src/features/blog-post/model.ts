@@ -1,12 +1,18 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
 import { Post } from "@/api/codegen";
 import { requestFx } from "@/shared/api";
+import { fetchBlogPosts } from "@/widgets/popular-news/model";
 
 type PageStared = {
   slug: string;
 };
 
 export const pageStarted = createEvent<PageStared>();
+
+sample({
+  clock: pageStarted,
+  target: fetchBlogPosts,
+});
 
 export const $post = createStore<Post>(null!);
 

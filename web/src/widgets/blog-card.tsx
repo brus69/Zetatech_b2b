@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import dayjs from "dayjs";
 import { Post } from "@/api/codegen";
 
 type Props = {
@@ -14,7 +14,9 @@ export const BlogCard = ({ post }: Props) => {
     >
       <Link href={`/blog/${post.slug}`} className="w-full px-5 py-2">
         <div className="px-2 mb-7">
-          <p className="p-0 m-0 text-base text-gray">{post.pub_date}</p>
+          <p className="p-0 m-0 text-base text-gray">
+            {dayjs(post.pub_date || new Date()).format("DD MMM YYYY")}
+          </p>
           <p className="mx-0 my-2 text-lg font-medium line-clamp-2">
             {post.title}
           </p>
