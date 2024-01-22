@@ -40,6 +40,12 @@ const Contacts = () => {
         </div>
       </div>
       <div className="flex flex-row gap-60">
+        <div>
+            <p className="text-3xl font-medium">Покупателям</p>
+        </div>
+        <div>
+            <p className="text-3xl font-medium">Реквизиты</p>
+        </div>
       </div>
     </div>
   );
