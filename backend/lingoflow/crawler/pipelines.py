@@ -18,6 +18,7 @@ class Post(Base):
     __tablename__ = 'lingflow_scrapy'
 
     id = Column(Integer, primary_key=True)
+    url = Column(Text)
     title = Column(Text)
     description = Column(Text)
     h1 = Column(Text)
@@ -26,16 +27,17 @@ class Post(Base):
 class PostToDBPiplene:
     
     def open_spider(self, spider):
-        engine = create_engine('sqlite:///sqlite.db')
+        engine = create_engine('sqlite:///scrape_do.db')
         Base.metadata.create_all(engine)
         self.session = Session(engine)
     
     def process_item(self, item, spider):
         post = Post(
+          url = item['url'],
           title = item['title'],
           description = item['description'],
           h1 = item['h1'],
-          content = item['content'],  
+          content = item['content'],
         )
         self.session.add(post)
         self.session.commit()

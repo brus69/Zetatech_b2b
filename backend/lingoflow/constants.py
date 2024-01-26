@@ -1,8 +1,9 @@
 import os
 
 #Перевод статей
-DEEPL_TOKEN = os.environ.get('DEEPL_TOKEN')
 
+# DEEPL_TOKEN = os.environ.get('DEEPL_TOKEN')
+DEEPL_TOKEN = ''
 #Анализ на уникальность
 TEXT_TOKEN = os.environ.get('TEXT_TOKEN')
 
