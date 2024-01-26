@@ -1,3 +1,11 @@
+from database import (
+    base_connect,
+    base_connect_translition,
+    _insert_table_articles,
+    create_table,
+
+)
+
 
 #База которую нужно превести
 DATA_BASE = 'crawler/scrape_do.db'

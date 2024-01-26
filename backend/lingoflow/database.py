@@ -43,7 +43,8 @@ def _create_articles_tables(cursor, table_name = 'articles'):
     title TEXT,
     description TEXT,
     h1 TEXT,
-    content TEXT
+    content TEXT,
+    articles_id NUMERIC
     )
     ''')
 def _create_translated_table(cursor, table_name = 'translated_articles'):
@@ -60,7 +61,20 @@ def _create_translated_table(cursor, table_name = 'translated_articles'):
             translated_title TEXT,
             translated_description TEXT,
             translated_h1 TEXT,
-            translated_content TEXT
+            translated_content TEXT,
+            translated_articles_id NUMERIC NOT NULL,
+            image_id NUMERIC NOT NULL,
+            turgenev_id NUMERIC NOT NULL,
+            uniqueness_id NUMERIC NOT NULL,
+            FOREIGN KEY (image_id) REFERENCES
+            image_post(translation_articles_id),
+            FOREIGN KEY (turgenev_id) REFERENCES
+            turgenev_ashmanov(translation_articles_id),
+            FOREIGN KEY (uniqueness_id) REFERENCES
+            uniqueness_text(translation_articles_id),
+            FOREIGN KEY (translated_articles_id) REFERENCES
+            articles(articles_id)
+            
         )
     ''')
 
@@ -86,16 +100,26 @@ def _create_turgenev_ashmanov_table(cursor, table_name = 'turgenev_ashmanov'):
         )
     ''')
 
-def create_uniqueness_text_table(cursor, table_name = 'uniqueness_text'):
+def _create_uniqueness_text_table(cursor, table_name = 'uniqueness_text'):
     """Проверка уникальности текста"""
 
     cursor.execute(f'''
     CREATE TABLE IF NOT EXISTS {table_name} (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     point NUMERIC,
-    translation_articles
+    translation_articles_id NUMERIC NOT NULL
     )
     ''')
+
+def create_table():
+    """Создание таблиц для перевода"""
+
+    cursor = base_connect_translition()
+    _create_articles_tables(cursor)
+    _create_translated_table(cursor)
+    _create_image_post_table(cursor)
+    _create_turgenev_ashmanov_table(cursor)
+    _create_uniqueness_text_table(cursor)
 
 def _create_name_bd(url: str) -> str:
     """Создает название таблицы для перевода
