@@ -11,7 +11,9 @@ class CrawlerItem(scrapy.Item):
     # name = scrapy.Field()
     pass
 
+
 class PostItrms(scrapy.Item):
+    url = scrapy.Field()
     title = scrapy.Field()
     description = scrapy.Field()
     h1 = scrapy.Field()
