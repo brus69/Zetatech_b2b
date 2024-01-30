@@ -55,7 +55,7 @@ export const Footer = () => {
           </div>
           <div className="flex flex-col mt-8 mb-8 gap-7 sm:mt-0">
             <img
-              src="/logo.svg"
+              src="/logo-light.svg"
               alt="Логотип"
               className="w-[178px] object-contain text-white"
             />
