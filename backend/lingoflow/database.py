@@ -1,11 +1,11 @@
 """
 Модуль для взаимодействия с базой данных, 
-где вы будете хранить переведенные статьи
+для хранения переведенныех статей
 """
 import sqlite3
 from datetime import datetime
 
-from main import DATA_BASE, DATA_BASE_TRANSLIT
+from constants import DATA_BASE, DATA_BASE_TRANSLIT
 
 def base_connect() -> list[tuple]:
     """Соеденение с БД от фреймвока scrapy"""
@@ -17,6 +17,7 @@ def base_connect() -> list[tuple]:
     return data_list
 
 def base_connect_translition() -> sqlite3.Cursor:
+    """Соеденение с БД переводом текстов"""
     conn = sqlite3.connect(DATA_BASE_TRANSLIT)
     cursor = conn.cursor()
     return cursor
@@ -36,17 +37,21 @@ def _insert_table_articles(cursor, rows: list[dict], table_name = 'articles'):
 
 def _create_articles_tables(cursor, table_name = 'articles'):
     """Таблица для непереведенных статей"""
-    cursor.execute(f'''
-    CREATE TABLE IF NOT EXISTS {table_name} (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    url TEXT,
-    title TEXT,
-    description TEXT,
-    h1 TEXT,
-    content TEXT,
-    articles_id NUMERIC
-    )
-    ''')
+    try:
+        cursor.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        url TEXT,
+        title TEXT,
+        description TEXT,
+        h1 TEXT,
+        content TEXT,
+        articles_id NUMERIC
+        )
+        ''')
+    except sqlite3.Error as e:
+        print(f"Ошибка при создании таблицы {table_name}: {e}")
+
 def _create_translated_table(cursor, table_name = 'translated_articles'):
     """Перевод статьи"""
 
@@ -106,34 +111,23 @@ def _create_uniqueness_text_table(cursor, table_name = 'uniqueness_text'):
     cursor.execute(f'''
     CREATE TABLE IF NOT EXISTS {table_name} (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    point NUMERIC,
+    unique NUMERIC,
     translation_articles_id NUMERIC NOT NULL
     )
     ''')
 
-def create_table():
+def create_tables():
     """Создание таблиц для перевода"""
-
-    cursor = base_connect_translition()
-    _create_articles_tables(cursor)
-    _create_translated_table(cursor)
-    _create_image_post_table(cursor)
-    _create_turgenev_ashmanov_table(cursor)
-    _create_uniqueness_text_table(cursor)
-
-def _create_name_bd(url: str) -> str:
-    """Создает название таблицы для перевода
-       на основе url адреса и текущей даты
-    """
-    name_domain = url.split("/")[2]
-    name_domain_clear = name_domain.replace(".", "_")
-    if name_domain.find("-") != -1:
-        name_domain_clear = name_domain_clear.replace("-", "_")
-    now = datetime.now()
-    date = now.strftime("%d_%m_%Y")
-    table_name = f'translated_{name_domain_clear}_{date}'
-    return table_name
-
+    try:
+        cursor = base_connect_translition()
+        _create_articles_tables(cursor)
+        _create_translated_table(cursor)
+        _create_image_post_table(cursor)
+        _create_turgenev_ashmanov_table(cursor)
+        _create_uniqueness_text_table(cursor)
+        print("Таблицы созданы или уже существуют")
+    except:
+        print('Ошибка создании таблиц')
 
 if __name__ == "__main__":
     """ /// """
