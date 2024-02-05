@@ -101,6 +101,7 @@ def _create_turgenev_ashmanov_table(cursor, table_name = 'turgenev_ashmanov'):
         CREATE TABLE IF NOT EXISTS {table_name} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         risk_point NUMERIC,
+        name_risk TEXT,
         translation_articles_id NUMERIC NOT NULL
         )
     ''')
