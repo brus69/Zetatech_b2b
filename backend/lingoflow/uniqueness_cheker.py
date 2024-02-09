@@ -7,7 +7,7 @@ import requests
 import time
 
 from constants import TEXT_TOKEN
-
+from database import (get_tables_translit, insert_table_unigueness_text)
 
 def text_uniqueness(text:str, limit_balance: int) -> str:
     """Проверка на уникальность текста"""
@@ -64,15 +64,20 @@ def text_result_uniqueness_uid(text_uid: str):
         print(f"Ошибка запроса: {e}")
         return None
 
-def text_result(text:str) -> int:
+def text_result() -> int:
     limit_balance = text_limit_balance()
-    text_uid = text_uniqueness(text, limit_balance)
-    if text_uid:
-        data = text_result_uniqueness_uid(text_uid)
-        return int(float(data))
+    texts = get_tables_translit('translated_articles', 'id, translated_content')
+    for text in texts:
+        text_uid = text_uniqueness(text[1], limit_balance)
+        if text_uid:
+            data = text_result_uniqueness_uid(text_uid)
+            result = (int(float(data)), text[0])
+            print(result)
+            insert_table_unigueness_text(result)
+    return f'Запись'
+
 
 
 if __name__ == "__main__":
-    text = 'type() — это базовая функция, которая помогает узнать тип переменной. Получившееся значение можно будет выводить точно так же, как обычные значения переменных с помощью print. Преобразование значения float в int выполняется с помощью преобразования типа, которое представляет собой явный метод преобразования операнда в определенный тип. Я несу ерунду и тут будет текст подлинее, что разве текст должен быть таким линным? Да ладно сколько можно почему такой короткий текст?'
-    result = text_result(text)
+    result = text_result()
     print(result)

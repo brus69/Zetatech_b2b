@@ -9,11 +9,33 @@
 
 import requests
 
-from constants import TURGENEV_TOKEN
+from constants import (TURGENEV_TOKEN,
+                       PRICE_API_LIMIT_TURGENEV)
 
+from database import (get_tables_translit,
+                      insert_table_turgenev_ashmanov)
+
+def turgenev_balance():
+    """Проверить баланс"""
+    url = 'https://turgenev.ashmanov.com/'
+    payload = {
+        'api': 'balance',
+        'key': TURGENEV_TOKEN
+    }
+    r = requests.get(url, params=payload)
+    return r.json()
+
+def check_limit():
+    """Кол-во проверок"""
+    balance = turgenev_balance()
+    count = int(balance['balance'] / PRICE_API_LIMIT_TURGENEV)
+    return count
 
 def check_text_turgenev(text:str) -> dict:
     """Проверка текста на угрозу риска алгоритма Баден-Баден"""
+    limit = check_limit()
+    if limit < 1:
+        print('Ошибка: Закончились лимиты')
     url = 'https://turgenev.ashmanov.com/'
     payload = {
         'key':TURGENEV_TOKEN,
@@ -32,6 +54,12 @@ def check_text_turgenev(text:str) -> dict:
         return None
     return data
 
+def get_result_turgenev():
+    data = get_tables_translit('translated_articles', 'id, translated_content')
+    for text_content in data:
+        data = check_text_turgenev(text_content[1])
+        row = (data['risk_point'], data['name_risk'], text_content[0])
+        insert_table_turgenev_ashmanov(row)
 
 if __name__ == "__main__":
-    print(check_text_turgenev(text))
+    get_result_turgenev()
