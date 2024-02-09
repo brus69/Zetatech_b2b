@@ -12,6 +12,8 @@ import os
 import requests
 
 from constants import FUSIONBRAIN_PUBLIC_TOKEN, FUSIONBRAIN_SECRET_TOKEN
+from database import (get_tables_translit,
+                      insert_image_post)
 
 class Text2ImageAPI:
 
@@ -57,28 +59,42 @@ class Text2ImageAPI:
             time.sleep(delay)
 
 def decode_and_save_image(base64_string, output_folder):
+    """Хранит картинку, на выход имя изображения"""
     try:
         image_data = base64.b64decode(base64_string)
         image = Image.open(BytesIO(image_data))
         current_datetime = datetime.now()
-        timestamp = current_datetime.strftime("%Y%m%d_%H%M%S")
-        output_filename = f"image_{timestamp}.png"
+        timestamp = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+        output_filename = f"img_{timestamp}.png"
         output_path = os.path.join(output_folder, output_filename)
         os.makedirs(output_folder, exist_ok=True)
         image.save(output_path)
+        return output_filename
 
     except Exception as e:
         print(f"Error processing image: {str(e)}")
 
-
-if __name__ == '__main__':
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', 
-                        FUSIONBRAIN_PUBLIC_TOKEN, 
+def generate_image(text_promt):
+    """Генерация изображения на выход путь до файла"""
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/',
+                        FUSIONBRAIN_PUBLIC_TOKEN,
                         FUSIONBRAIN_SECRET_TOKEN)
     model_id = api.get_model()
-    uuid = api.generate("Парсинг, базы данных", model_id)
-    #Промт будет геренерироваться на основе статьи
+    uuid = api.generate(text_promt, model_id)
+    # Промт будет геренерироваться на основе статьи
     images = api.check_generation(uuid)
     output_folder = "media"
-    decode_and_save_image(images[0], output_folder)
-  
+    name_file = decode_and_save_image(images[0], output_folder)
+    return output_folder + '/' + name_file
+
+def get_result_image():
+    text_promt = get_tables_translit('promt', 'promt, translation_articles_id')
+
+    for text in text_promt:
+        url_post_image = generate_image(text[0])
+        data = (url_post_image, text[1])
+        insert_image_post(data)
+        print(data)
+
+if __name__ == '__main__':
+    get_result_image()
