@@ -66,11 +66,14 @@ export const ProductPage = () => {
       <NextSeo title={product?.title} />
 
       <div className="container">
-        <Breadcrumbs className="mt-12" separator={<IconChevronRight />}>
+        <Breadcrumbs
+          className="flex-wrap mt-12"
+          separator={<IconChevronRight />}
+        >
           {items}
         </Breadcrumbs>
 
-        <div className="grid grid-cols-[auto,380px] gap-16 mt-9 pb-32 relative">
+        <div className="grid md:grid-cols-[auto,380px] gap-16 mt-9 pb-32 relative">
           <div>
             <div className="flex gap-32 ">
               {product.img_product && (
@@ -151,70 +154,73 @@ export const ProductPage = () => {
         </div>
       </div>
 
-      <div className="mt-auto flex items-center h-[40rem] bg-[#FAFAFB]">
-        <div className="flex  flex-col mx-auto w-[61rem]">
-          <h2 className="text-5xl font-medium leading-10 text-center">
-            Почему выбирают нас?
-          </h2>
+      <div className="mt-auto flex items-center  pb-16 bg-[#FAFAFB]">
+        <div className="container">
+          <div className="flex flex-col">
+            <h2 className="text-5xl font-medium leading-10 text-center">
+              Почему выбирают нас?
+            </h2>
 
-          <div className="relative flex items-center gap-24 mt-32">
-            <div>
-              <p className=" text-9xl font-black absolute top-[-70px] text-light m-0">
-                1
-              </p>
-
-              <div className="relative z-0">
-                <div className="text-2xl font-medium leading-9 text-ruby">
-                  Качество
-                </div>
-
-                <p>
-                  Мы даем вам обзор тысяч поставщиков данных. Вы получите полную
-                  картину
+            <div className="relative flex flex-col items-center gap-24 mt-32 lg:flex-row">
+              <div className="relative">
+                <p className=" text-9xl font-black absolute top-[-70px] text-light m-0">
+                  1
                 </p>
+
+                <div className="relative z-0">
+                  <div className="text-2xl font-medium leading-9 text-ruby">
+                    Качество
+                  </div>
+
+                  <p>
+                    Мы даем вам обзор тысяч поставщиков данных. Вы получите
+                    полную картину
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <p className="text-9xl font-black absolute top-[-70px] text-light m-0">
+                  2
+                </p>
+
+                <div className="relative z-0">
+                  <div className="text-2xl font-medium leading-9 text-ruby">
+                    Удобство
+                  </div>
+
+                  <p>
+                    В кратчайшие сроки получайте результат в удобном для вас
+                    формате
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <p className="text-9xl font-black absolute top-[-70px] text-light m-0">
+                  3
+                </p>
+
+                <div className="relative z-0">
+                  <div className="text-2xl font-medium leading-9 text-ruby">
+                    Надежность
+                  </div>
+                  <p>
+                    Получите бесплатную консультацию по выбору источников от
+                    нашей команды
+                  </p>
+                </div>
               </div>
             </div>
-            <div>
-              <p className="text-9xl font-black absolute top-[-70px] text-light m-0">
-                2
-              </p>
 
-              <div className="relative z-0">
-                <div className="text-2xl font-medium leading-9 text-ruby">
-                  Удобство
-                </div>
-
-                <p>
-                  В кратчайшие сроки получайте результат в удобном для вас
-                  формате
-                </p>
-              </div>
+            <div className="flex justify-end mt-16">
+              <Button onClick={() => openBriefModal(true)}>
+                {" "}
+                Получить консультацию
+              </Button>
             </div>
-            <div>
-              <p className="text-9xl font-black absolute top-[-70px] text-light m-0">
-                3
-              </p>
-
-              <div className="relative z-0">
-                <div className="text-2xl font-medium leading-9 text-ruby">
-                  Надежность
-                </div>
-                <p>
-                  Получите бесплатную консультацию по выбору источников от нашей
-                  команды
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-end mt-16">
-            <Button onClick={() => openBriefModal(true)}>
-              {" "}
-              Получить консультацию
-            </Button>
           </div>
         </div>
       </div>
+
       <BriefModal />
     </>
   );

@@ -8,8 +8,8 @@ type Props = {
 export const AuthLayout = ({ children }: Props) => {
   return (
     <>
-      <header className="py-2">
-        <div className="container flex items-center">
+      <header className="py-2 ">
+        <div className="container flex items-center min-h-[80px]">
           <Link href="/">
             <img className="h-12" src="/logo.svg" alt="Логотип" />
           </Link>
