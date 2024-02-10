@@ -17,13 +17,24 @@ sample({
   target: fetchBlogPosts,
 });
 
+export const $query = createStore<{ sorting?: string | null }>({});
+export const queryChanged = createEvent<{ sorting?: string | null }>();
+
 export const $paginatedProducts = $$paginated<PaginatedProductList>({
   path: "/products/",
 });
 
 sample({
-  fn: () => ({ page_size: 6 }),
-  clock: [pageStarted, $paginatedProducts.pageChanged],
+  clock: queryChanged,
+  target: $query,
+});
+
+sample({
+  source: {
+    query: $query,
+  },
+  fn: ({ query }) => ({ page_size: 6, ...query }),
+  clock: [pageStarted, $paginatedProducts.pageChanged, queryChanged],
   target: $paginatedProducts.fetchItems,
 });
 

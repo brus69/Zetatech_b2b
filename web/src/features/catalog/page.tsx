@@ -8,21 +8,19 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import { GetServerSideProps } from "next";
-import { $marks, pageStarted, $paginatedProducts } from "./model";
+import { useRouter } from "next/router";
+import {
+  $marks,
+  pageStarted,
+  $paginatedProducts,
+  $query,
+  queryChanged,
+} from "./model";
 import { ProductCard } from "./ui/card/card";
 import { PopularProducts } from "./ui/popular-products/view";
 import { $categories } from "@/api/categories";
 import { PopularNews } from "@/widgets/popular-news/popular-news";
-
-const items = [
-  { title: "Главная", href: "/" },
-  { title: "Каталог компаний", href: "/catalog" },
-  { title: "Популярные базы", href: "#" },
-].map((item, index) => (
-  <Anchor className="text-base text-gray" href={item.href} key={index}>
-    {item.title}
-  </Anchor>
-));
+import { cn } from "@/shared/lib";
 
 export const getServerSidePropsCatalog: GetServerSideProps = async ({
   query,
@@ -44,15 +42,46 @@ export const getServerSidePropsCatalog: GetServerSideProps = async ({
 };
 
 export const CatalogPage = () => {
-  const { products, marks, page, totalPages, onPageChanged, categories } =
-    useUnit({
-      products: $paginatedProducts.$items,
-      marks: $marks,
-      page: $paginatedProducts.$page,
-      totalPages: $paginatedProducts.$totalPages,
-      onPageChanged: $paginatedProducts.pageChanged,
-      categories: $categories,
-    });
+  const router = useRouter();
+
+  const queryCategory = router.query.category;
+  const queryMark = router.query.mark;
+
+  const {
+    products,
+    marks,
+    page,
+    totalPages,
+    onPageChanged,
+    categories,
+    query,
+    onQueryChanged,
+  } = useUnit({
+    products: $paginatedProducts.$items,
+    marks: $marks,
+    page: $paginatedProducts.$page,
+    totalPages: $paginatedProducts.$totalPages,
+    onPageChanged: $paginatedProducts.pageChanged,
+    categories: $categories,
+    query: $query,
+    onQueryChanged: queryChanged,
+  });
+
+  const mark = marks.find((item) => item.slug === queryMark);
+
+  const category = categories.find((item) => item.slug === queryCategory);
+
+  const items = [
+    { title: "Главная", href: "/" },
+    ...(category
+      ? [{ title: category.name, href: `/catalog/${category.slug}` }]
+      : []),
+    ...(mark ? [{ title: mark.name, href: `/catalog/mark/${mark.slug}` }] : []),
+  ].map((item, index) => (
+    <Anchor className="text-base text-gray" href={item.href} key={index}>
+      {item.title}
+    </Anchor>
+  ));
 
   return (
     <>
@@ -84,10 +113,13 @@ export const CatalogPage = () => {
           <h1 className="font-medium text-center">
             Исследуйте данные по меткам
           </h1>
-          <div className="flex flex-wrap gap-x-7 gap-y-2 mb-28">
-            {marks.slice(-9).map((mark) => (
+          <div className="flex flex-wrap gap-2 mb-12">
+            {marks.map((mark) => (
               <Link
-                className="p-1 px-2 text-black rounded bg-lilac"
+                className={cn(
+                  "p-1 px-2 text-black rounded bg-lilac",
+                  mark.slug === queryMark && "bg-ruby text-white"
+                )}
                 key={mark.slug}
                 href={`/catalog/mark/${mark.slug}`}
               >
@@ -127,11 +159,15 @@ export const CatalogPage = () => {
                 withCheckIcon={false}
                 placeholder="По популярности"
                 data={[
-                  "Цена: по убыванию",
-                  "Цена: по возрастанию",
-                  "По новизне",
-                  "По рейтингу",
+                  { value: "1", label: "Цена: по убыванию" },
+                  { value: "2", label: "Цена: по возрастанию" },
+                  { value: "3", label: "По новизне" },
+                  { value: "4", label: "По рейтингу" },
                 ]}
+                value={query.sorting}
+                onChange={(value) => {
+                  onQueryChanged({ sorting: value });
+                }}
                 classNames={{
                   option: "hover:bg-light rounded-none",
                   dropdown: "p-0 rounded-none -mt-[10px]",

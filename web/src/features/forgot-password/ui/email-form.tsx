@@ -16,8 +16,9 @@ export const EmailForm = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    onSendCode(data);
+  // @ts-ignore
+  const onSubmit = (data) => {
+    onSendCode();
   };
 
   return (

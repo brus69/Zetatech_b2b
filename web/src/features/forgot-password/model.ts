@@ -1,5 +1,4 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
-import { requestFx } from "@/shared/api";
 
 type Step = "email" | "pin" | "password" | "success";
 
@@ -28,9 +27,9 @@ sample({
 export const $token = createStore("");
 
 sample({
-  clock: sendCodeFx,
+  clock: sendCodeFx.doneData,
   fn: (data) => {
-    return data.token;
+    return data.data.token;
   },
   target: $token,
 });

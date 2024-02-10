@@ -47,7 +47,8 @@ export const CartPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
+  // @ts-ignore
+  const onSubmit = (data) => {
     console.log(data);
   };
 

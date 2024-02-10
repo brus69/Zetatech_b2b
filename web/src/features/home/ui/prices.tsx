@@ -38,14 +38,14 @@ export const Prices = () => {
       >
         Тарифы
       </Title>
-      <ul className="grid grid-cols-1 gap-10 p-0 mt-20 lg:grid-cols-2 2xl:grid-cols-3">
+      <ul className="grid w-full grid-cols-1 gap-10 p-0 mt-20 lg:grid-cols-2 2xl:grid-cols-3">
         {prices.map(({ name, price, grid }, index) => {
           const { textColor, backgroundColor, buttonColor, buttonClassName } =
             STYLES[index];
 
           return (
             <li
-              className={`p-10 ${textColor} ${backgroundColor} flex flex-col rounded-lg shadow-md sm:min-w-[410px]`}
+              className={`p-6 lg:p-10 ${textColor} ${backgroundColor} flex flex-col rounded-lg shadow-md w-full sm:min-w-[410px]`}
               key={name}
             >
               <p className="px-2 py-1 m-0 text-base text-center text-black rounded-md bg-lilac w-30 sm:w-52">
@@ -61,7 +61,7 @@ export const Prices = () => {
                 {grid.map(({ name, value }) => (
                   <div
                     key={name}
-                    className="flex flex-col items-center gap-5 sm:flex-row"
+                    className="flex flex-col gap-5 text-center max-md:items-center sm:flex-row"
                   >
                     <IconCheck className="min-w-[17px] w-[17px] hidden sm:block" />
                     <p className="m-0 max-w-[163px] w-full">{name}</p>

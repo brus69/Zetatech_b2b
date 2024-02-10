@@ -12,6 +12,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useUnit } from "effector-react";
+import { useRouter } from "next/router";
 import { $categories } from "@/api/categories";
 import { cn } from "@/shared/lib";
 
@@ -25,6 +26,7 @@ const ITEMS = [
 ];
 
 export const Header = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const { categories } = useUnit({
@@ -35,14 +37,21 @@ export const Header = () => {
 
   const parentCategory = categories.find((category) => category.slug === slug);
 
+  const [search, setSearch] = useState("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    router.push(`/catalog?search=${search}`);
+  };
+
   return (
     <header>
       <div className="container flex items-center py-2">
-        <Link href="/">
+        <Link className="mr-auto max-sm:hidden" href="/">
           <img className="h-12" src="/logo.svg" alt="Логотип" />
         </Link>
 
-        <ul className="flex gap-2 ml-auto mr-8 md:gap-6">
+        <ul className="flex flex-wrap p-0 mr-8 gap-x-2 md:gap-x-4">
           {ITEMS.map(({ url, name }) => (
             <li key={name} className="hover:underline">
               <Link href={url}>{name}</Link>
@@ -129,14 +138,18 @@ export const Header = () => {
         </Menu>
 
         <div className="flex grow">
-          <Input
-            className="grow"
-            classNames={{
-              input: "rounded-none border-black",
-            }}
-            placeholder="Поиск"
-            rightSection={<IconSearch className="!text-black" />}
-          />
+          <form className="grow" onSubmit={handleSubmit}>
+            <Input
+              className="grow"
+              classNames={{
+                input: "rounded-none border-black",
+              }}
+              placeholder="Поиск"
+              rightSection={<IconSearch className="!text-black" />}
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+            />
+          </form>
           <Button
             component={Link}
             // TODO or go to lk/favorites

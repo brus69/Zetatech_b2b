@@ -5,8 +5,12 @@ import { MantineProvider } from "@mantine/core";
 import { EffectorNext } from "@effector/next";
 import { NextPage } from "next";
 import { ElementType } from "react";
+import dayjs from "dayjs";
 import { theme } from "../theme";
 import { Layout, CoreLayout } from "@/layouts";
+import "dayjs/locale/ru";
+
+dayjs.locale("ru");
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   Layout?: ElementType;
