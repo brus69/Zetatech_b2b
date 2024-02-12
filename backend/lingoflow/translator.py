@@ -7,6 +7,7 @@
 import requests
 import json
 import time
+
 from typing import TypedDict
 
 from exceptions import (CantGetTranslated,

@@ -14,7 +14,6 @@ from database import (
     base_connect,
     base_connect_translition,
     insert_table_articles,
-    create_tables,
     get_tables_translit
 )
 

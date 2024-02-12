@@ -1,65 +1,72 @@
 """
 Модуль для проверки 
 грамматики с использованием API от turgenev.ashmanov.com
-
-Много(параметр risk) — это если риск высокий (от 8 баллов) или, тем более, 
-критический (от 13). 
-Впрочем, средний (от 5) — это тоже не очень хорошо.
 """
 
 import requests
 
-from constants import (TURGENEV_TOKEN,
-                       PRICE_API_LIMIT_TURGENEV)
+from constants import TURGENEV_TOKEN, PRICE_API_LIMIT_TURGENEV, TURGENEV_URL
+from database import get_tables_translit, insert_table_turgenev_ashmanov
+from exceptions import LimitExceededError, TurgenevAPIError
 
-from database import (get_tables_translit,
-                      insert_table_turgenev_ashmanov)
 
-def turgenev_balance():
-    """Проверить баланс"""
-    url = 'https://turgenev.ashmanov.com/'
-    payload = {
-        'api': 'balance',
-        'key': TURGENEV_TOKEN
-    }
-    r = requests.get(url, params=payload)
-    return r.json()
+class TurgenevAPI:
+    def __init__(self):
+        self.token = TURGENEV_TOKEN
+    def _get_balance(self) -> dict:
+        """Проверить баланс аккаунта в Тургенев API"""
+        payload = {'api': 'balance', 'key': self.token}
+        response = requests.get(TURGENEV_URL, params=payload)
+        return response.json()
 
-def check_limit():
-    """Кол-во проверок"""
-    balance = turgenev_balance()
-    count = int(balance['balance'] / PRICE_API_LIMIT_TURGENEV)
-    return count
+    def _check_limit(self) -> int:
+        """Кол-во доступных проверок в Тургенев API"""
+        balance = self._get_balance()
+        return int(balance['balance'] // PRICE_API_LIMIT_TURGENEV)
 
-def check_text_turgenev(text:str) -> dict:
-    """Проверка текста на угрозу риска алгоритма Баден-Баден"""
-    limit = check_limit()
-    if limit < 1:
-        print('Ошибка: Закончились лимиты')
-    url = 'https://turgenev.ashmanov.com/'
-    payload = {
-        'key':TURGENEV_TOKEN,
-        'text':text,
-        'api':'risk',
-        'more': 1
-    }
-    r = requests.post(url, data=payload)
-    data = r.json()
-    data = {
-        'risk_point': data['risk'],
-        'name_risk': data['level']
-    }
-    if 'error' in data:
-        print(f'Ошибка: {data["error"]}')
-        return None
-    return data
+    def _check_text(self, text:str) -> dict:
+        """Проверить текст на угрозы фильтра от поисковых систем
+           с помощью Turgenev API"""
 
-def get_result_turgenev():
-    data = get_tables_translit('translated_articles', 'id, translated_content')
-    for text_content in data:
-        data = check_text_turgenev(text_content[1])
-        row = (data['risk_point'], data['name_risk'], text_content[0])
-        insert_table_turgenev_ashmanov(row)
+        limit = self._check_limit()
+        if limit < 1:
+            raise LimitExceededError('Ошибка: Закончились лимиты API')
+
+        payload = {
+            'key': self.token,
+            'text': text,
+            'api': 'risk',
+            'more': 1
+        }
+        response = requests.post(TURGENEV_URL, data=payload)
+        data = response.json()
+
+        if 'error' in data:
+            raise TurgenevAPIError(data["error"])
+
+        return {
+            'risk_point': data['risk'],
+            'name_risk': data['level']
+        }
+
+    def process_results(self):
+        """Обработать результаты проверки
+        текстов с помощью Turgenev API и записать в БД"""
+        texts = get_tables_translit('translated_articles', 'id, translated_content')
+
+        for text_id, text_content in texts:
+            try:
+                result = self._check_text(text_content)
+            except LimitExceededError:
+                print('Закончились Лимиты API')
+                break
+            except TurgenevAPIError as e:
+                print(f'Ошибка Turgenev API: {e}')
+            else:
+                row = (result['risk_point'], result['name_risk'], text_id)
+                insert_table_turgenev_ashmanov(row)
+
 
 if __name__ == "__main__":
-    get_result_turgenev()
+    turgenev_api = TurgenevAPI()
+    print(type(turgenev_api.get_balance()))
