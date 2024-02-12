@@ -6,78 +6,75 @@
 import requests
 import time
 
-from constants import TEXT_TOKEN
-from database import (get_tables_translit, insert_table_unigueness_text)
+from constants import TEXT_TOKEN, TEXT_URL_POST, TEXT_URL_ACCOUN
+from database import get_tables_translit, insert_table_unigueness_text
+from exceptions import ExceededGetLimit, LengthTextError, TextAPIError
 
-def text_uniqueness(text:str, limit_balance: int) -> str:
-    """Проверка на уникальность текста"""
-    url = 'http://api.text.ru/post'
-    payload = {'userkey': TEXT_TOKEN, 'text': text}
-    count_text = len(text)
-    try:
-        if count_text < 100:
-            print('Минимальная длина текста — 100 символов.')
-            return None
+class TextUniquenessChecker:
+    def __init__(self):
+        self.token = TEXT_TOKEN
+        self.text_url_post = TEXT_URL_POST
+        self.text_url_account = TEXT_URL_ACCOUN
+        self.min_limit_text = 100
+
+    def _get_text_limit_balance(self):
+        """Остаток количества символов баланса"""
+        payload = {'userkey': self.token, 'method': 'get_packages_info'}
+        r = requests.post(self.text_url_account, data=payload)
+        data = r.json()
+        return int(data['size'])
+
+    def _check_text_uniqueness(self, text:str, limit_balance: int) -> str:
+        """Проверка на уникальность текста"""
+
+        payload = {'userkey': self.token, 'text': text}
+        count_text = len(text)
+
+        if count_text < self.min_limit_text:
+            raise LengthTextError('Минимальная длина текста — 100 символов')
         elif count_text > limit_balance:
-            print('Баланс на проверку уникальности исчерпан')
-            return None
-        else:
-            r = requests.post(url, data=payload)
-            data = r.json()
-            return data['text_uid']
-    except:
+            raise ExceededGetLimit('Баланс на проверку уникальности исчерпан')
+
+        response = requests.post(self.text_url_post, data=payload)
+        data = response.json()
         if 'error_code' in data:
-            print(data['error_desc'])
-        else:
-            print("Ошибка: не удалось выполнить запрос")
-    # {'error_code': 112, 'error_desc': 'Проверяемый текст слишком короткий. Минимальная длина текста — 100 символов.'}
+            raise TextAPIError(data['error_desc'])
+        return data['text_uid']
 
-
-def text_limit_balance():
-    """Остаток кол-во символов баланса"""
-    url = 'http://api.text.ru/account'
-    payload = {'userkey': TEXT_TOKEN, 'method':'get_packages_info'}
-    r = requests.post(url, data=payload)
-    data = r.json()
-    return int(data['size'])
-
-def text_result_uniqueness_uid(text_uid: str):
-    """Результат проверки текста"""
-    url = 'http://api.text.ru/post'
-    payload = {'userkey': TEXT_TOKEN, 'uid': text_uid}
-    try:
-        while True:
-            r = requests.post(url, data=payload)
-            data = r.json()
-            if 'error_code' in data:
-                if data['error_code'] == 181:
-                    time.sleep(10)
+    def _text_result_uniqueness_uid(self, text_uid: str):
+        """Результат проверки текста"""
+        payload = {'userkey': self.token, 'uid': text_uid}
+        try:
+            while True:
+                response = requests.post(self.text_url_post, data=payload)
+                data = response.json()
+                if 'error_code' in data:
+                    if data['error_code'] == 181:
+                        time.sleep(10)
+                    else:
+                        raise TextAPIError(f"Ошибка: {data['error_code']}")
+                elif 'unique' in data:
+                    return data['unique']
                 else:
-                    print(f"Ошибка при выполнении запроса: {data['error_code']}")
-                    return None
-            elif 'unique' in data:
-                return data['unique']
-            else:
-                print("Не удалось распознать ответ сервера")
-                return None
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка запроса: {e}")
-        return None
+                    raise TextAPIError("Не удалось распознать ответ сервера")
 
-def text_result() -> int:
-    limit_balance = text_limit_balance()
-    texts = get_tables_translit('translated_articles', 'id, translated_content')
-    for text in texts:
-        text_uid = text_uniqueness(text[1], limit_balance)
-        if text_uid:
-            data = text_result_uniqueness_uid(text_uid)
-            result = (int(float(data)), text[0])
-            print(result)
-            insert_table_unigueness_text(result)
-    return f'Запись'
+        except requests.exceptions.RequestException as e:
+            raise RuntimeError(f"Ошибка запроса: {e}")
 
+    def process_text_results(self):
+        try:
+            limit_balance = self._get_text_limit_balance()
+            texts = get_tables_translit('translated_articles', 'id, translated_content')
+            for text_id, text_content in texts:
+                text_uid = self._check_text_uniqueness(text_content, limit_balance)
+                if text_uid:
+                    data = self._text_result_uniqueness_uid(text_uid)
+                    result = (int(float(data)), text_id)
+                    insert_table_unigueness_text(result)
+        except Exception as e:
+            return f"Ошибка при обработке результатов: {e}"
 
 
 if __name__ == "__main__":
-    result = text_result()
-    print(result)
+    result = TextUniquenessChecker()
+    print(result.text_limit_balance())
