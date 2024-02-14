@@ -58,20 +58,6 @@ class TextToImageProcessor:
             attempts -= 1
             time.sleep(delay)
 
-    def process_image_generation(self):
-        text_prompts = get_tables_translit('promt', 'promt, translation_articles_id')
-
-        for text in text_prompts:
-            model_id = self.get_model()
-            uuid = self.generate_image(text[0], model_id)
-            images = self.check_generation_status(uuid)
-            output_folder = "media"
-            name_file = self._decode_and_save_image(images[0], output_folder)
-            url_post_image = f"{output_folder}/{name_file}"
-            data = (url_post_image, text[1])
-            insert_image_post(data)
-            print(data)
-
     def _decode_and_save_image(self, base64_string, output_folder):
         try:
             image_data = base64.b64decode(base64_string)
@@ -87,6 +73,19 @@ class TextToImageProcessor:
         except Exception as e:
             print(f"Error processing image: {str(e)}")
 
+    def process_image_generation(self):
+        text_prompts = get_tables_translit('promt', 'promt, translation_articles_id')
+
+        for text in text_prompts:
+            model_id = self.get_model()
+            uuid = self.generate_image(text[0], model_id)
+            images = self.check_generation_status(uuid)
+            output_folder = "media"
+            name_file = self._decode_and_save_image(images[0], output_folder)
+            url_post_image = f"{output_folder}/{name_file}"
+            data = (url_post_image, text[1])
+            insert_image_post(data)
+            print(data)
 
 if __name__ == '__main__':
-    ...
+   ...

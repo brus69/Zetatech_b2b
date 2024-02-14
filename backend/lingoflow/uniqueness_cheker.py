@@ -6,7 +6,7 @@
 import requests
 import time
 
-from constants import TEXT_TOKEN, TEXT_URL_POST, TEXT_URL_ACCOUN
+from constants import TEXT_TOKEN, TEXT_URL_POST, TEXT_URL_ACCOUNT
 from database import get_tables_translit, insert_table_unigueness_text
 from exceptions import ExceededGetLimit, LengthTextError, TextAPIError
 
@@ -14,7 +14,7 @@ class TextUniquenessChecker:
     def __init__(self):
         self.token = TEXT_TOKEN
         self.text_url_post = TEXT_URL_POST
-        self.text_url_account = TEXT_URL_ACCOUN
+        self.text_url_account = TEXT_URL_ACCOUNT
         self.min_limit_text = 100
 
     def _get_text_limit_balance(self):
@@ -22,6 +22,8 @@ class TextUniquenessChecker:
         payload = {'userkey': self.token, 'method': 'get_packages_info'}
         r = requests.post(self.text_url_account, data=payload)
         data = r.json()
+        if 'error_code' in data:
+            raise TextAPIError(data['error_desc'])
         return int(data['size'])
 
     def _check_text_uniqueness(self, text:str, limit_balance: int) -> str:
@@ -77,4 +79,4 @@ class TextUniquenessChecker:
 
 if __name__ == "__main__":
     result = TextUniquenessChecker()
-    print(result.text_limit_balance())
+    print(result._get_text_limit_balance())

@@ -110,10 +110,7 @@ class DeeplTranslator:
         return result_data
 
 
+
 if __name__ == "__main__":
-    ...
-    # result = get_result_transfer()
-    # print(result)
-    result = get_tables_translit('articles')
-    for i in result:
-        print(i[2:6])
+    deepl = DeeplTranslator
+    deepl.get_result_transfer()

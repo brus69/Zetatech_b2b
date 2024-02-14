@@ -8,7 +8,7 @@ import time
 
 from constants import DATA_BASE, DATA_BASE_TRANSLIT
 
-def base_connect() -> list[tuple]:
+def base_connect_scrapy() -> list[tuple]:
     """Соеденение с БД от фреймвока scrapy"""
     conn = sqlite3.connect(DATA_BASE)
     cursor = conn.cursor()
@@ -23,7 +23,7 @@ def base_connect_translition() -> sqlite3.Cursor:
     cursor = conn.cursor()
     return cursor
 
-def insert_table_articles(rows: list[tuple], table_name = 'articles'):
+def insert_table_articles(rows: list[tuple]):
     """Наполнение таблицы данными"""
     conn = sqlite3.connect(DATA_BASE_TRANSLIT)
     cursor = conn.cursor()
@@ -33,7 +33,7 @@ def insert_table_articles(rows: list[tuple], table_name = 'articles'):
     try:
         for row in rows:
             cursor.execute(f'''
-            INSERT INTO {table_name} (url, title, description, h1, content, date)
+            INSERT INTO articles (url, title, description, h1, content, date)
             VALUES(?,?,?,?,?,?)''', row + (date, )
             )
             conn.commit()
@@ -70,13 +70,14 @@ def get_tables_translit(table_name = 'articles', column='*'):
     conn = sqlite3.connect(DATA_BASE_TRANSLIT)
     cursor = conn.cursor()
     cursor.execute(f''' 
-    SELECT {column} FROM {table_name} LIMIT 4
+    SELECT {column} FROM {table_name} 
     ''')
     data_list = cursor.fetchall()
     cursor.close()
     return data_list
 
 def get_tables_all():
+    """Вывести все таблицы"""
     conn = sqlite3.connect(DATA_BASE_TRANSLIT)
     cursor = conn.cursor()
     cursor.execute(f'''
@@ -96,7 +97,7 @@ def insert_table_unigueness_text(row: tuple, table_name = 'uniqueness_text'):
         ''', row)
         conn.commit()
     except sqlite3.OperationalError as e:
-        print(f'Ошибка создание таблицы {table_name}: {e}')
+        print(f'Ошибка {table_name}: {e}')
     finally:
         conn.close()
 
