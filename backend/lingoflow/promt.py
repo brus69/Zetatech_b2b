@@ -6,8 +6,11 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.probability import FreqDist
+from pymystem3 import Mystem
+
 
 from database import get_tables_translit, insert_table_promt
+
 
 class TextProcessor:
     def __init__(self):
@@ -27,54 +30,57 @@ class TextProcessor:
         result = get_tables_translit('stop_words', 'text_stop_words')
         self._custom_stop_words = result[0][0].replace(' ', '').split(',')
 
-    def _process_russian_text(self, text):
+
+    def _process_text(self, text, language='russian'):
         """
-        Обработка русскоязычного текста.
-        Выполняет токенизацию текста, исключает стоп-слова и возвращает список слов.
+        Обработка текста.
+        Выполняет токенизацию текста и возвращает список слов.
         """
-        tokens = word_tokenize(text, language='russian')
+        tokens = word_tokenize(text, language=language)
+        return tokens
+
+    def _filter_stop_words(self, words):
+        """
+        Фильтрация стоп-слов из списка слов.
+        """
         stop_words = set(stopwords.words('russian') + self._custom_stop_words)
-        filtered_words = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
+        filtered_words = [word.lower() for word in words if word.isalpha() and word.lower() not in stop_words]
         return filtered_words
 
-    def _process_new_list_text(self, word_list, limit=3):
+    def _generate_common_words(self, word_list, limit=3):
         """
-        Обработка списка слов и формирование списка фраз.
-        Использует частотный анализ для определения наиболее
-        часто встречающихся слов и формирует список фраз.
+        Генерация списка общих слов на основе частотного анализа слов.
         """
         frequency_dist = FreqDist(word_list)
         most_common_words = frequency_dist.most_common()
         common_words = [word for word, count in most_common_words if count > limit]
-        common_phrases_list = [word * frequency_dist[word] for word in common_words]
-        return list(set(common_phrases_list))
+        return common_words
 
     def _process_prompt(self, example_text):
         """
         Обработка текста и создание промпта.
-        Преобразует текст в список слов, формирует список фраз
-        и возвращает первые 10 фраз в виде строки.
-        Если список фраз пуст, возвращает первое слово текста.
         """
-        processed_words = self._process_russian_text(example_text)
-        result_text = ', '.join(self._process_new_list_text(processed_words)[:10])
-        if not result_text:
-            result_text = processed_words[0]
-        return result_text
+        processed_words = self._process_text(example_text)
+        filtered_words = self._filter_stop_words(processed_words)
+        common_words = self._generate_common_words(filtered_words)
+        return common_words
 
     def process_and_insert_prompts(self):
         """
         Обработка текстов и вставка промптов в базу данных.
-        Получает тексты из базы данных, обрабатывает каждый текст
-        и вставляет полученный промпт обратно в базу данных.
         """
         example_texts = get_tables_translit('translated_articles', 'id, translated_content')
+        mystem = Mystem()
         for text in example_texts:
-            prompt = self._process_prompt(text[1])
-            result = (prompt, text[0])
+            words = self._process_prompt(text[1])[:5]
+            lemmas = set(mystem.lemmatize(word)[0] for word in words)
+            promt = ', '.join( list(lemmas))
+            result = (promt, text[0])
             insert_table_promt(result)
 
 
+
+
+
 if __name__ == "__main__":
-    processor = TextProcessor()
-    processor.process_and_insert_prompts()
+    ...

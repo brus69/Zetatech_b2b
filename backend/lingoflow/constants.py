@@ -4,12 +4,10 @@ DEEPL_TOKEN = os.environ.get('DEEPL_TOKEN')
 #Анализ на уникальность
 TEXT_TOKEN = os.environ.get('TEXT_TOKEN')
 TEXT_URL_POST = 'http://api.text.ru/post'
-TEXT_URL_ACCOUN = 'http://api.text.ru/account'
+TEXT_URL_ACCOUNT = 'http://api.text.ru/account'
 
 #Проверка на риск попасть(Тургенев) в Баден-Баден
 TURGENEV_TOKEN = os.environ.get('TURGENEV_TOKEN')
-TURGENEV_URL = 'https://turgenev.ashmanov.com/'
-
 
 #Стоимость проверки по API(Тургенев):
 PRICE_API_LIMIT_TURGENEV = 0.3
