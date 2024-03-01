@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  nginx:
+    container_name: nginx
+    restart: always
+    image: "nginx:1.25.2-alpine-slim"
+    networks:
+      - production_network
+    volumes:
+      - "../../nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "../../nginx/templates:/etc/nginx/templates:ro"
+      - "static_zetatech_service_production_volumes:/usr/zetatech_service/staticfiles:rw"
+      - "cerbot_www_volume_production_volumes:/var/www/certbot/:ro"
+      - "cerbot_conf_volume_production_volumes:/etc/nginx/ssl/:ro"
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=${PROD_NGINX_HOST}
+      - NGINX_PORT=80
+
+      - ZETATECH_SERVICE_HOST=zetatech_service_api
+      - ZETATECH_SERVICE_PORT=${PROD_ZETATECH_SERVICE_PORT}
+
+      - WEB_HOST=web
+      - WEB_PORT=${PROD_WEB_PORT}
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - cerbot_www_volume_production_volumes:/var/www/certbot/:rw
+      - cerbot_conf_volume_production_volumes:/etc/letsencrypt/:rw
+
+volumes:
+  static_zetatech_service_production_volumes:
+  cerbot_www_volume_production_volumes:
+  cerbot_conf_volume_production_volumes:
+
+networks:
+  zetatech_service:
+    name: zetatech_service
+
+  production_network:
+    name: production_network
