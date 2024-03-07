@@ -1,6 +1,52 @@
 version: "3.9"
 
+name: zetatech_deploy
+
 services:
+  zetatech_db:
+    image: postgres:15.4-alpine
+    container_name: zetatech_db
+    restart: always
+    networks:
+      - production_network
+    volumes:
+      - "./backend/postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql"
+      - "zetatech_dev_postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_PORT}
+  
+  zetattech_api:
+    container_name: zetatech_api
+    restart: always
+    build: 
+      context: ./../../..
+      dockerfile: deployments/docker/service/ServerDockerfile
+    network: 
+      - production_network
+    volumes:
+      - "../../zetatech/zetatech_backend/:/usr/service:rw"
+      - "zetatech_dev_static_files:/usr/service/staticfiles"
+    depends_on:
+      - zetatech_db
+    command: gunicorn backend.zetatech_backend.core.wsqi -bind 0.0.0.0
+    ports:
+      - "${PORT}:8000"
+    environment:
+      - SERVICE_NAME=zetatech_api
+
+  zetatech_redis:
+    image: redis:latest
+    container_name: zetatech_redis
+    networks:
+      - production_network
+    restart: always
+    expose:
+      - 6379
+
   nginx:
     container_name: nginx
     restart: always
@@ -38,8 +84,5 @@ volumes:
   cerbot_conf_volume_production_volumes:
 
 networks:
-  zetatech_service:
-    name: zetatech_service
-
   production_network:
     name: production_network
