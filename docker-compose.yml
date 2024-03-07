@@ -29,7 +29,7 @@ services:
       - production_network
     volumes:
       - "../../zetatech/zetatech_backend/:/usr/service:rw"
-      - "zetatech_dev_static_files:/usr/service/staticfiles"
+      - "static_zetatech_service_production_volumes:/usr/service/staticfiles"
     depends_on:
       - zetatech_db
     command: gunicorn backend.zetatech_backend.core.wsqi -bind 0.0.0.0
@@ -82,6 +82,7 @@ volumes:
   static_zetatech_service_production_volumes:
   cerbot_www_volume_production_volumes:
   cerbot_conf_volume_production_volumes:
+  zetatech_dev_postgres_data:
 
 networks:
   production_network:
