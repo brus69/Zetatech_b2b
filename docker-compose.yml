@@ -24,7 +24,7 @@ services:
     restart: always
     build: 
       context: ./../../..
-      dockerfile: deployments/docker/service/ServerDockerfile
+      dockerfile: ./deployments/docker/service/ServerDockerfile
     networks: 
       - production_network
     volumes:
