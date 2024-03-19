@@ -1,6 +1,10 @@
+COMPOSE_FILE_DEV= ../docker-compose.yml
 COMPOSE_FILE=docker/development.yml
 ENV_FILE=dev.env
+ENV_DEPLOY_FILE=deploy.env
 
+up_dev_build:
+	docker-compose -f $(COMPOSE_FILE_DEV) --env-file $(ENV_DEPLOY_FILE) up -d --build
 
 up_build:
 	docker-compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up -d --build
