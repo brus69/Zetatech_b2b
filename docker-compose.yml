@@ -51,7 +51,7 @@ services:
     container_name: zetatech_front
     restart: always
     build:
-      contexnt: .
+      context: .
       dockerfile: deployments/docker/web/Dockerfile
     network:
       - production_network
