@@ -53,7 +53,7 @@ services:
     build:
       context: .
       dockerfile: deployments/docker/web/Dockerfile
-    network:
+    networks:
       - production_network
 
   nginx:
