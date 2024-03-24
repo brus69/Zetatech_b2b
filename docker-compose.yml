@@ -47,6 +47,15 @@ services:
     expose:
       - 6379
 
+  zetatech_front:
+    container_name: zetatech_front
+    restart: always
+    build:
+      contexnt: .
+      dockerfile: deployments/docker/web/Dockerfile
+    network:
+      - production_network
+
   nginx:
     container_name: nginx
     restart: always
