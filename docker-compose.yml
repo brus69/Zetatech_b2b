@@ -51,8 +51,10 @@ services:
     container_name: zetatech_front
     restart: always
     build:
-      context: .
-      dockerfile: deployments/docker/web/Dockerfile
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     networks:
       - production_network
 
